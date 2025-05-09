@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brooklyn Events Explorer</title>
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     crossorigin=""/>
+    <!-- noUiSlider CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.css" 
+     crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app-container">
+        <div id="filters-panel">
+            <div class="filter-group"> <!-- This is the date filter group -->
+                <label for="date-slider">Date Range:</label>
+                <div id="date-slider"></div>
+                <div id="date-slider-values">
+                    <span id="slider-start-date"></span> - <span id="slider-end-date"></span>
+                </div>
+            </div>
+
+            <!-- WRAP the hashtag label and its container -->
+            <div class="filter-group" id="hashtag-filter-group-wrapper"> 
+                <label>Hashtags:</label> 
+                <div id="hashtag-filters-container">
+                    <!-- Hashtags will be populated here -->
+                </div>
+            </div>
+
+            <button id="reset-filters">Reset Filters</button>
+            <div id="event-count-display">Showing 0 events at 0 locations.</div>
+        </div>
+
+        <div id="map-container">
+            <div id="map"></div>
+        </div>
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+    <!-- noUiSlider JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.js" 
+     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Custom Script -->
+    <script src="script.js"></script>
+</body>
+</html>
