@@ -4,11 +4,12 @@ document.addEventListener('DOMContentLoaded', () => {
     let markersLayer;
     let allEvents = [];
     let eventsByLocation = {};
-    let hashtagColors = {}; // Stores { '#Tag': 'color' }
+    let hashtagColors = {};
     let dateSlider;
     
-    const MAY_2025_START_DATE = new Date(2025, 4, 1); 
-    const MAY_2025_END_DATE = new Date(2025, 4, 31);
+    const START_DATE = new Date(2025, 4, 1); 
+    const END_DATE = new Date(2025, 5, 30);
+    const ONE_DAY_IN_MS = 24 * 60 * 60 * 1000;
 
     const DEFAULT_MARKER_COLOR = '#757575'; 
     const HASHTAG_COLOR_PALETTE = [ 
@@ -28,8 +29,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const eventData = await loadEventsFromFile('events.json');
             processEventData(eventData);
             initMap();
-            const sortedHashtagData = processHashtagData(); 
-            populateHashtagFilters(sortedHashtagData);   
+            assignHashtagColors();
+            populateHashtagFilters();
             initDateSlider();
             addEventListeners();
             filterAndDisplayEvents(); 
@@ -67,47 +68,26 @@ document.addEventListener('DOMContentLoaded', () => {
         markersLayer = L.layerGroup().addTo(map);
     }
 
-    function processHashtagData() {
-        const frequencies = {};
-        const uniqueTagsSet = new Set();
-
+    function assignHashtagColors() {
+        const uniqueHashtags = new Set();
         allEvents.forEach(event => {
             if (event.hashtags && Array.isArray(event.hashtags)) {
-                event.hashtags.forEach(tag => {
-                    uniqueTagsSet.add(tag);
-                    frequencies[tag] = (frequencies[tag] || 0) + 1;
-                });
+                event.hashtags.forEach(tag => uniqueHashtags.add(tag));
             }
         });
-
-        const alphabeticallySortedUniqueTags = Array.from(uniqueTagsSet).sort();
-        alphabeticallySortedUniqueTags.forEach((tag, index) => {
+        Array.from(uniqueHashtags).sort().forEach((tag, index) => {
             hashtagColors[tag] = HASHTAG_COLOR_PALETTE[index % HASHTAG_COLOR_PALETTE.length];
         });
-
-        const displayData = alphabeticallySortedUniqueTags.map(tag => ({
-            tag: tag,
-            count: frequencies[tag],
-            color: hashtagColors[tag] 
-        }));
-
-        displayData.sort((a, b) => {
-            if (b.count !== a.count) {
-                return b.count - a.count;
-            }
-            return a.tag.localeCompare(b.tag);
-        });
-        return displayData;
     }
 
-    function populateHashtagFilters(sortedHashtagData) {
+    function populateHashtagFilters() {
         hashtagFiltersContainer.innerHTML = '';
-        sortedHashtagData.forEach(data => {
-            const { tag, count, color } = data;
+        Object.keys(hashtagColors).sort().forEach(tag => {
             const label = document.createElement('label');
             label.classList.add('hashtag-label');
             const checkbox = document.createElement('input');
-            checkbox.type = 'checkbox'; checkbox.value = tag;
+            checkbox.type = 'checkbox';
+            checkbox.value = tag;
             checkbox.id = `tag-${tag.replace(/[^a-zA-Z0-9]/g, '')}`;
             checkbox.addEventListener('change', () => {
                 label.classList.toggle('selected', checkbox.checked);
@@ -115,9 +95,9 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             const colorSwatch = document.createElement('div');
             colorSwatch.classList.add('hashtag-color-swatch');
-            colorSwatch.style.backgroundColor = color || DEFAULT_MARKER_COLOR;
+            colorSwatch.style.backgroundColor = hashtagColors[tag] || DEFAULT_MARKER_COLOR;
             const span = document.createElement('span');
-            span.textContent = `${tag} (${count})`;
+            span.textContent = tag;
             label.appendChild(checkbox); label.appendChild(colorSwatch); 
             label.appendChild(span);
             label.htmlFor = checkbox.id;
@@ -136,18 +116,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function initDateSlider() { 
         const slider = document.getElementById('date-slider');
-        if (isNaN(MAY_2025_START_DATE.getTime()) || isNaN(MAY_2025_END_DATE.getTime())) {
-            console.error("MAY_2025_START_DATE or MAY_2025_END_DATE is invalid!");
-            MAY_2025_START_DATE = new Date(2025, 4, 1);
-            MAY_2025_END_DATE = new Date(2025, 4, 31);
+        const startTimestamp = START_DATE.getTime();
+        const endTimestamp = END_DATE.getTime();
+
+        let initialStartHandleTimestamp = startTimestamp;
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // Set to the beginning of today
+        const todayTimestamp = today.getTime();
+
+        if (todayTimestamp <= endTimestamp) { // If today is not after the END_DATE
+            initialStartHandleTimestamp = Math.max(todayTimestamp, startTimestamp); // Use today, but not before original START_DATE
         }
-        const startTimestamp = MAY_2025_START_DATE.getTime();
-        const endTimestamp = MAY_2025_END_DATE.getTime();
+
         dateSlider = noUiSlider.create(slider, {
             range: { min: startTimestamp, max: endTimestamp },
-            start: [startTimestamp, endTimestamp],
-            connect: true, step: 24 * 60 * 60 * 1000,
-            behaviour: 'drag-tap', margin: 24 * 60 * 60 * 1000 * 1
+            start: [initialStartHandleTimestamp, endTimestamp],
+            connect: true, step: ONE_DAY_IN_MS,
+            behaviour: 'drag-tap',
+            margin: ONE_DAY_IN_MS // Minimum 1 day between handles
         });
         dateSlider.on('update', (values, handle, unencoded) => { 
             startDateElement.textContent = formatDateForDisplay(unencoded[0]);
@@ -165,7 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function resetFilters() { 
         if (dateSlider) {
-            dateSlider.set([MAY_2025_START_DATE.getTime(), MAY_2025_END_DATE.getTime()]);
+            dateSlider.set([START_DATE.getTime(), END_DATE.getTime()]);
         }
         const hashtagCheckboxes = document.querySelectorAll('#hashtag-filters-container input[type="checkbox"]');
         hashtagCheckboxes.forEach(checkbox => {
@@ -189,8 +175,11 @@ document.addEventListener('DOMContentLoaded', () => {
     function escapeHtml(unsafe) { 
         if (typeof unsafe !== 'string') return '';
         return unsafe
-             .replace(/&/g, "&").replace(/</g, "<").replace(/>/g, ">")
-             .replace(/"/g, "\"").replace(/'/g, "'");
+             .replace(/&/g, "&amp;")
+             .replace(/</g, "&lt;")
+             .replace(/>/g, "&gt;")
+             .replace(/"/g, "&quot;")
+             .replace(/'/g, "&#039;"); // or &apos;
     }
 
     function isValidUrl(string) { 
@@ -198,24 +187,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function formatEventDateTimeCompactly(event) {
-        if (event.parsedStartDate === "Ongoing") return "Ongoing";
+        if (event.parsedStartDate === "Ongoing") {
+            return "Ongoing";
+        }
         const start = event.parsedStartDate;
         const end = event.parsedEndDate;
-        if (!(start instanceof Date) || isNaN(start) || !(end instanceof Date) || isNaN(end)) return "Date/Time N/A";
-        
+        if (!(start instanceof Date) || isNaN(start) || !(end instanceof Date) || isNaN(end)) {
+            return "Date/Time N/A";
+        }
         const optionsDate = { month: 'short', day: 'numeric' };
-        // More robust time formatting to handle potential ':00' and space correctly
-        const formatTime = (date) => {
-            let timeStr = date.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
-            timeStr = timeStr.replace(':00 AM', 'am').replace(':00 PM', 'pm'); // First handle :00
-            timeStr = timeStr.replace(' AM', 'am').replace(' PM', 'pm'); // Then handle remaining space AM/PM
-            return timeStr;
-        };
+        const optionsTime = { hour: 'numeric', minute: 'numeric', hour12: true };
 
         const startDateStr = start.toLocaleDateString('en-US', optionsDate);
-        const startTimeStr = formatTime(start);
+        const startTimeStr = start.toLocaleTimeString('en-US', optionsTime).replace(':00 AM', ' AM').replace(':00 PM', ' PM').replace(' AM', 'am').replace(' PM', 'pm');
         const endDateStr = end.toLocaleDateString('en-US', optionsDate);
-        const endTimeStr = formatTime(end);
+        const endTimeStr = end.toLocaleTimeString('en-US', optionsTime).replace(':00 AM', ' AM').replace(':00 PM', ' PM').replace(' AM', 'am').replace(' PM', 'pm');
 
         if (startDateStr === endDateStr) {
             if (startTimeStr === endTimeStr) return `${startDateStr}, ${startTimeStr}`;
@@ -234,16 +220,22 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!isEventFilteredOut(event, activeFilters.sliderStartDate, activeFilters.sliderEndDate, activeFilters.selectedHashtags)) {
                 displayedEventCount++;
                 let eventDetailHtml = '';
+                
                 eventDetailHtml += `<p class="popup-event-datetime">${formatEventDateTimeCompactly(event)}</p>`;
+
                 if (event.location_name && event.location_name !== eventsAtLocation[0].location_name) { 
                      eventDetailHtml += `<p><strong>Venue:</strong> ${escapeHtml(event.location_name)}</p>`;
                 }
-                if (event.description) eventDetailHtml += `<p>${escapeHtml(event.description)}</p>`;
+                
+                if (event.description) {
+                    eventDetailHtml += `<p>${escapeHtml(event.description)}</p>`;
+                }
+                
                 if (event.link) {
                     if (isValidUrl(event.link)) {
                         eventDetailHtml += `<p><a href="${escapeHtml(event.link)}" target="_blank" rel="noopener noreferrer">More Info</a></p>`;
                     } else {
-                        eventDetailHtml += `<p><strong>Info:</strong> ${escapeHtml(event.link)}</p>`;
+                        eventDetailHtml += `<p><strong>Info:</strong> ${escapeHtml(event.link)}</p>`; // Changed "Link" to "Info" for non-URLs
                     }
                 }
                 if (event.hashtags && event.hashtags.length > 0) {
@@ -251,6 +243,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         `<span style="color:${hashtagColors[tag] || 'inherit'}; font-weight:bold;">${escapeHtml(tag)}</span>`
                     ).join(', ')}</p>`;
                 }
+                
                 const isOpen = isFirstMatchingEventInPopup; 
                 mainContent += `<details ${isOpen ? 'open' : ''}>`;
                 mainContent += `<summary>${escapeHtml(event.name)}</summary>`;
@@ -260,15 +253,19 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        if (displayedEventCount === 0) return "<p>No events at this location match the current filters.</p>";
+        if (displayedEventCount === 0) {
+            return "<p>No events at this location match the current filters.</p>";
+        }
         
         let header = '';
-        const totalEventsAtPhysicalLocation = eventsAtLocation.length;
-        if (totalEventsAtPhysicalLocation > 1 && displayedEventCount > 0 && displayedEventCount < totalEventsAtPhysicalLocation) {
+        const totalEventsAtPhysicalLocation = eventsAtLocation.length; // All events physically here
+        if (totalEventsAtPhysicalLocation > 1 && displayedEventCount > 0) {
              header = `<div><small>${displayedEventCount} of ${totalEventsAtPhysicalLocation} events match filters:</small></div>`;
         } else if (displayedEventCount === 1 && totalEventsAtPhysicalLocation > 1) {
              header = `<div><small>1 of ${totalEventsAtPhysicalLocation} events matches filters:</small></div>`;
         }
+        // If displayedEventCount === totalEventsAtPhysicalLocation, no extra header needed as summary is enough.
+        
         return header + mainContent;
     }
 
@@ -279,25 +276,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
         for (const locationKey in locationsToDisplay) {
             if (locationKey === 'unknown_location') continue;
+
             const eventsMatchingFiltersAtThisLocation = locationsToDisplay[locationKey];
             if (eventsMatchingFiltersAtThisLocation.length === 0) continue;
 
             visibleLocationCount++;
             visibleEventCountTotal += eventsMatchingFiltersAtThisLocation.length; 
+
             const [lat, lng] = locationKey.split(',').map(Number);
             const markerColor = getMarkerColorForLocation(eventsMatchingFiltersAtThisLocation); 
+
             const customIcon = L.divIcon({
                 className: 'custom-marker-icon',
                 html: `<div style="background-color: ${markerColor}; width: 100%; height: 100%; border-radius: 50%;"></div>`,
                 iconSize: [20, 20], iconAnchor: [10, 10] 
             });
+
             const marker = L.marker([lat, lng], { icon: customIcon });
+            
             const hoverTooltipText = eventsMatchingFiltersAtThisLocation.length > 1 
                 ? `${eventsMatchingFiltersAtThisLocation.length} events here (match filters)` 
                 : eventsMatchingFiltersAtThisLocation[0].name;
             marker.bindTooltip(hoverTooltipText);
 
-            marker.bindPopup(() => { 
+            marker.bindPopup(() => {
                 const sliderValues = dateSlider.get(true); 
                 const currentPopupFilters = {
                     sliderStartDate: new Date(sliderValues[0]),
@@ -319,8 +321,8 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             const eventStart = event.parsedStartDate;
             const eventEnd = event.parsedEndDate;
-            const startFilter = (filterStartDate instanceof Date && !isNaN(filterStartDate)) ? filterStartDate : MAY_2025_START_DATE;
-            let endFilter = (filterEndDate instanceof Date && !isNaN(filterEndDate)) ? filterEndDate : MAY_2025_END_DATE;
+            const startFilter = (filterStartDate instanceof Date && !isNaN(filterStartDate)) ? filterStartDate : START_DATE;
+            let endFilter = (filterEndDate instanceof Date && !isNaN(filterEndDate)) ? filterEndDate : END_DATE;
             endFilter = new Date(endFilter); 
             endFilter.setHours(23, 59, 59, 999);
             dateMatch = eventStart <= endFilter && eventEnd >= startFilter;

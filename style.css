@@ -1,15 +1,18 @@
 /* style.css */
 :root {
-    --primary-bg: #1e1e2f;
-    --secondary-bg: #27293d;
-    --tertiary-bg: #3b3d56;
-    --primary-text: #e0e0e0;
-    --secondary-text: #b0b0b0;
-    --accent-color: #00bcd4;
-    --accent-hover: #00acc1;
+    --primary-bg: #111111; /* Very dark gray / near black */
+    --secondary-bg: #282828; /* Dark gray for panels */
+    --tertiary-bg: #3f3f3f; /* Slightly lighter gray for interactive elements */
+    --tertiary-hover-bg: #626262; /* Lighter gray for hover on tertiary elements */
+    --primary-text: #ffffff; /* White text */
+    --secondary-text: #bbbbbb; /* Light gray text */
+    
+    --accent-color: #70abf3;
+    --accent-hover: #b5dfff;
+    
     --border-color: #4a4a6A;
     --marker-default-color: #757575;
-    --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; /* Subway-like font */
 }
 
 body {
@@ -34,40 +37,44 @@ body {
     background-color: var(--secondary-bg);
     padding: 20px;
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
-    display: flex; 
-    flex-direction: column; 
-    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;    /* border-right: 1px solid var(--border-color); */
     height: 100vh; 
+    box-sizing: border-box; /* Ensure padding is included in the 100vh height */
 }
 
-.panel-header,
-.filter-group, /* Applies to date filter group */
-button#reset-filters,
-#event-count-display {
-    flex-shrink: 0; /* Prevent these static elements from shrinking */
+/* Ensure the panel header itself doesn't shrink if #filters-panel is flex */
+.panel-header {
+    flex-shrink: 0;
 }
+
 .panel-header h2 {
     color: var(--accent-color);
     margin-top: 0;
+    margin-bottom: 20px; /* Add some space below header */
     text-align: center;
     font-size: 1.8em;
 }
 
-.filter-group { 
-    margin-bottom: 20px;
+.filter-group {
+    margin-bottom: 0; /* Reduced slightly */
+    flex-shrink: 0; /* Prevent general filter groups from shrinking or growing by default */
 }
 
-/* Specific wrapper for the hashtag section to allow it to grow */
-.filter-group#hashtag-filter-group-wrapper {
-    flex-grow: 1; 
-    display: flex; 
-    flex-direction: column; 
-    min-height: 0; /* Crucial for flex-grow to work in a constrained parent */
-    margin-bottom: 15px; /* Spacing before reset button */
+/* Specific styling for the hashtag group wrapper */
+#hashtag-group-wrapper { /* Add this ID to your HTML's hashtag filter group */
+    height: 600px; /* ADJUSTABLE: Set your desired fixed height here */
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px; /* Space before event count / reset button */
+    /* flex-shrink: 0; /* It has a fixed height, so it won't shrink/grow in the main panel */
 }
 
+#hashtag-group-wrapper > label { /* The "Hashtags" title within the wrapper */
+    flex-shrink: 0; /* Prevent the label from shrinking */
+}
 
-.filter-group label { /* General label for "Date Range" and "Hashtags" */
+.filter-group label {
     font-weight: bold;
     display: block;
     margin-bottom: 8px;
@@ -80,101 +87,237 @@ button#reset-filters,
     background-color: var(--primary-bg);
 }
 
-#map { height: 100%; width: 100%; }
+#map {
+    height: 100%;
+    width: 100%;
+}
 
-#date-slider { margin-top: 10px; margin-bottom: 10px; }
-.noUi-target { background: var(--tertiary-bg); border-radius: 4px; border: 1px solid var(--border-color); box-shadow: none; }
-.noUi-connect { background: var(--accent-color); }
-.noUi-handle { border: 1px solid var(--border-color); border-radius: 50%; background: var(--secondary-bg); box-shadow: 0 1px 3px rgba(0,0,0,0.4); cursor: grab; }
+#date-slider {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.noUi-target {
+    background: var(--tertiary-bg);
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+    box-shadow: none;
+}
+.noUi-connect {
+    background-image: linear-gradient(to bottom right, var(--accent-hover), var(--accent-color));
+}
+.noUi-handle {
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    background: var(--secondary-bg);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+    cursor: grab;
+}
 .noUi-handle:focus { outline: none; }
 .noUi-handle:active { cursor: grabbing; }
-#date-slider-values { font-size: 0.85em; color: var(--secondary-text); text-align: center; margin-top: 5px; }
+#date-slider-values {
+    font-size: 0.85em;
+    color: var(--secondary-text);
+    text-align: center;
+    margin-top: 5px;
+}
 
-#hashtag-filters-container { /* The actual scrollable container for hashtag items */
+#hashtag-filters-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
-    flex-grow: 1; 
-    overflow-y: auto; 
+    gap: 2px; /* Made tags even closer */
+    flex-grow: 1; /* Allows this container to take up available space within its fixed-height parent */
+    overflow-y: auto; /* Enables scrolling if content overflows */
     padding: 10px;
     background-color: var(--primary-bg);
     border-radius: 4px;
-    border: 1px solid var(--border-color);
-    /* min-height: 100px; /* Can be useful but not strictly necessary if flex-grow works */
-}
+    /* border: 1px solid var(--border-color); */
+    min-height: 100px; /* Optional: Ensure a minimum visible area */
 
+    /* Hide scrollbar for IE, Edge */
+    -ms-overflow-style: none;  
+    /* Hide scrollbar for Firefox */
+    scrollbar-width: none;  
+}
 
 #hashtag-filters-container label {
-    display: flex; align-items: center; background-color: var(--tertiary-bg); padding: 0; 
-    border-radius: 16px; font-size: 0.85em; cursor: pointer;
-    transition: background-color 0.2s, color 0.2s; border: 1px solid transparent; overflow: hidden; 
+    display: flex;
+    align-items: center;
+    background-color: var(--tertiary-bg);
+    padding: 0; /* Padding will be handled by inner elements for more control */
+    border-radius: 14px; /* Slightly smaller radius for a more compact feel */
+    font-size: 0.8em; /* Reduced font size */
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+    border: 1px solid transparent;
+    overflow: hidden; 
 }
-#hashtag-filters-container label:hover { background-color: #4a4c6b; }
-#hashtag-filters-container input[type="checkbox"] { display: none; }
+#hashtag-filters-container label:hover {
+    background-color: var(--tertiary-hover-bg);
+}
+#hashtag-filters-container input[type="checkbox"] {
+    display: none; 
+}
 #hashtag-filters-container label .hashtag-color-swatch {
-    width: 12px; height: 12px; border-radius: 50%; margin-right: 6px; margin-left: 8px;
-    border: 1px solid rgba(255,255,255,0.3);
+    width: 10px; /* Smaller swatch */
+    height: 10px; /* Smaller swatch */
+    border-radius: 50%;
+    margin-right: 4px; /* Reduced right margin */
+    margin-left: 6px;  /* Reduced left margin */
+    border: 1px solid var(--border-color); /* Adjusted for better visibility on dark theme */
 }
-#hashtag-filters-container label span { padding: 6px 12px 6px 0; }
+#hashtag-filters-container label span {
+    padding: 3px 8px 3px 0; /* Further reduced vertical padding */
+}
 #hashtag-filters-container label.selected {
-    background-color: var(--accent-color); color: var(--primary-bg); border: 1px solid var(--accent-hover);
+    background-color: var(--accent-color);
+    color: var(--primary-bg);
+    border: 1px solid var(--accent-hover);
 }
-#hashtag-filters-container label.selected .hashtag-color-swatch { border-color: var(--primary-bg); }
+#hashtag-filters-container label.selected .hashtag-color-swatch {
+    border-color: var(--primary-text);
+}
+/* Hide scrollbar for Chrome, Safari and Opera */
+#hashtag-filters-container::-webkit-scrollbar {
+    width: 0;  /* Effectively hide the vertical scrollbar */
+    height: 0; /* Effectively hide the horizontal scrollbar (if one were to appear) */
+}
 
 button#reset-filters {
-    padding: 10px 15px; background-color: var(--accent-color); color: var(--primary-bg);
-    font-weight: bold; border: none; border-radius: 4px; cursor: pointer;
-    transition: background-color 0.2s; width: 100%; margin-top: auto; /* Push to bottom if space */
+    padding: 10px 15px;
+    background-image: linear-gradient(to bottom right, var(--accent-hover), var(--accent-color));
+    color: var(--primary-text); /* Changed to primary-text for better contrast on gradient */
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    width: 100%;
+    margin-top: 15px;
+    flex-shrink: 0; /* Prevent button from shrinking */
 }
-button#reset-filters:hover { background-color: var(--accent-hover); }
+button#reset-filters:hover {
+    background-color: var(--accent-hover);
+}
 
 #event-count-display {
-    margin-top: 15px; font-size: 0.9em; color: var(--secondary-text); text-align: center;
-    padding: 10px; background-color: var(--primary-bg); border-radius: 4px;
+    margin-top: 15px; /* Reduced slightly */
+    font-size: 0.9em;
+    color: var(--secondary-text);
+    text-align: center;
+    padding: 10px;
+    background-color: var(--primary-bg);
+    border-radius: 4px;
+    flex-shrink: 0; /* Prevent count display from shrinking */
 }
 
-.leaflet-popup-content-wrapper { background: var(--tertiary-bg); color: var(--primary-text); border-radius: 8px; box-shadow: 0 3px 15px rgba(0,0,0,0.4); }
-.leaflet-popup-content { font-size: 0.9em; line-height: 1.5; margin: 12px !important; color: var(--primary-text); max-height: 300px; overflow-y: auto; }
-.leaflet-popup-content p { margin: 6px 0; color: var(--primary-text); }
-.leaflet-popup-content details { border-bottom: 1px solid var(--border-color); margin-bottom: 8px; padding-bottom: 8px; }
-.leaflet-popup-content details:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-.leaflet-popup-content summary { cursor: pointer; font-weight: bold; padding: 4px 0; color: var(--accent-color); outline: none; list-style-position: inside; }
-.leaflet-popup-content summary:hover { color: var(--accent-hover); }
-.leaflet-popup-content summary::marker { color: var(--accent-color); font-size: 0.9em; }
-.leaflet-popup-content a { color: var(--accent-color); text-decoration: none; }
-.leaflet-popup-content a:hover { text-decoration: underline; color: var(--accent-hover); }
+.leaflet-popup-content-wrapper {
+    background: var(--tertiary-bg);
+    color: var(--primary-text);
+    border-radius: 8px;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.4);
+}
+.leaflet-popup-content {
+    font-size: 1em; /* Made text larger */
+    line-height: 1.3; /* Made line height more compact */
+    margin: 12px !important; /* Slightly more margin */
+    color: var(--primary-text);
+    max-height: 300px; /* Max height for popup before it scrolls */
+    overflow-y: auto;  /* Scroll for oversized content */
+}
+.leaflet-popup-content p {
+    margin: 3px 0; /* Made paragraph margins more compact */
+    color: var(--primary-text);
+}
+.leaflet-popup-content details {
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+}
+.leaflet-popup-content details:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+.leaflet-popup-content summary {
+    cursor: pointer;
+    font-weight: bold;
+    padding: 2px 0; /* Made summary padding more compact */
+    color: var(--accent-color);
+    outline: none;
+    list-style-position: inside; /* Keeps marker closer */
+}
+.leaflet-popup-content summary:hover {
+    color: var(--accent-hover);
+}
+.leaflet-popup-content summary::marker {
+    color: var(--accent-color);
+    font-size: 0.9em; /* Slightly smaller marker */
+}
+.leaflet-popup-content a {
+    color: var(--accent-color);
+    text-decoration: none;
+}
+.leaflet-popup-content a:hover {
+    text-decoration: underline;
+    color: var(--accent-hover);
+}
 .leaflet-popup-tip { background: var(--tertiary-bg); }
-.leaflet-popup-close-button { color: var(--primary-text) !important; padding: 8px 8px 0 0 !important; }
+.leaflet-popup-close-button {
+    color: var(--primary-text) !important;
+    padding: 8px 8px 0 0 !important;
+}
 .leaflet-popup-close-button:hover { color: var(--accent-color) !important; }
 
 .custom-marker-icon {
-    border-radius: 50%; width: 20px; height: 20px; border: 2px solid white;
-    box-shadow: 0 0 5px rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    border: 2px solid white;
+    box-shadow: 0 0 5px rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
-.leaflet-tile-pane { /* filter: brightness(0.8) contrast(1.1) saturate(0.9); */ }
-.leaflet-control-attribution { background: rgba(0, 0, 0, 0.7) !important; color: var(--secondary-text) !important; }
+.leaflet-control-attribution {
+    background: rgba(0, 0, 0, 0.7) !important;
+    color: var(--secondary-text) !important;
+}
 .leaflet-control-attribution a { color: var(--accent-color) !important; }
 .leaflet-tooltip {
-    background-color: var(--tertiary-bg) !important; border: 1px solid var(--border-color) !important;
-    color: var(--primary-text) !important; padding: 5px 8px !important; border-radius: 4px !important;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.3) !important; font-size: 0.85em !important;
+    background-color: var(--tertiary-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--primary-text) !important;
+    padding: 5px 8px !important;
+    border-radius: 4px !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3) !important;
+    font-size: 0.85em !important;
 }
-.popup-event-datetime { font-style: italic; color: var(--secondary-text); margin-bottom: 6px !important; font-size: 0.9em; }
+.popup-event-datetime {
+    font-style: italic;
+    color: var(--secondary-text);
+    margin-bottom: 4px !important; /* Made more compact */
+    font-size: 0.85em; /* Adjusted to be slightly smaller than new base text */
+}
+
 
 @media (max-width: 768px) {
-    #app-container { flex-direction: column; }
+    #app-container {
+        flex-direction: column;
+    }
     #filters-panel {
-        width: 100%; height: 45vh; 
-        max-height: none; 
-        border-right: none; border-bottom: 1px solid var(--border-color);
+        width: 100%;
+        height: 45vh; 
+        max-height: none;
+        /* border-right: none; */ /* Already removed from base style */
+        /* border-bottom: 1px solid var(--border-color); */ /* Removing this as well for consistency */
         box-sizing: border-box;
     }
-    /* .filter-group#hashtag-filter-group-wrapper will correctly grow within the 45vh panel height */
     #map-container { height: 55vh; }
+    #hashtag-filters-container { min-height: 80px; }
     .panel-header h2 { font-size: 1.5em; margin-bottom: 10px; }
-    .filter-group { margin-bottom: 15px; } 
-    .filter-group#hashtag-filter-group-wrapper { margin-bottom: 10px; } 
+    .filter-group { margin-bottom: 15px; }
     #event-count-display { margin-top: 10px;}
-    button#reset-filters { margin-top: 10px;} /* Ensure it doesn't get pushed off by hashtag container */
-    .leaflet-popup-content { max-height: 200px; }
+    button#reset-filters { margin-top: 10px;}
+    .leaflet-popup-content { max-height: 200px; } /* Smaller max height for popups on mobile */
+
 }
