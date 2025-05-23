@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
         EVENT_DATA_URL: 'events.json',
         TAG_HIERARCHY_URL: 'tags.json',
         START_DATE: new Date(2025, 4, 1), // Month is 0-indexed, so 4 is May
-        END_DATE: new Date(2025, 5, 30),   // 5 is June
+        END_DATE: new Date(2025, 6, 31),   // 6 is July
         ONE_DAY_IN_MS: 24 * 60 * 60 * 1000,
         DEFAULT_MARKER_COLOR: '#757575',
         HASHTAG_COLOR_PALETTE: [
