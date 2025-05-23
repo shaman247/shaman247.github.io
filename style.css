@@ -321,3 +321,169 @@ button#reset-filters:hover {
     .leaflet-popup-content { max-height: 200px; } /* Smaller max height for popups on mobile */
 
 }
+
+/* Styles for Hashtag Tree Structure */
+.hashtag-category {
+    margin-bottom: 8px;
+    border-left: 2px solid var(--border-color-light); /* Optional: visual cue for category block */
+    padding-left: 5px;
+}
+
+.category-header {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 4px 0;
+    user-select: none; /* Prevent text selection on click */
+}
+
+.toggle-icon {
+    margin-right: 8px;
+    font-size: 0.9em; /* Smaller icon */
+    width: 16px; 
+    text-align: center;
+    color: var(--accent-color);
+    transition: transform 0.2s ease-in-out;
+    display: inline-block; /* Allows transform */
+}
+
+.hashtag-category.open .toggle-icon {
+    transform: rotate(0deg); /* ▼ icon doesn't need rotation if you switch textContent */
+}
+
+.category-header label { /* The label containing the checkbox and category name */
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    color: var(--primary-text);
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+.category-header input[type="checkbox"].category-checkbox {
+    margin-right: 8px;
+    accent-color: var(--accent-color); /* Style the checkbox itself */
+    /* Make category checkbox slightly larger if desired */
+    transform: scale(1.1);
+}
+.category-name-span {
+    flex-grow: 1; /* Allow category name to take space */
+}
+
+
+.hashtag-children {
+    padding-left: 25px; /* Indentation for children */
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s cubic-bezier(0.25, 0.1, 0.25, 1); /* Smoother transition */
+}
+
+.hashtag-category.open .hashtag-children {
+    max-height: 1000px; /* Adjust if you have extremely long lists of tags in one category */
+    /* Consider adding a subtle border or background to open children if desired */
+    /* border-top: 1px dashed var(--border-color-light); */
+    /* margin-top: 5px; */
+    /* padding-top: 5px; */
+}
+
+/* Adjust existing .hashtag-label styles if needed to fit within the tree */
+#hashtag-filters-container .hashtag-children .hashtag-label {
+    margin-bottom: 4px; /* Spacing between individual tags */
+    /* font-size: 0.8em; /* Already set, ensure it looks good */
+}
+
+.hashtag-item {
+    /* Container for each filterable tag (parent or leaf) */
+    /* margin-bottom: 2px; /* Optional: small gap between items */
+}
+
+#hashtag-filters-container .hashtag-label {
+    /* Existing styles for hashtag-label should mostly apply */
+    /* Ensure it aligns items nicely */
+    display: flex;
+    align-items: center;
+    padding: 2px 0; /* Adjust vertical padding for compactness if needed */
+    border-radius: 14px; /* Keep consistent if you like the pill shape */
+    /* background-color: var(--tertiary-bg); /* If you want background on the whole label */
+}
+
+#hashtag-filters-container .hashtag-label input[type="checkbox"] {
+    /* display: none; /* Keep if you want to hide the actual checkbox */
+    margin-right: 5px; /* Or use appearance: none and style the swatch as the checkbox */
+    accent-color: var(--accent-color);
+    transform: scale(1); /* Reset if previously scaled differently for category-only checkboxes */
+}
+
+.hashtag-color-swatch { /* This is the base class for swatches */
+    width: 10px;
+    height: 10px;
+    margin-right: 6px;
+    margin-left: 6px;
+    border: 1px solid var(--border-color);
+    flex-shrink: 0; /* Prevent swatch from shrinking */
+}
+
+.circle-swatch {
+    border-radius: 50%;
+    background-color: var(--marker-default-color); /* Fallback, JS will set specific color */
+}
+
+.triangle-swatch {
+    width: 0;
+    height: 0;
+    background-color: transparent !important; /* Override any background color from .hashtag-color-swatch */
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top-width: 8px; /* Adjust size of triangle */
+    border-top-style: solid;
+    /* border-top-color will be set by JS via borderColor or a custom property */
+    border-radius: 0; /* Ensure it's a triangle */
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+}
+
+.hashtag-item.open > .hashtag-label .triangle-swatch {
+    transform: rotate(90deg);
+}
+
+
+/* Children container for nesting */
+.hashtag-children {
+    padding-left: 20px; /* Indent children */
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.hashtag-item.open > .hashtag-children {
+    max-height: 1500px; /* Adjust if very deep nesting or many children */
+}
+
+/* Styling for selected labels (parent or child) */
+#hashtag-filters-container .hashtag-label.selected {
+    background-color: var(--accent-color);
+    color: var(--primary-text);
+    border: 1px solid var(--accent-hover); /* Optional: border for selected */
+}
+
+#hashtag-filters-container .hashtag-label.selected .hashtag-color-swatch {
+    border-color: var(--primary-text); /* Contrast for swatch border when selected */
+}
+#hashtag-filters-container .hashtag-label.selected .triangle-swatch {
+    /* Ensure triangle color remains visible or changes appropriately on selection */
+    /* If using border-top-color for triangle, it might need adjustment here */
+}
+
+.other-tags-category {
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--border-color);
+}
+.other-tags-category > div:first-child { /* The "Other Tags" header text */
+    margin-left: 0 !important; /* No indent for the "Other Tags" header itself */
+    margin-bottom: 5px;
+}
+
+#reset-filters {
+    text-shadow: 1px 1px 2px black; /* Adjust values as needed */
+}

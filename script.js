@@ -5,19 +5,31 @@ document.addEventListener('DOMContentLoaded', () => {
     let allEvents = [];
     let eventsByLocation = {};
     let hashtagColors = {};
+    let hashtagDisplayNames = {}; // To store display names
+    let hashtagFrequencies = {}; // To store calculated frequencies
     let dateSlider;
-    
-    const START_DATE = new Date(2025, 4, 1); 
-    const END_DATE = new Date(2025, 5, 30);
-    const ONE_DAY_IN_MS = 24 * 60 * 60 * 1000;
+    let allAvailableTags = [];
+    let tagHierarchy = [];
 
-    const DEFAULT_MARKER_COLOR = '#757575'; 
-    const HASHTAG_COLOR_PALETTE = [ 
-        '#FF6B6B', '#4ECDC4', '#45B7D1', '#FED766', '#2AB7CA',
-        '#F0B67F', '#8A6FBF', '#F9A828', '#C1E1A6', '#FF8C94',
-        '#A1C3D1', '#B39BC8', '#F3EAC2', '#F7A6B4', '#5D5C61',
-        '#FFD166', '#06D6A0', '#118AB2', '#EF476F', '#073B4C' 
-    ];
+    const CONFIG = {
+        EVENT_DATA_URL: 'events.json',
+        TAG_HIERARCHY_URL: 'tags.json',
+        START_DATE: new Date(2025, 4, 1), // Month is 0-indexed, so 4 is May
+        END_DATE: new Date(2025, 5, 30),   // 5 is June
+        ONE_DAY_IN_MS: 24 * 60 * 60 * 1000,
+        DEFAULT_MARKER_COLOR: '#757575',
+        HASHTAG_COLOR_PALETTE: [
+            '#FF6B6B', '#4ECDC4', '#45B7D1', '#FED766', '#2AB7CA',
+            '#F0B67F', '#8A6FBF', '#F9A828', '#C1E1A6', '#FF8C94',
+            '#A1C3D1', '#B39BC8', '#F3EAC2', '#F7A6B4', '#5D5C61',
+            '#FFD166', '#06D6A0', '#118AB2', '#EF476F', '#073B4C'
+        ],
+        MAP_INITIAL_VIEW: [40.6782, -73.9442],
+        MAP_INITIAL_ZOOM: 12,
+        MAP_TILE_URL: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+        MAP_ATTRIBUTION: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors © <a href="https://carto.com/attributions">CARTO</a>',
+        MAP_MAX_ZOOM: 20
+    };
 
     const startDateElement = document.getElementById('slider-start-date');
     const endDateElement = document.getElementById('slider-end-date');
@@ -26,11 +38,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function initializeApp() {
         try {
-            const eventData = await loadEventsFromFile('events.json');
+            const eventData = await loadEventsFromFile(CONFIG.EVENT_DATA_URL);
+            tagHierarchy = await loadEventsFromFile(CONFIG.TAG_HIERARCHY_URL);            
             processEventData(eventData);
+            processTagHierarchy(); // Renamed and expanded function
             initMap();
-            assignHashtagColors();
-            populateHashtagFilters();
+            HashtagFilterUI.init({
+                allAvailableTags: allAvailableTags,
+                hashtagColors: hashtagColors,
+                tagHierarchy: tagHierarchy,
+                hashtagDisplayNames: hashtagDisplayNames, // Pass display names
+                hashtagFrequencies: hashtagFrequencies, // Pass the calculated frequencies
+                hashtagFiltersContainerDOM: hashtagFiltersContainer,
+                filterAndDisplayEventsCallback: filterAndDisplayEvents,
+                defaultMarkerColor: CONFIG.DEFAULT_MARKER_COLOR
+            });
+            HashtagFilterUI.populateFilters();
             initDateSlider();
             addEventListeners();
             filterAndDisplayEvents(); 
@@ -60,64 +83,65 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function initMap() { 
-        map = L.map('map').setView([40.6782, -73.9442], 12);
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-            attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors © <a href="https://carto.com/attributions">CARTO</a>',
-            subdomains: 'abcd', maxZoom: 20
-        }).addTo(map);
-        markersLayer = L.layerGroup().addTo(map);
+        const mapInstances = MapManager.init('map', CONFIG, hashtagColors, CONFIG.DEFAULT_MARKER_COLOR);
+        map = mapInstances.map;
+        markersLayer = mapInstances.markersLayer;
     }
 
-    function assignHashtagColors() {
-        const uniqueHashtags = new Set();
+    function processTagHierarchy() {
+        // Process colors and displayNames from tagHierarchy (tags.json)
+        function recurseHierarchy(nodes) {
+            nodes.forEach(node => {
+                if (node.hashtag && node.color) {
+                    hashtagColors[node.hashtag] = node.color;
+                }
+                if (node.hashtag && node.displayName) {
+                    hashtagDisplayNames[node.hashtag] = node.displayName;
+                }
+                if (node.children && node.children.length > 0) {
+                    recurseHierarchy(node.children);
+                }
+            });
+        }
+        recurseHierarchy(tagHierarchy);
+
+        // Collect all unique hashtags from events
+        const uniqueHashtagsFromEvents = new Set();
         allEvents.forEach(event => {
             if (event.hashtags && Array.isArray(event.hashtags)) {
-                event.hashtags.forEach(tag => uniqueHashtags.add(tag));
+                event.hashtags.forEach(tag => uniqueHashtagsFromEvents.add(tag));
             }
         });
-        Array.from(uniqueHashtags).sort().forEach((tag, index) => {
-            hashtagColors[tag] = HASHTAG_COLOR_PALETTE[index % HASHTAG_COLOR_PALETTE.length];
-        });
-    }
-
-    function populateHashtagFilters() {
-        hashtagFiltersContainer.innerHTML = '';
-        Object.keys(hashtagColors).sort().forEach(tag => {
-            const label = document.createElement('label');
-            label.classList.add('hashtag-label');
-            const checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.value = tag;
-            checkbox.id = `tag-${tag.replace(/[^a-zA-Z0-9]/g, '')}`;
-            checkbox.addEventListener('change', () => {
-                label.classList.toggle('selected', checkbox.checked);
-                filterAndDisplayEvents();
-            });
-            const colorSwatch = document.createElement('div');
-            colorSwatch.classList.add('hashtag-color-swatch');
-            colorSwatch.style.backgroundColor = hashtagColors[tag] || DEFAULT_MARKER_COLOR;
-            const span = document.createElement('span');
-            span.textContent = tag;
-            label.appendChild(checkbox); label.appendChild(colorSwatch); 
-            label.appendChild(span);
-            label.htmlFor = checkbox.id;
-            hashtagFiltersContainer.appendChild(label);
-        });
-    }
     
-    function formatDateForDisplay(timestamp) { 
-        const date = new Date(Number(timestamp)); 
-        if (isNaN(date.getTime())) { 
-            console.warn("formatDateForDisplay received an invalid timestamp:", timestamp);
-            return "Invalid Date";
+        // Collect all hashtags from the tagHierarchy (even if they didn't have a color property)
+        const definedCategoryHashtags = new Set();
+        function getAllDefinedHashtags(nodes) {
+            nodes.forEach(node => {
+                definedCategoryHashtags.add(node.hashtag);
+                if (node.children && node.children.length > 0) {
+                    getAllDefinedHashtags(node.children);
+                }
+            });
         }
-        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        getAllDefinedHashtags(tagHierarchy);
+    
+        const allUniqueTagsSet = new Set([...uniqueHashtagsFromEvents, ...definedCategoryHashtags]);
+        allAvailableTags = Array.from(allUniqueTagsSet).sort(); // Populate global allAvailableTags
+    
+        // Assign palette colors as a fallback for tags not colored from tags.json
+        let paletteIndex = 0;
+        allAvailableTags.forEach(tag => {
+            if (!hashtagColors[tag]) {
+                hashtagColors[tag] = CONFIG.HASHTAG_COLOR_PALETTE[paletteIndex % CONFIG.HASHTAG_COLOR_PALETTE.length];
+                paletteIndex++;
+            }
+        });
     }
 
     function initDateSlider() { 
         const slider = document.getElementById('date-slider');
-        const startTimestamp = START_DATE.getTime();
-        const endTimestamp = END_DATE.getTime();
+        const startTimestamp = CONFIG.START_DATE.getTime();
+        const endTimestamp = CONFIG.END_DATE.getTime();
 
         let initialStartHandleTimestamp = startTimestamp;
         const today = new Date();
@@ -131,84 +155,44 @@ document.addEventListener('DOMContentLoaded', () => {
         dateSlider = noUiSlider.create(slider, {
             range: { min: startTimestamp, max: endTimestamp },
             start: [initialStartHandleTimestamp, endTimestamp],
-            connect: true, step: ONE_DAY_IN_MS,
+            connect: true, step: CONFIG.ONE_DAY_IN_MS,
             behaviour: 'drag-tap',
-            margin: ONE_DAY_IN_MS // Minimum 1 day between handles
+            margin: CONFIG.ONE_DAY_IN_MS // Minimum 1 day between handles
         });
         dateSlider.on('update', (values, handle, unencoded) => { 
-            startDateElement.textContent = formatDateForDisplay(unencoded[0]);
-            endDateElement.textContent = formatDateForDisplay(unencoded[1]);
+            startDateElement.textContent = Utils.formatDateForDisplay(unencoded[0]);
+            endDateElement.textContent = Utils.formatDateForDisplay(unencoded[1]);
         });
         dateSlider.on('set', filterAndDisplayEvents); 
         const initialTimestamps = dateSlider.get(true);
-        startDateElement.textContent = formatDateForDisplay(initialTimestamps[0]);
-        endDateElement.textContent = formatDateForDisplay(initialTimestamps[1]);
+        startDateElement.textContent = Utils.formatDateForDisplay(initialTimestamps[0]);
+        endDateElement.textContent = Utils.formatDateForDisplay(initialTimestamps[1]);
     }
-    
+
     function addEventListeners() { 
         document.getElementById('reset-filters').addEventListener('click', resetFilters);
     }
 
     function resetFilters() { 
         if (dateSlider) {
-            dateSlider.set([START_DATE.getTime(), END_DATE.getTime()]);
+            // Determine the correct initial start for the slider
+            let initialStartHandleTimestamp = CONFIG.START_DATE.getTime();
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const todayTimestamp = today.getTime();
+            const endTimestamp = CONFIG.END_DATE.getTime();        
+
+            if (todayTimestamp <= endTimestamp) {
+                initialStartHandleTimestamp = Math.max(todayTimestamp, CONFIG.START_DATE.getTime());
+            }
+            dateSlider.set([initialStartHandleTimestamp, endTimestamp]);
         }
-        const hashtagCheckboxes = document.querySelectorAll('#hashtag-filters-container input[type="checkbox"]');
-        hashtagCheckboxes.forEach(checkbox => {
+        // Uncheck all hashtag checkboxes (parents and children)
+        document.querySelectorAll('#hashtag-filters-container .hashtag-label input[type="checkbox"]').forEach(checkbox => {
             checkbox.checked = false;
+            checkbox.indeterminate = false; 
             checkbox.parentElement.classList.remove('selected');
         });
-        // filterAndDisplayEvents(); // 'set' event on slider will trigger this
-    }
-
-    function getMarkerColorForLocation(eventsAtThisLocation) { 
-        if (eventsAtThisLocation && eventsAtThisLocation.length > 0) {
-            const firstEvent = eventsAtThisLocation[0];
-            if (firstEvent.hashtags && firstEvent.hashtags.length > 0) {
-                const firstTag = firstEvent.hashtags[0];
-                return hashtagColors[firstTag] || DEFAULT_MARKER_COLOR;
-            }
-        }
-        return DEFAULT_MARKER_COLOR;
-    }
-    
-    function escapeHtml(unsafe) { 
-        if (typeof unsafe !== 'string') return '';
-        return unsafe
-             .replace(/&/g, "&amp;")
-             .replace(/</g, "&lt;")
-             .replace(/>/g, "&gt;")
-             .replace(/"/g, "&quot;")
-             .replace(/'/g, "&#039;"); // or &apos;
-    }
-
-    function isValidUrl(string) { 
-        return string && (string.startsWith('http://') || string.startsWith('https://'));
-    }
-
-    function formatEventDateTimeCompactly(event) {
-        if (event.parsedStartDate === "Ongoing") {
-            return "Ongoing";
-        }
-        const start = event.parsedStartDate;
-        const end = event.parsedEndDate;
-        if (!(start instanceof Date) || isNaN(start) || !(end instanceof Date) || isNaN(end)) {
-            return "Date/Time N/A";
-        }
-        const optionsDate = { month: 'short', day: 'numeric' };
-        const optionsTime = { hour: 'numeric', minute: 'numeric', hour12: true };
-
-        const startDateStr = start.toLocaleDateString('en-US', optionsDate);
-        const startTimeStr = start.toLocaleTimeString('en-US', optionsTime).replace(':00 AM', ' AM').replace(':00 PM', ' PM').replace(' AM', 'am').replace(' PM', 'pm');
-        const endDateStr = end.toLocaleDateString('en-US', optionsDate);
-        const endTimeStr = end.toLocaleTimeString('en-US', optionsTime).replace(':00 AM', ' AM').replace(':00 PM', ' PM').replace(' AM', 'am').replace(' PM', 'pm');
-
-        if (startDateStr === endDateStr) {
-            if (startTimeStr === endTimeStr) return `${startDateStr}, ${startTimeStr}`;
-            return `${startDateStr} ${startTimeStr}–${endTimeStr}`; // Using en-dash
-        } else {
-            return `${startDateStr}, ${startTimeStr} – ${endDateStr}, ${endTimeStr}`;
-        }
     }
 
     function createLocationPopupContent(eventsAtLocation, activeFilters) {
@@ -221,32 +205,34 @@ document.addEventListener('DOMContentLoaded', () => {
                 displayedEventCount++;
                 let eventDetailHtml = '';
                 
-                eventDetailHtml += `<p class="popup-event-datetime">${formatEventDateTimeCompactly(event)}</p>`;
+                eventDetailHtml += `<p class="popup-event-datetime">${Utils.formatEventDateTimeCompactly(event)}</p>`;
 
                 if (event.location_name && event.location_name !== eventsAtLocation[0].location_name) { 
-                     eventDetailHtml += `<p><strong>Venue:</strong> ${escapeHtml(event.location_name)}</p>`;
+                     eventDetailHtml += `<p><strong>Venue:</strong> ${Utils.escapeHtml(event.location_name)}</p>`;
                 }
                 
                 if (event.description) {
-                    eventDetailHtml += `<p>${escapeHtml(event.description)}</p>`;
+                    eventDetailHtml += `<p>${Utils.escapeHtml(event.description)}</p>`;
                 }
                 
                 if (event.link) {
-                    if (isValidUrl(event.link)) {
-                        eventDetailHtml += `<p><a href="${escapeHtml(event.link)}" target="_blank" rel="noopener noreferrer">More Info</a></p>`;
+                    if (Utils.isValidUrl(event.link)) {
+                        eventDetailHtml += `<p><a href="${Utils.escapeHtml(event.link)}" target="_blank" rel="noopener noreferrer">More Info</a></p>`;
                     } else {
-                        eventDetailHtml += `<p><strong>Info:</strong> ${escapeHtml(event.link)}</p>`; // Changed "Link" to "Info" for non-URLs
+                        eventDetailHtml += `<p><strong>Info:</strong> ${Utils.escapeHtml(event.link)}</p>`; // Changed "Link" to "Info" for non-URLs
                     }
                 }
                 if (event.hashtags && event.hashtags.length > 0) {
                     eventDetailHtml += `<p>${event.hashtags.map(tag => 
-                        `<span style="color:${hashtagColors[tag] || 'inherit'}; font-weight:bold;">${escapeHtml(tag)}</span>`
+                        `<span style="color:${hashtagColors[tag] || CONFIG.DEFAULT_MARKER_COLOR}; font-weight:bold;">${
+                            Utils.escapeHtml(hashtagDisplayNames[tag] || Utils.formatHashtagForDisplay(tag))
+                        }</span>`
                     ).join(', ')}</p>`;
                 }
                 
                 const isOpen = isFirstMatchingEventInPopup; 
                 mainContent += `<details ${isOpen ? 'open' : ''}>`;
-                mainContent += `<summary>${escapeHtml(event.name)}</summary>`;
+                mainContent += `<summary>${Utils.escapeHtml(event.name)}</summary>`;
                 mainContent += eventDetailHtml;
                 mainContent += `</details>`;
                 isFirstMatchingEventInPopup = false; 
@@ -270,7 +256,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function displayEventsOnMap(locationsToDisplay) {
-        markersLayer.clearLayers();
+        MapManager.clearMarkers();
         let visibleEventCountTotal = 0;
         let visibleLocationCount = 0;
 
@@ -284,22 +270,14 @@ document.addEventListener('DOMContentLoaded', () => {
             visibleEventCountTotal += eventsMatchingFiltersAtThisLocation.length; 
 
             const [lat, lng] = locationKey.split(',').map(Number);
-            const markerColor = getMarkerColorForLocation(eventsMatchingFiltersAtThisLocation); 
-
-            const customIcon = L.divIcon({
-                className: 'custom-marker-icon',
-                html: `<div style="background-color: ${markerColor}; width: 100%; height: 100%; border-radius: 50%;"></div>`,
-                iconSize: [20, 20], iconAnchor: [10, 10] 
-            });
-
-            const marker = L.marker([lat, lng], { icon: customIcon });
+            const markerColor = MapManager.getMarkerColor(eventsMatchingFiltersAtThisLocation);
+            const customIcon = MapManager.createCustomMarkerIcon(markerColor);
             
             const hoverTooltipText = eventsMatchingFiltersAtThisLocation.length > 1 
                 ? `${eventsMatchingFiltersAtThisLocation.length} events here (match filters)` 
                 : eventsMatchingFiltersAtThisLocation[0].name;
-            marker.bindTooltip(hoverTooltipText);
 
-            marker.bindPopup(() => {
+            const popupContentCallback = () => {
                 const sliderValues = dateSlider.get(true); 
                 const currentPopupFilters = {
                     sliderStartDate: new Date(sliderValues[0]),
@@ -308,8 +286,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 };
                 const allEventsForThisPhysicalLocation = eventsByLocation[locationKey] || [];
                 return createLocationPopupContent(allEventsForThisPhysicalLocation, currentPopupFilters);
-            });
-            markersLayer.addLayer(marker);
+            };
+            MapManager.addMarkerToMap([lat, lng], customIcon, hoverTooltipText, popupContentCallback);
         }
         eventCountDisplay.textContent = `Showing ${visibleEventCountTotal} events at ${visibleLocationCount} locations.`;
     }
@@ -321,8 +299,8 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             const eventStart = event.parsedStartDate;
             const eventEnd = event.parsedEndDate;
-            const startFilter = (filterStartDate instanceof Date && !isNaN(filterStartDate)) ? filterStartDate : START_DATE;
-            let endFilter = (filterEndDate instanceof Date && !isNaN(filterEndDate)) ? filterEndDate : END_DATE;
+            const startFilter = (filterStartDate instanceof Date && !isNaN(filterStartDate)) ? filterStartDate : CONFIG.START_DATE;
+            let endFilter = (filterEndDate instanceof Date && !isNaN(filterEndDate)) ? filterEndDate : CONFIG.END_DATE;
             endFilter = new Date(endFilter); 
             endFilter.setHours(23, 59, 59, 999);
             dateMatch = eventStart <= endFilter && eventEnd >= startFilter;
