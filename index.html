@@ -15,7 +15,7 @@
 </head>
 <body>
     <div id="app-container">
-        <div id="filters-panel">
+        <div id="left-panel"> <!-- Changed ID to left-panel -->
             <div class="filter-group"> <!-- This is the date filter group -->
                 <label for="date-slider">Date Range</label>
                 <div id="date-slider"></div>
@@ -37,6 +37,7 @@
 
         </div>
 
+        <div id="resize-handle"></div> <!-- Added resize handle -->
         <div id="map-container">
             <div id="map"></div>
         </div>
@@ -49,10 +50,10 @@
     <!-- noUiSlider JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.js" 
      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ical.js/1.5.0/ical.min.js"></script>
     <!-- Custom Script -->
     <script src="utils.js"></script>
     <script src="mapManager.js"></script>
-    <script src="dataManager.js"></script>
     <script src="hashtagFilterUI.js"></script>
     <script src="script.js"></script>
 </body>
