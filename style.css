@@ -32,16 +32,18 @@ body {
     height: 100%;
 }
 
-#filters-panel {
-    width: 250px;
+#left-panel { /* Renamed from #filters-panel to match JS */
+    width: 300px; /* Initial width, can be adjusted */
     background-color: var(--secondary-bg);
     padding: 20px;
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
     display: flex;
-    flex-direction: column;    /* border-right: 1px solid var(--border-color); */
+    flex-direction: column;
     height: 100vh; 
-    box-sizing: border-box; /* Ensure padding is included in the 100vh height */
+    overflow-y: auto; /* Allow content within the panel to scroll if it overflows */
+    flex-shrink: 0; /* Prevent panel from shrinking if map content is too wide */
 }
+
 
 /* Ensure the panel header itself doesn't shrink if #filters-panel is flex */
 .panel-header {
@@ -82,9 +84,18 @@ body {
     font-size: 0.95em;
 }
 
+#resize-handle {
+    width: 8px; /* Width of the draggable handle */
+    background-color: var(--tertiary-bg); /* Visible handle color */
+    cursor: ew-resize; /* East-West resize cursor */
+    flex-shrink: 0; /* Prevent handle from shrinking */
+    /* border-left: 1px solid var(--border-color); */
+    /* border-right: 1px solid var(--border-color); */
+}
+
 #map-container {
     flex-grow: 1;
-    background-color: var(--primary-bg);
+    position: relative; /* Important for Leaflet map sizing */
 }
 
 #map {
@@ -122,9 +133,6 @@ body {
 }
 
 #hashtag-filters-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2px; /* Made tags even closer */
     flex-grow: 1; /* Allows this container to take up available space within its fixed-height parent */
     overflow-y: auto; /* Enables scrolling if content overflows */
     padding: 10px;
@@ -139,43 +147,69 @@ body {
 /*    scrollbar-width: none;*/ 
 }
 
-#hashtag-filters-container label {
+/* New container for the actual tags, enabling flex layout */
+.hashtag-tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px; /* Spacing between tags, adjust as needed */
+}
+/* New Hashtag Button Styling */
+.hashtag-button {
     display: flex;
     align-items: center;
-    background-color: var(--tertiary-bg);
-    padding: 0; /* Padding will be handled by inner elements for more control */
+    justify-content: center;
+    padding: 4px 10px; /* Adjusted padding */
     border-radius: 14px; /* Slightly smaller radius for a more compact feel */
     font-size: 0.8em; /* Reduced font size */
+    font-weight: 500;
     cursor: pointer;
-    transition: background-color 0.2s, color 0.2s;
-    border: 1px solid transparent;
-    overflow: hidden; 
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+    text-align: center;
+    line-height: 1.2; /* Ensure text fits well */
+    text-shadow: 0 0 8px rgba(0, 0, 0, 1);
 }
-#hashtag-filters-container label:hover {
+
+/* Class for FLIP animation */
+.hashtag-button.moving {
+    transition: transform 0.3s ease-in-out;
+}
+
+.hashtag-button:hover {
+    opacity: 0.85;
+}
+
+/* Unselected State (Default) */
+.hashtag-button.state-unselected {
+    background-color: var(--tertiary-bg);
+    color: var(--secondary-text);
+    border-color: var(--border-color);
+}
+.hashtag-button.state-unselected:hover {
     background-color: var(--tertiary-hover-bg);
+    color: var(--primary-text);
 }
-#hashtag-filters-container input[type="checkbox"] {
-    display: none; 
+
+/* Selected State (OR) */
+.hashtag-button.state-selected {
+    font-weight: bold;
 }
-#hashtag-filters-container label .hashtag-color-swatch {
-    width: 10px; /* Smaller swatch */
-    height: 10px; /* Smaller swatch */
-    border-radius: 50%;
-    margin-right: 4px; /* Reduced right margin */
-    margin-left: 6px;  /* Reduced left margin */
-    border: 1px solid var(--border-color); /* Adjusted for better visibility on dark theme */
+
+/* Required State (AND) */
+.hashtag-button.state-required {
+    font-weight: bold;
+    outline: 4px solid rgba(192, 192, 192, 0.8);
+    outline-offset: -4px; /* Pulls the outline inside the button */
 }
-#hashtag-filters-container label span {
-    padding: 3px 8px 3px 0; /* Further reduced vertical padding */
+
+/* Forbidden State (NOT) */
+.hashtag-button.state-forbidden {
+    background-color: var(--tertiary-bg);
+    color: var(--secondary-text);
+    border-color: var(--border-color);    
+    text-decoration: line-through;
 }
-#hashtag-filters-container label.selected {
-    background-color: var(--accent-color);
-    color: var(--primary-bg);
-    border: 1px solid var(--accent-hover);
-}
-#hashtag-filters-container label.selected .hashtag-color-swatch {
-    border-color: var(--primary-text);
-}
+
 /* Hide scrollbar for Chrome, Safari and Opera */
 #hashtag-filters-container::-webkit-scrollbar {
     width: 0;  /* Effectively hide the vertical scrollbar */
@@ -302,187 +336,18 @@ button#reset-filters:hover {
 
 @media (max-width: 768px) {
     #app-container {
-        /* flex-direction: column; */ /* Keep as row */
+        /* On smaller screens, you might want the panel to be collapsible or have a different behavior */
+        /* For now, we'll keep the row layout but allow the panel to be resized. */
     }
-    #filters-panel {
-        /* width: 100%; */ /* Keep original width */
-        /* height: 45vh; */ /* Keep original height (100vh) */
+    #left-panel {
         max-height: none;
-        /* border-right: none; */ /* Already removed from base style */
-        /* border-bottom: 1px solid var(--border-color); */ /* Removing this as well for consistency */
         box-sizing: border-box;
     }
-    /* #map-container { height: 55vh; } */ /* Keep original height (flex-grow) */
-    #hashtag-filters-container { min-height: 80px; }
     .panel-header h2 { font-size: 1.5em; margin-bottom: 10px; }
     .filter-group { margin-bottom: 15px; }
     #event-count-display { margin-top: 10px;}
     button#reset-filters { margin-top: 10px;}
     .leaflet-popup-content { max-height: 200px; } /* Smaller max height for popups on mobile */
-
-}
-
-/* Styles for Hashtag Tree Structure */
-.hashtag-category {
-    margin-bottom: 8px;
-    border-left: 2px solid var(--border-color-light); /* Optional: visual cue for category block */
-    padding-left: 5px;
-}
-
-.category-header {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    padding: 4px 0;
-    user-select: none; /* Prevent text selection on click */
-}
-
-.toggle-icon {
-    margin-right: 8px;
-    font-size: 0.9em; /* Smaller icon */
-    width: 16px; /* Ensure it has a defined width for the icon character */
-    color: var(--accent-color);
-    transition: transform 0.2s ease-in-out;
-    display: inline-flex; /* Use flex to center the icon character itself */
-    align-items: center;    /* Vertically center the icon character */
-    justify-content: center; /* Horizontally center the icon character */
-}
-
-.hashtag-category.open .toggle-icon {
-    transform: rotate(0deg); /* ▼ icon doesn't need rotation if you switch textContent */
-}
-
-.category-header label { /* The label containing the checkbox and category name */
-    display: flex;
-    align-items: center;
-    flex-grow: 1;
-    color: var(--primary-text);
-    font-weight: bold;
-    font-size: 0.9em;
-}
-
-.category-header input[type="checkbox"].category-checkbox {
-    margin-right: 8px;
-    accent-color: var(--accent-color); /* Style the checkbox itself */
-    /* Make category checkbox slightly larger if desired */
-    transform: scale(1.1);
-}
-.category-name-span {
-    flex-grow: 1; /* Allow category name to take space */
-}
-
-
-.hashtag-children {
-    padding-left: 25px; /* Indentation for children */
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s cubic-bezier(0.25, 0.1, 0.25, 1); /* Smoother transition */
-}
-
-.hashtag-category.open .hashtag-children {
-    max-height: 1000px; /* Adjust if you have extremely long lists of tags in one category */
-    /* Consider adding a subtle border or background to open children if desired */
-    /* border-top: 1px dashed var(--border-color-light); */
-    /* margin-top: 5px; */
-    /* padding-top: 5px; */
-}
-
-/* Adjust existing .hashtag-label styles if needed to fit within the tree */
-#hashtag-filters-container .hashtag-children .hashtag-label {
-    margin-bottom: 4px; /* Spacing between individual tags */
-    /* font-size: 0.8em; /* Already set, ensure it looks good */
-}
-
-.hashtag-item {
-    /* Container for each filterable tag (parent or leaf) */
-    /* margin-bottom: 2px; /* Optional: small gap between items */
-}
-
-#hashtag-filters-container .hashtag-label {
-    /* Existing styles for hashtag-label should mostly apply */
-    /* Ensure it aligns items nicely */
-    display: flex;
-    align-items: center;
-    padding: 2px 0; /* Adjust vertical padding for compactness if needed */
-    border-radius: 14px; /* Keep consistent if you like the pill shape */
-    /* background-color: var(--tertiary-bg); /* If you want background on the whole label */
-}
-
-#hashtag-filters-container .hashtag-label input[type="checkbox"] {
-    /* display: none; /* Keep if you want to hide the actual checkbox */
-    margin-right: 5px; /* Or use appearance: none and style the swatch as the checkbox */
-    accent-color: var(--accent-color);
-    transform: scale(1); /* Reset if previously scaled differently for category-only checkboxes */
-}
-
-.hashtag-color-swatch { /* This is the base class for swatches */
-    width: 10px;
-    height: 10px;
-    margin-right: 6px;
-    margin-left: 6px;
-    border: 1px solid var(--border-color);
-    flex-shrink: 0; /* Prevent swatch from shrinking */
-}
-
-.circle-swatch {
-    border-radius: 50%;
-    background-color: var(--marker-default-color); /* Fallback, JS will set specific color */
-}
-
-.triangle-swatch {
-    width: 0;
-    height: 0;
-    background-color: transparent !important; /* Override any background color from .hashtag-color-swatch */
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    border-top-width: 8px; /* Adjust size of triangle */
-    border-top-style: solid;
-    /* border-top-color will be set by JS via borderColor or a custom property */
-    border-radius: 0; /* Ensure it's a triangle */
-    cursor: pointer;
-    transition: transform 0.2s ease-in-out;
-}
-
-.hashtag-item.open > .hashtag-label .triangle-swatch {
-    transform: rotate(90deg);
-}
-
-
-/* Children container for nesting */
-.hashtag-children {
-    padding-left: 20px; /* Indent children */
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
-}
-
-.hashtag-item.open > .hashtag-children {
-    max-height: 1500px; /* Adjust if very deep nesting or many children */
-}
-
-/* Styling for selected labels (parent or child) */
-#hashtag-filters-container .hashtag-label.selected {
-    background-color: var(--accent-color);
-    color: var(--primary-text);
-    border: 1px solid var(--accent-hover); /* Optional: border for selected */
-}
-
-#hashtag-filters-container .hashtag-label.selected .hashtag-color-swatch {
-    border-color: var(--primary-text); /* Contrast for swatch border when selected */
-}
-#hashtag-filters-container .hashtag-label.selected .triangle-swatch {
-    /* Ensure triangle color remains visible or changes appropriately on selection */
-    /* If using border-top-color for triangle, it might need adjustment here */
-}
-
-.other-tags-category {
-    margin-top: 15px;
-    padding-top: 10px;
-    border-top: 1px dashed var(--border-color);
-}
-.other-tags-category > div:first-child { /* The "Other Tags" header text */
-    margin-left: 0 !important; /* No indent for the "Other Tags" header itself */
-    margin-bottom: 5px;
 }
 
 #reset-filters {

@@ -10,12 +10,15 @@ document.addEventListener('DOMContentLoaded', () => {
     let dateSlider;
     let allAvailableTags = [];
     let tagHierarchy = [];
+    let leftPanel; // Already declared
+    let resizeHandle;
+    // let mapContainer; // map div's parent, if needed for layout adjustments
 
     const CONFIG = {
         EVENT_DATA_URL: 'events.json',
         TAG_HIERARCHY_URL: 'tags.json',
-        START_DATE: new Date(2025, 4, 1), // Month is 0-indexed, so 4 is May
-        END_DATE: new Date(2025, 6, 31),   // 6 is July
+        START_DATE: new Date(2025, 6, 1),
+        END_DATE: new Date(2025, 7, 31),
         ONE_DAY_IN_MS: 24 * 60 * 60 * 1000,
         DEFAULT_MARKER_COLOR: '#757575',
         HASHTAG_COLOR_PALETTE: [
@@ -37,26 +40,32 @@ document.addEventListener('DOMContentLoaded', () => {
     const eventCountDisplay = document.getElementById('event-count-display');
 
     async function initializeApp() {
+        // Assign panel-related elements here
+        leftPanel = document.getElementById('left-panel'); // Assign the ID of your main left panel
+        resizeHandle = document.getElementById('resize-handle'); // Assign the ID of the resize handle element
+        // mapContainer = document.getElementById('map-container'); // Assign if you have a specific map container div
+
         try {
             const eventData = await loadEventsFromFile(CONFIG.EVENT_DATA_URL);
             tagHierarchy = await loadEventsFromFile(CONFIG.TAG_HIERARCHY_URL);            
             processEventData(eventData);
+            calculateHashtagFrequencies(); // Calculate frequencies after events are processed
             processTagHierarchy(); // Renamed and expanded function
             initMap();
             HashtagFilterUI.init({
                 allAvailableTags: allAvailableTags,
                 hashtagColors: hashtagColors,
-                tagHierarchy: tagHierarchy,
                 hashtagDisplayNames: hashtagDisplayNames, // Pass display names
-                hashtagFrequencies: hashtagFrequencies, // Pass the calculated frequencies
+                initialGlobalFrequencies: hashtagFrequencies, // Pass the global frequencies
                 hashtagFiltersContainerDOM: hashtagFiltersContainer,
-                filterAndDisplayEventsCallback: filterAndDisplayEvents,
+                onFilterChangeCallback: filterAndDisplayEvents, // Callback for when filters change
                 defaultMarkerColor: CONFIG.DEFAULT_MARKER_COLOR
             });
-            HashtagFilterUI.populateFilters();
+            HashtagFilterUI.populateInitialFilters(); // Use new method
             initDateSlider();
             addEventListeners();
-            filterAndDisplayEvents(); 
+            initPanelResizer(); // Initialize the panel resizing logic
+            filterAndDisplayEvents();
         } catch (error) {
             console.error("Failed to initialize app:", error);
             eventCountDisplay.textContent = "Error loading event data.";
@@ -64,28 +73,94 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function loadEventsFromFile(filePath) { 
+        console.log(`Fetching data from: ${filePath}`);
         const response = await fetch(filePath);
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         return await response.json();
     }
 
     function processEventData(eventData) { 
-        allEvents = eventData.map(event => {
-            const parsedStartDate = event.start_date_time === "Ongoing" ? "Ongoing" : new Date(event.start_date_time);
-            const parsedEndDate = event.end_date_time === "Ongoing" ? "Ongoing" : new Date(event.end_date_time);
-            const locationKey = (event.latitude != null && event.longitude != null) 
-                               ? `${event.latitude},${event.longitude}` : 'unknown_location';
+        allEvents = eventData.map(rawEvent => {
+            const { date_time, latitude, longitude, url: eventUrl, location: eventLocation, hashtags: rawHashtags, ...restOfEvent } = rawEvent;
+
+            // Normalize newline characters: replace literal '\\n' with actual '\n'
+            const normalizedDateTime = date_time.replace(/\\n/g, '\n');
+            const dtLines = normalizedDateTime.split('\n');
+
+            let parsedStartDate = null;
+            let parsedEndDate = null;
+
+            // Construct a minimal valid iCalendar string for parsing
+            const iCalString = `BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//EventsApp//EN
+BEGIN:VEVENT
+${normalizedDateTime}
+END:VEVENT
+END:VCALENDAR`;
+
+            try {
+                const jcalData = ICAL.parse(iCalString);
+                const vcalendar = new ICAL.Component(jcalData);
+                const vevent = vcalendar.getFirstSubcomponent('vevent');
+
+                if (vevent) {
+                    const icalEvent = new ICAL.Event(vevent);
+                    if (icalEvent.startDate) {
+                        parsedStartDate = icalEvent.startDate.toJSDate();
+                    }
+                    if (icalEvent.endDate) {
+                        parsedEndDate = icalEvent.endDate.toJSDate();
+                    }
+                }
+            } catch (e) {
+                console.warn(`Failed to parse iCal data for event (ID: ${rawEvent.id || 'N/A'}): "${date_time}". Error: ${e.message}`);
+            }
+            
+            const locationKey = (latitude != null && longitude != null) 
+                               ? `${latitude},${longitude}` : 'unknown_location';
+
+            let processedHashtags = rawHashtags;
+            if (typeof rawHashtags === 'string') {
+                // Normalize by replacing commas with spaces, then split by any whitespace
+                processedHashtags = rawHashtags
+                    .replace(/,/g, ' ') // Replace all commas with a space
+                    .split(/\s+/)       // Split by one or more whitespace characters
+                    .map(tag => tag.trim()) // Trim each resulting tag
+                    .filter(tag => tag.length > 0); // Filter out any empty strings
+            } else if (!Array.isArray(rawHashtags)) {
+                processedHashtags = [];
+            }
+
             if (!eventsByLocation[locationKey]) eventsByLocation[locationKey] = [];
-            const processedEvent = { ...event, parsedStartDate, parsedEndDate, locationKey };
+            const processedEvent = { 
+                ...restOfEvent, latitude, longitude, parsedStartDate, parsedEndDate, 
+                locationKey, url: eventUrl, location: eventLocation, hashtags: processedHashtags 
+            };
             eventsByLocation[locationKey].push(processedEvent);
             return processedEvent;
         });
+        console.log("Total events processed:", allEvents.length);
+        if (allEvents.length > 0) {
+            console.log("First processed event sample:", JSON.parse(JSON.stringify(allEvents[0]))); // Log a copy
+        }
     }
 
     function initMap() { 
         const mapInstances = MapManager.init('map', CONFIG, hashtagColors, CONFIG.DEFAULT_MARKER_COLOR);
         map = mapInstances.map;
         markersLayer = mapInstances.markersLayer;
+    }
+
+    function calculateHashtagFrequencies() {
+        hashtagFrequencies = {};
+        allEvents.forEach(event => {
+            if (event.hashtags && Array.isArray(event.hashtags)) {
+                event.hashtags.forEach(tag => {
+                    hashtagFrequencies[tag] = (hashtagFrequencies[tag] || 0) + 1;
+                });
+            }
+        });
     }
 
     function processTagHierarchy() {
@@ -187,12 +262,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             dateSlider.set([initialStartHandleTimestamp, endTimestamp]);
         }
-        // Uncheck all hashtag checkboxes (parents and children)
-        document.querySelectorAll('#hashtag-filters-container .hashtag-label input[type="checkbox"]').forEach(checkbox => {
-            checkbox.checked = false;
-            checkbox.indeterminate = false; 
-            checkbox.parentElement.classList.remove('selected');
-        });
+        HashtagFilterUI.resetSelections(); // Use the UI module's reset function
+        filterAndDisplayEvents(); // Re-filter and update everything
     }
 
     function createLocationPopupContent(eventsAtLocation, activeFilters) {
@@ -206,18 +277,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 let eventDetailHtml = '';
                 
                 eventDetailHtml += `<p class="popup-event-datetime">${Utils.formatEventDateTimeCompactly(event)}</p>`;
-
-                if (event.location_name && event.location_name !== eventsAtLocation[0].location_name) { 
-                     eventDetailHtml += `<p><strong>Venue:</strong> ${Utils.escapeHtml(event.location_name)}</p>`;
+                // Use event.location (new field name)
+                if (event.location && event.location !== eventsAtLocation[0].location) { 
+                     eventDetailHtml += `<p><strong>Venue:</strong> ${Utils.escapeHtml(event.location)}</p>`;
                 }
                 
                 if (event.description) {
                     eventDetailHtml += `<p>${Utils.escapeHtml(event.description)}</p>`;
                 }
-                
-                if (event.link) {
-                    if (Utils.isValidUrl(event.link)) {
-                        eventDetailHtml += `<p><a href="${Utils.escapeHtml(event.link)}" target="_blank" rel="noopener noreferrer">More Info</a></p>`;
+                // Use event.url (new field name)
+                if (event.url) {
+                    if (Utils.isValidUrl(event.url)) {
+                        eventDetailHtml += `<p><a href="${Utils.escapeHtml(event.url)}" target="_blank" rel="noopener noreferrer">More Info</a></p>`;
                     } else {
                         eventDetailHtml += `<p><strong>Info:</strong> ${Utils.escapeHtml(event.link)}</p>`; // Changed "Link" to "Info" for non-URLs
                     }
@@ -282,7 +353,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const currentPopupFilters = {
                     sliderStartDate: new Date(sliderValues[0]),
                     sliderEndDate: new Date(sliderValues[1]),   
-                    selectedHashtags: Array.from(document.querySelectorAll('#hashtag-filters-container input:checked')).map(cb => cb.value)
+                    tagStates: HashtagFilterUI.getTagStates() // Get current tag states
                 };
                 const allEventsForThisPhysicalLocation = eventsByLocation[locationKey] || [];
                 return createLocationPopupContent(allEventsForThisPhysicalLocation, currentPopupFilters);
@@ -292,10 +363,10 @@ document.addEventListener('DOMContentLoaded', () => {
         eventCountDisplay.textContent = `Showing ${visibleEventCountTotal} events at ${visibleLocationCount} locations.`;
     }
 
-    function isEventFilteredOut(event, filterStartDate, filterEndDate, selectedHashtags) { 
+    function isEventFilteredOut(event, filterStartDate, filterEndDate, tagStates) { 
         let dateMatch = false;
-        if (event.parsedStartDate === "Ongoing") {
-             dateMatch = true; 
+        if (!event.parsedStartDate || !event.parsedEndDate) {
+            dateMatch = false; // Event has invalid/missing date info, filter it out
         } else {
             const eventStart = event.parsedStartDate;
             const eventEnd = event.parsedEndDate;
@@ -303,12 +374,61 @@ document.addEventListener('DOMContentLoaded', () => {
             let endFilter = (filterEndDate instanceof Date && !isNaN(filterEndDate)) ? filterEndDate : CONFIG.END_DATE;
             endFilter = new Date(endFilter); 
             endFilter.setHours(23, 59, 59, 999);
-            dateMatch = eventStart <= endFilter && eventEnd >= startFilter;
+            dateMatch = eventStart <= endFilter && eventEnd >= startFilter; // Ensure eventStart and eventEnd are valid Date objects
         }
+
         let hashtagMatch = true;
-        if (selectedHashtags.length > 0) {
-            hashtagMatch = event.hashtags && event.hashtags.some(tag => selectedHashtags.includes(tag));
+        const eventTags = new Set(event.hashtags || []);
+
+        const requiredTags = [];
+        const selectedOrTags = [];
+        const forbiddenTags = [];
+
+        for (const tag in tagStates) {
+            if (tagStates.hasOwnProperty(tag)) {
+                if (tagStates[tag] === 'required') requiredTags.push(tag);
+                else if (tagStates[tag] === 'selected') selectedOrTags.push(tag);
+                else if (tagStates[tag] === 'forbidden') forbiddenTags.push(tag);
+            }
         }
+
+        // 1. Forbidden check: If event has any forbidden tag, it's out.
+        if (forbiddenTags.length > 0) {
+            for (const forbiddenTag of forbiddenTags) {
+                if (eventTags.has(forbiddenTag)) {
+                    hashtagMatch = false;
+                    break;
+                }
+            }
+        }
+        if (!hashtagMatch) return !(dateMatch && hashtagMatch); // Early exit
+
+        // 2. Required check: If event does not have ALL required tags, it's out.
+        if (requiredTags.length > 0) {
+            let allRequiredMet = true;
+            for (const requiredTag of requiredTags) {
+                if (!eventTags.has(requiredTag)) {
+                    allRequiredMet = false;
+                    break;
+                }
+            }
+            if (!allRequiredMet) hashtagMatch = false;
+        }
+        if (!hashtagMatch) return !(dateMatch && hashtagMatch); // Early exit
+
+        // 3. Selected (OR) check: If event does not have AT LEAST ONE selected tag (and there are selected tags), it's out.
+        if (selectedOrTags.length > 0) {
+            let anySelectedMet = false;
+            for (const selectedTag of selectedOrTags) {
+                if (eventTags.has(selectedTag)) {
+                    anySelectedMet = true;
+                    break;
+                }
+            }
+            if (!anySelectedMet) hashtagMatch = false;
+        }
+        // If selectedOrTags is empty, this part of the condition is met by default.
+
         return !(dateMatch && hashtagMatch); 
     }
 
@@ -324,20 +444,84 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error("Slider returned invalid timestamps for filtering:", sliderTimestamps);
             return; 
         }
-        const selectedHashtags = Array.from(document.querySelectorAll('#hashtag-filters-container input:checked'))
-                                     .map(cb => cb.value);
+        const currentTagStates = HashtagFilterUI.getTagStates();
+
+        // First, filter all events based on date and selected tags to get a flat list
+        // This list will be used to update the HashtagFilterUI's dynamic frequencies
+        const allMatchingEventsFlatList = allEvents.filter(event => {
+            return !isEventFilteredOut(event, currentSliderStartDate, currentSliderEndDate, currentTagStates);
+        });
+
+        // Then, group these filtered events by location for map display
         const filteredLocations = {};
-        for (const locationKey in eventsByLocation) {
-            if (locationKey === 'unknown_location') continue;
-            const eventsAtThisLocation = eventsByLocation[locationKey];
-            const matchingEventsAtLocation = eventsAtThisLocation.filter(event => {
-                return !isEventFilteredOut(event, currentSliderStartDate, currentSliderEndDate, selectedHashtags);
-            });
-            if (matchingEventsAtLocation.length > 0) {
-                filteredLocations[locationKey] = matchingEventsAtLocation;
+        allMatchingEventsFlatList.forEach(event => {
+            if (event.locationKey && event.locationKey !== 'unknown_location') {
+                if (!filteredLocations[event.locationKey]) {
+                    filteredLocations[event.locationKey] = [];
+                }
+                filteredLocations[event.locationKey].push(event);
+            }
+        });
+
+        displayEventsOnMap(filteredLocations);
+
+        // Update the HashtagFilterUI view with the new set of filtered events and current selections
+        HashtagFilterUI.updateView(allMatchingEventsFlatList);
+    }
+
+    function initPanelResizer() {
+        if (!leftPanel || !resizeHandle) {
+            console.warn("Panel resizing elements ('left-panel', 'resize-handle') not found in the DOM.");
+            return;
+        }
+
+        let isResizing = false;
+        let initialPosX = 0;
+        let initialWidth = 0;
+
+        resizeHandle.addEventListener('mousedown', (e) => {
+            e.preventDefault(); // Prevent text selection or other default actions
+            isResizing = true;
+            initialPosX = e.clientX;
+            initialWidth = leftPanel.offsetWidth;
+            
+            // Apply styles for visual feedback during resize
+            document.body.style.cursor = 'ew-resize';
+            document.body.style.userSelect = 'none'; // Prevent text selection
+
+            document.addEventListener('mousemove', handleMouseMove);
+            document.addEventListener('mouseup', handleMouseUp);
+        });
+
+        function handleMouseMove(e) {
+            if (!isResizing) return;
+
+            const deltaX = e.clientX - initialPosX;
+            let newWidth = initialWidth + deltaX;
+
+            // Define min/max width for the panel (adjust as needed)
+            const minWidth = 200; // Example: minimum width of 200px
+            const maxWidth = 600; // Example: maximum width of 600px
+
+            newWidth = Math.max(minWidth, Math.min(newWidth, maxWidth));
+            leftPanel.style.width = `${newWidth}px`;
+
+            if (map) {
+                map.invalidateSize(); // Crucial for Leaflet to adjust the map layout
             }
         }
-        displayEventsOnMap(filteredLocations);
+
+        function handleMouseUp() {
+            if (!isResizing) return;
+            isResizing = false;
+
+            // Reset styles
+            document.body.style.cursor = '';
+            document.body.style.userSelect = '';
+
+            document.removeEventListener('mousemove', handleMouseMove);
+            document.removeEventListener('mouseup', handleMouseUp);
+        }
     }
 
     initializeApp();
