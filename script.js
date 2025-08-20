@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let map;
     let markersLayer;
     let allEvents = [];
+    let tileLayer;
     let eventsByLocation = {};
     let hashtagColors = {};
     let hashtagDisplayNames = {}; // To store display names
@@ -10,15 +11,14 @@ document.addEventListener('DOMContentLoaded', () => {
     let dateSlider;
     let allAvailableTags = [];
     let tagHierarchy = [];
-    let leftPanel; // Already declared
     let resizeHandle;
     // let mapContainer; // map div's parent, if needed for layout adjustments
 
     const CONFIG = {
         EVENT_DATA_URL: 'events.json',
         TAG_HIERARCHY_URL: 'tags.json',
-        START_DATE: new Date(2025, 6, 1),
-        END_DATE: new Date(2025, 7, 31),
+        START_DATE: new Date(2025, 7, 1),
+        END_DATE: new Date(2025, 8, 30),
         ONE_DAY_IN_MS: 24 * 60 * 60 * 1000,
         DEFAULT_MARKER_COLOR: '#757575',
         HASHTAG_COLOR_PALETTE: [
@@ -29,7 +29,8 @@ document.addEventListener('DOMContentLoaded', () => {
         ],
         MAP_INITIAL_VIEW: [40.6782, -73.9442],
         MAP_INITIAL_ZOOM: 12,
-        MAP_TILE_URL: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+        MAP_TILE_URL_DARK: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+        MAP_TILE_URL_LIGHT: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
         MAP_ATTRIBUTION: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors © <a href="https://carto.com/attributions">CARTO</a>',
         MAP_MAX_ZOOM: 20
     };
@@ -40,10 +41,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const eventCountDisplay = document.getElementById('event-count-display');
 
     async function initializeApp() {
-        // Assign panel-related elements here
-        leftPanel = document.getElementById('left-panel'); // Assign the ID of your main left panel
+        // const leftPanel = document.getElementById('left-panel'); // This is now handled inside initPanelResizer
         resizeHandle = document.getElementById('resize-handle'); // Assign the ID of the resize handle element
-        // mapContainer = document.getElementById('map-container'); // Assign if you have a specific map container div
 
         try {
             const eventData = await loadEventsFromFile(CONFIG.EVENT_DATA_URL);
@@ -52,6 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
             calculateHashtagFrequencies(); // Calculate frequencies after events are processed
             processTagHierarchy(); // Renamed and expanded function
             initMap();
+            initTheme();
             HashtagFilterUI.init({
                 allAvailableTags: allAvailableTags,
                 hashtagColors: hashtagColors,
@@ -81,42 +81,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function processEventData(eventData) { 
         allEvents = eventData.map(rawEvent => {
-            const { date_time, latitude, longitude, url: eventUrl, location: eventLocation, hashtags: rawHashtags, ...restOfEvent } = rawEvent;
-
-            // Normalize newline characters: replace literal '\\n' with actual '\n'
-            const normalizedDateTime = date_time.replace(/\\n/g, '\n');
-            const dtLines = normalizedDateTime.split('\n');
+            const { start_date, end_date, start_time, end_time, latitude, longitude, url: eventUrl, location: eventLocation, hashtags: rawHashtags, ...restOfEvent } = rawEvent;
 
             let parsedStartDate = null;
             let parsedEndDate = null;
 
-            // Construct a minimal valid iCalendar string for parsing
-            const iCalString = `BEGIN:VCALENDAR
-VERSION:2.0
-PRODID:-//EventsApp//EN
-BEGIN:VEVENT
-${normalizedDateTime}
-END:VEVENT
-END:VCALENDAR`;
+             if (start_date) {
+                parsedStartDate = Utils.parseDateInNewYork(start_date, start_time);
 
-            try {
-                const jcalData = ICAL.parse(iCalString);
-                const vcalendar = new ICAL.Component(jcalData);
-                const vevent = vcalendar.getFirstSubcomponent('vevent');
+                // If end_date is missing, it's the same as start_date.
+                const effectiveEndDateStr = (end_date && end_date.trim() !== '') ? end_date : start_date;
+                // If end_time is missing, use start_time.
+                const effectiveEndTimeStr = (end_time && end_time.trim() !== '') ? end_time : start_time;
+                parsedEndDate = Utils.parseDateInNewYork(effectiveEndDateStr, effectiveEndTimeStr);
 
-                if (vevent) {
-                    const icalEvent = new ICAL.Event(vevent);
-                    if (icalEvent.startDate) {
-                        parsedStartDate = icalEvent.startDate.toJSDate();
-                    }
-                    if (icalEvent.endDate) {
-                        parsedEndDate = icalEvent.endDate.toJSDate();
-                    }
+                // Handle cases where parsing might fail or end date is missing
+                if (parsedStartDate && !parsedEndDate) {
+                    // If end date failed but start date succeeded, make end date same as start date.
+                    parsedEndDate = new Date(parsedStartDate);
                 }
-            } catch (e) {
-                console.warn(`Failed to parse iCal data for event (ID: ${rawEvent.id || 'N/A'}): "${date_time}". Error: ${e.message}`);
             }
-            
+
             const locationKey = (latitude != null && longitude != null) 
                                ? `${latitude},${longitude}` : 'unknown_location';
 
@@ -134,8 +119,8 @@ END:VCALENDAR`;
 
             if (!eventsByLocation[locationKey]) eventsByLocation[locationKey] = [];
             const processedEvent = { 
-                ...restOfEvent, latitude, longitude, parsedStartDate, parsedEndDate, 
-                locationKey, url: eventUrl, location: eventLocation, hashtags: processedHashtags 
+                ...restOfEvent, start_time, end_time, latitude, longitude, parsedStartDate, parsedEndDate,
+                locationKey, url: eventUrl, location: eventLocation, hashtags: processedHashtags
             };
             eventsByLocation[locationKey].push(processedEvent);
             return processedEvent;
@@ -146,10 +131,20 @@ END:VCALENDAR`;
         }
     }
 
-    function initMap() { 
-        const mapInstances = MapManager.init('map', CONFIG, hashtagColors, CONFIG.DEFAULT_MARKER_COLOR);
-        map = mapInstances.map;
-        markersLayer = mapInstances.markersLayer;
+    function initMap() {
+        // Initialize the map once and store the instance.
+        map = L.map('map').setView(CONFIG.MAP_INITIAL_VIEW, CONFIG.MAP_INITIAL_ZOOM);
+
+        // Create the tile layer instance. The URL will be set by initTheme().
+        // We can give it a default URL to start.
+        tileLayer = L.tileLayer(CONFIG.MAP_TILE_URL_DARK, {
+            attribution: CONFIG.MAP_ATTRIBUTION,
+            maxZoom: CONFIG.MAP_MAX_ZOOM
+        }).addTo(map);
+
+        // Initialize the MapManager with the existing map instance. It will create and return the markers layer.
+        const mapManagerInstances = MapManager.init(map, hashtagColors, CONFIG.DEFAULT_MARKER_COLOR);
+        markersLayer = mapManagerInstances.markersLayer;
     }
 
     function calculateHashtagFrequencies() {
@@ -244,6 +239,37 @@ END:VCALENDAR`;
         endDateElement.textContent = Utils.formatDateForDisplay(initialTimestamps[1]);
     }
 
+    function updateMapTheme(theme) {
+        if (!tileLayer) return;
+        const newUrl = theme === 'light' ? CONFIG.MAP_TILE_URL_LIGHT : CONFIG.MAP_TILE_URL_DARK;
+        tileLayer.setUrl(newUrl);
+    }
+
+    function setTheme(theme) {
+        document.body.dataset.theme = theme;
+        localStorage.setItem('theme', theme);
+        updateMapTheme(theme);
+        // Redraw markers to apply the new theme-appropriate stroke color.
+        filterAndDisplayEvents();
+    }
+
+    function initTheme() {
+        const themeToggle = document.getElementById('theme-switch-checkbox');
+        if (!themeToggle) return;
+
+        // Check for saved theme, default to dark
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+
+        if (savedTheme === 'light') {
+            themeToggle.checked = true;
+        }
+        setTheme(savedTheme);
+
+        themeToggle.addEventListener('change', (e) => {
+            setTheme(e.target.checked ? 'light' : 'dark');
+        });
+    }
+
     function addEventListeners() { 
         document.getElementById('reset-filters').addEventListener('click', resetFilters);
     }
@@ -279,7 +305,7 @@ END:VCALENDAR`;
                 eventDetailHtml += `<p class="popup-event-datetime">${Utils.formatEventDateTimeCompactly(event)}</p>`;
                 // Use event.location (new field name)
                 if (event.location && event.location !== eventsAtLocation[0].location) { 
-                     eventDetailHtml += `<p><strong>Venue:</strong> ${Utils.escapeHtml(event.location)}</p>`;
+                     eventDetailHtml += `<p>${Utils.escapeHtml(event.location)}</p>`;
                 }
                 
                 if (event.description) {
@@ -315,13 +341,13 @@ END:VCALENDAR`;
         }
         
         let header = '';
+        if (eventsAtLocation.length > 0) {
+            header = `<p><strong> ${Utils.escapeHtml(eventsAtLocation[0].location)}</strong></p>`;
+        }
         const totalEventsAtPhysicalLocation = eventsAtLocation.length; // All events physically here
         if (totalEventsAtPhysicalLocation > 1 && displayedEventCount > 0) {
-             header = `<div><small>${displayedEventCount} of ${totalEventsAtPhysicalLocation} events match filters:</small></div>`;
-        } else if (displayedEventCount === 1 && totalEventsAtPhysicalLocation > 1) {
-             header = `<div><small>1 of ${totalEventsAtPhysicalLocation} events matches filters:</small></div>`;
+             header += `<div><small>${displayedEventCount} of ${totalEventsAtPhysicalLocation} events match filters:</small></div>`;
         }
-        // If displayedEventCount === totalEventsAtPhysicalLocation, no extra header needed as summary is enough.
         
         return header + mainContent;
     }
@@ -345,7 +371,7 @@ END:VCALENDAR`;
             const customIcon = MapManager.createCustomMarkerIcon(markerColor);
             
             const hoverTooltipText = eventsMatchingFiltersAtThisLocation.length > 1 
-                ? `${eventsMatchingFiltersAtThisLocation.length} events here (match filters)` 
+                ? eventsMatchingFiltersAtThisLocation[0].location
                 : eventsMatchingFiltersAtThisLocation[0].name;
 
             const popupContentCallback = () => {
@@ -470,6 +496,7 @@ END:VCALENDAR`;
     }
 
     function initPanelResizer() {
+        const leftPanel = document.getElementById('left-panel');
         if (!leftPanel || !resizeHandle) {
             console.warn("Panel resizing elements ('left-panel', 'resize-handle') not found in the DOM.");
             return;
@@ -480,11 +507,10 @@ END:VCALENDAR`;
         let initialWidth = 0;
 
         resizeHandle.addEventListener('mousedown', (e) => {
-            e.preventDefault(); // Prevent text selection or other default actions
             isResizing = true;
             initialPosX = e.clientX;
             initialWidth = leftPanel.offsetWidth;
-            
+
             // Apply styles for visual feedback during resize
             document.body.style.cursor = 'ew-resize';
             document.body.style.userSelect = 'none'; // Prevent text selection

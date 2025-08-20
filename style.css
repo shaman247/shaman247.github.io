@@ -13,6 +13,24 @@
     --border-color: #4a4a6A;
     --marker-default-color: #757575;
     --font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; /* Subway-like font */
+
+    --attribution-bg: rgba(0, 0, 0, 0.7);
+    --reset-text-shadow: 1px 1px 2px black;
+}
+
+/* Light Theme Variables */
+body[data-theme="light"] {
+    --primary-bg: #f4f4f4;
+    --secondary-bg: #ffffff;
+    --tertiary-bg: #e9e9e9;
+    --tertiary-hover-bg: #d1d1d1;
+    --primary-text: #111111;
+    --secondary-text: #555555;
+    --accent-color: #007aff;
+    --accent-hover: #58aeff;
+    --border-color: #dcdcdc;
+    --attribution-bg: rgba(255, 255, 255, 0.7);
+    --reset-text-shadow: none;
 }
 
 body {
@@ -23,6 +41,7 @@ body {
     color: var(--primary-text);
     display: flex;
     height: 100vh;
+    transition: background-color 0.3s ease, color 0.3s ease;
     overflow: hidden;
 }
 
@@ -302,18 +321,14 @@ button#reset-filters:hover {
 }
 .leaflet-popup-close-button:hover { color: var(--accent-color) !important; }
 
+/* This class is the container for the SVG marker. */
 .custom-marker-icon {
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    border: 2px solid white;
-    box-shadow: 0 0 5px rgba(0,0,0,0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    /* The SVG inside handles its own styling. We can remove the old circle styles. */
+    background: none;
+    border: none;
 }
 .leaflet-control-attribution {
-    background: rgba(0, 0, 0, 0.7) !important;
+    background: var(--attribution-bg) !important;
     color: var(--secondary-text) !important;
 }
 .leaflet-control-attribution a { color: var(--accent-color) !important; }
@@ -351,5 +366,64 @@ button#reset-filters:hover {
 }
 
 #reset-filters {
-    text-shadow: 1px 1px 2px black; /* Adjust values as needed */
+    text-shadow: var(--reset-text-shadow);
+}
+
+/* Theme Switcher Styles */
+.theme-switcher-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0;
+    margin-top: auto; /* Pushes it towards the bottom */
+    flex-shrink: 0;
+}
+
+.theme-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 26px;
+}
+
+.theme-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--tertiary-bg);
+    transition: .4s;
+    border-radius: 26px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: var(--accent-color);
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px var(--accent-color);
+}
+
+input:checked + .slider:before {
+    transform: translateX(24px);
 }
