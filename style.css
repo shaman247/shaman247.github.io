@@ -7,22 +7,43 @@
     --primary-text: #ffffff; /* White text */
     --secondary-text: #bbbbbb; /* Light gray text */
     
-    --accent-color: #70abf3;
-    --accent-hover: #b5dfff;
+    --font-family-heading: "Host Grotesk", sans-serif;
+    --font-family-body: "Libre Franklin", sans-serif;
+
+    --accent-color: #ff0090;
+    --accent-hover: #ffb5ff;
     
-    --border-color: #4a4a6A;
+    --border-color: #534;
     --marker-default-color: #757575;
-    --font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; /* Subway-like font */
+
+    --attribution-bg: rgba(0, 0, 0, 0.7);
+    --reset-text-shadow: 1px 1px 2px black;
+}
+
+/* Light Theme Variables */
+body[data-theme="light"] {
+    --primary-bg: #f4f4f4;
+    --secondary-bg: #ffffff;
+    --tertiary-bg: #e9e9e9;
+    --tertiary-hover-bg: #d1d1d1;
+    --primary-text: #111111;
+    --secondary-text: #555555;
+    --accent-color: #007aff;
+    --accent-hover: #58aeff;
+    --border-color: #dcdcdc;
+    --attribution-bg: rgba(255, 255, 255, 0.7);
+    --reset-text-shadow: none;
 }
 
 body {
-    font-family: var(--font-family);
+    font-family: var(--font-family-body);
     margin: 0;
     padding: 0;
     background-color: var(--primary-bg);
     color: var(--primary-text);
     display: flex;
     height: 100vh;
+    transition: background-color 0.3s ease, color 0.3s ease;
     overflow: hidden;
 }
 
@@ -41,7 +62,9 @@ body {
     flex-direction: column;
     height: 100vh; 
     overflow-y: auto; /* Allow content within the panel to scroll if it overflows */
+    overflow-x: hidden; /* Prevent horizontal scrollbar on narrow screens */
     flex-shrink: 0; /* Prevent panel from shrinking if map content is too wide */
+    transition: width 0.3s ease, padding 0.3s ease;
 }
 
 
@@ -51,10 +74,12 @@ body {
 }
 
 .panel-header h2 {
+    font-family: var(--font-family-heading);
     color: var(--accent-color);
     margin-top: 0;
     margin-bottom: 20px; /* Add some space below header */
     text-align: center;
+    font-weight: 500;
     font-size: 1.8em;
 }
 
@@ -77,7 +102,8 @@ body {
 }
 
 .filter-group label {
-    font-weight: bold;
+    font-family: var(--font-family-heading);
+    font-weight: 500;
     display: block;
     margin-bottom: 8px;
     color: var(--secondary-text);
@@ -96,6 +122,33 @@ body {
 #map-container {
     flex-grow: 1;
     position: relative; /* Important for Leaflet map sizing */
+}
+
+#toggle-panel-btn {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 1000; /* On top of map controls which are usually < 1000 */
+    background-color: var(--secondary-bg);
+    color: var(--primary-text);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 5px 10px;
+    font-size: 1.5em;
+    line-height: 1;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    transition: background-color 0.2s;
+}
+
+#toggle-panel-btn:hover {
+    background-color: var(--tertiary-hover-bg);
+}
+
+#left-panel.collapsed {
+    width: 0;
+    padding: 0;
+    overflow: hidden;
 }
 
 #map {
@@ -251,21 +304,65 @@ button#reset-filters:hover {
     box-shadow: 0 3px 15px rgba(0,0,0,0.4);
 }
 .leaflet-popup-content {
-    font-size: 1em; /* Made text larger */
-    line-height: 1.3; /* Made line height more compact */
-    margin: 12px !important; /* Slightly more margin */
+    font-size: 1em;
+    line-height: 1.3;
+    margin: 0 !important; /* Remove margin to allow flexbox to control layout */
     color: var(--primary-text);
     max-height: 300px; /* Max height for popup before it scrolls */
-    overflow-y: auto;  /* Scroll for oversized content */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Hide overflow on the main container to prevent double scrollbars */
+}
+.popup-header {
+    padding: 6px 0px; /* Reduced vertical padding */
+    flex-shrink: 0; /* Prevent the header from shrinking */
+    border-bottom: 1px solid var(--border-color);
+    background: var(--tertiary-bg); /* Match the popup background to cover scrolling content */
+    display: flex;
+    align-items: center;
+    gap: 0px; /* Reduced space between emoji and text block */
+}
+
+.popup-header p {
+    margin: 0; /* Compact spacing for header elements */
+}
+
+/* Increased specificity to override the general .leaflet-popup-content p rule */
+.popup-header .popup-header-address {
+    color: var(--secondary-text);
+}
+
+.popup-header-emoji {
+    font-size: 2.5em; /* Larger emoji to roughly match height of two lines of text */
+    line-height: 1;
+}
+
+.popup-header-text p {
+    line-height: 0.9; /* Tighter line height for title and address */
+}
+
+.popup-header strong {
+    font-family: var(--font-family-heading);
+    font-weight: 700; /* Bold weight for Atkinson Hyperlegible */
+    font-size: 1.15em; /* Slightly bigger title */
+}
+
+.popup-events-list {
+    padding: 4px 12px 8px 12px; /* Reduced vertical padding */
+    overflow-y: auto; /* Enable scrolling ONLY on the list */
+    flex-grow: 1; /* Allow the list to take up remaining space */
 }
 .leaflet-popup-content p {
     margin: 3px 0; /* Made paragraph margins more compact */
     color: var(--primary-text);
 }
+.leaflet-popup-content details p {
+    margin: 2px 0; /* More compact margins for event details */
+}
 .leaflet-popup-content details {
     border-bottom: 1px solid var(--border-color);
-    margin-bottom: 8px;
-    padding-bottom: 8px;
+    margin-bottom: 5px; /* Reduced spacing between events */
+    padding-bottom: 5px; /* Reduced spacing between events */
 }
 .leaflet-popup-content details:last-child {
     border-bottom: none;
@@ -273,20 +370,30 @@ button#reset-filters:hover {
     padding-bottom: 0;
 }
 .leaflet-popup-content summary {
+    font-family: var(--font-family-heading);
     cursor: pointer;
-    font-weight: bold;
-    padding: 2px 0; /* Made summary padding more compact */
-    color: var(--accent-color);
+    font-weight: 700; /* Bold weight for Atkinson Hyperlegible */
+    padding: 0; /* Removed padding for a tighter look */
+    color: #28a745; /* Green for collapsed */
     outline: none;
-    list-style-position: inside; /* Keeps marker closer */
+    list-style: none; /* Remove the default arrow */
+    display: flex; /* Use flexbox for alignment */
+    align-items: center; /* Vertically align emoji and text */
+    gap: 6px; /* Space between emoji and text */
 }
+
+.popup-event-emoji {
+    font-size: 1.5em; /* 50% bigger emoji */
+    line-height: 1;
+}
+.leaflet-popup-content details[open] > summary {
+    color: #ffc107; /* Yellow for expanded */
+}
+
 .leaflet-popup-content summary:hover {
-    color: var(--accent-hover);
+    opacity: 0.8;
 }
-.leaflet-popup-content summary::marker {
-    color: var(--accent-color);
-    font-size: 0.9em; /* Slightly smaller marker */
-}
+
 .leaflet-popup-content a {
     color: var(--accent-color);
     text-decoration: none;
@@ -302,46 +409,64 @@ button#reset-filters:hover {
 }
 .leaflet-popup-close-button:hover { color: var(--accent-color) !important; }
 
+/* This class is the container for the SVG marker. */
 .custom-marker-icon {
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    border: 2px solid white;
-    box-shadow: 0 0 5px rgba(0,0,0,0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    /* The SVG inside handles its own styling. We can remove the old circle styles. */
+    background: none;
+    border: none;
 }
 .leaflet-control-attribution {
-    background: rgba(0, 0, 0, 0.7) !important;
+    background: var(--attribution-bg) !important;
     color: var(--secondary-text) !important;
 }
 .leaflet-control-attribution a { color: var(--accent-color) !important; }
 .leaflet-tooltip {
-    background-color: var(--tertiary-bg) !important;
+    background-color: var(--primary-bg) !important;
     border: 1px solid var(--border-color) !important;
     color: var(--primary-text) !important;
-    padding: 5px 8px !important;
+    padding: 4px 8px !important;
     border-radius: 4px !important;
     box-shadow: 0 1px 3px rgba(0,0,0,0.3) !important;
-    font-size: 0.85em !important;
+    font-size: 1.2em !important;
+    font-weight: bold;
 }
 .popup-event-datetime {
     font-style: italic;
     color: var(--secondary-text);
-    margin-bottom: 4px !important; /* Made more compact */
+    margin-bottom: 2px !important; /* Reduced space below datetime */
     font-size: 0.85em; /* Adjusted to be slightly smaller than new base text */
+}
+.popup-event-sublocation {
+    font-style: italic;
+    color: var(--secondary-text);
+    margin: 4px 0 !important;
+    font-size: 0.85em;
 }
 
 
 @media (max-width: 768px) {
     #app-container {
-        /* On smaller screens, you might want the panel to be collapsible or have a different behavior */
-        /* For now, we'll keep the row layout but allow the panel to be resized. */
+        flex-direction: column;
     }
     #left-panel {
-        max-height: none;
+        /* Override any inline width set by the resizer JS on desktop. */
+        /* This ensures the panel takes up the full width on mobile. */
+        width: 100% !important;
+        height: auto; /* Let content define height */
+        max-height: 45vh; /* Or a fixed value like 350px, adjust as needed */
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); /* Shadow on the bottom */
+        overflow-y: auto; /* Ensure it's scrollable if content overflows */
         box-sizing: border-box;
+        transition: height 0.3s ease, padding 0.3s ease; /* Animate height for collapse */
+    }
+    #left-panel.collapsed {
+        height: 0;
+        width: 100% !important; /* Ensure it takes full width even when collapsed */
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+    #resize-handle {
+        display: none; /* Hide the resizer on mobile */
     }
     .panel-header h2 { font-size: 1.5em; margin-bottom: 10px; }
     .filter-group { margin-bottom: 15px; }
@@ -350,6 +475,172 @@ button#reset-filters:hover {
     .leaflet-popup-content { max-height: 200px; } /* Smaller max height for popups on mobile */
 }
 
+#left-panel.collapsed + #resize-handle {
+    display: none;
+}
+
 #reset-filters {
-    text-shadow: 1px 1px 2px black; /* Adjust values as needed */
+    text-shadow: var(--reset-text-shadow);
+}
+
+/* Theme Switcher Styles */
+.theme-switcher-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0;
+    margin-top: auto; /* Pushes it towards the bottom */
+    flex-shrink: 0;
+}
+
+.theme-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 26px;
+}
+
+.theme-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--tertiary-bg);
+    transition: .4s;
+    border-radius: 26px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: var(--accent-color);
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px var(--accent-color);
+}
+
+input:checked + .slider:before {
+    transform: translateX(24px);
+}
+
+/* New styles for flatpickr */
+#date-picker {
+    width: 100%;
+    padding: 8px;
+    background-color: var(--primary-bg);
+    border: 1px solid var(--border-color);
+    color: var(--primary-text);
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-family: var(--font-family-body);
+    font-size: 0.9em;
+    cursor: pointer;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.flatpickr-calendar {
+    background: var(--secondary-bg);
+    border-radius: 4px;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.4);
+    border: 1px solid var(--border-color);
+    color: var(--primary-text);
+}
+
+.flatpickr-months .flatpickr-month {
+    color: var(--accent-color);
+    fill: var(--accent-color);
+}
+
+.flatpickr-months .flatpickr-prev-month svg,
+.flatpickr-months .flatpickr-next-month svg {
+    fill: var(--accent-color);
+}
+
+.flatpickr-months .flatpickr-prev-month:hover svg,
+.flatpickr-months .flatpickr-next-month:hover svg {
+    fill: var(--accent-color);
+}
+
+span.flatpickr-day {
+    color: var(--primary-text);
+}
+
+.flatpickr-day.selected,.flatpickr-day.startRange,.flatpickr-day.endRange,.flatpickr-day.selected.inRange,.flatpickr-day.nextMonthDay.inRange,.flatpickr-day.startRange.inRange,.flatpickr-day.endRange.inRange,.flatpickr-day.selected:focus,.flatpickr-day.startRange:focus,.flatpickr-day.endRange:focus,.flatpickr-day.selected:hover,.flatpickr-day.startRange:hover,.flatpickr-day.endRange:hover,.flatpickr-day.selected.prevMonthDay,.flatpickr-day.startRange.prevMonthDay,.flatpickr-day.endRange.prevMonthDay,.flatpickr-day.selected.nextMonthDay,.flatpickr-day.startRange.nextMonthDay,.flatpickr-day.endRange.nextMonthDay {
+    background: var(--accent-color);
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    color: #fff;
+    border-color: var(--accent-color)
+}
+
+.flatpickr-current-month input.cur-year,
+.flatpickr-current-month input.cur-year[disabled] {
+    color: var(--accent-color);
+    pointer-events: none; /* Make the year input non-interactive */
+}
+
+/* Make the month name non-interactive as well */
+.flatpickr-current-month span.cur-month {
+    pointer-events: none;
+}
+
+/* Hide the up/down arrows for the year input */
+.numInputWrapper span.arrowUp,
+.numInputWrapper span.arrowDown {
+    display: none;
+}
+span.flatpickr-weekday {
+    color: var(--accent-color);
+    font-weight: bold;
+}
+
+span.flatpickr-day:hover,
+span.flatpickr-day.prevMonthDay:hover,
+span.flatpickr-day.nextMonthDay:hover {
+    background: var(--accent-hover);
+    border-color: var(--accent-hover);
+    color: #fff; /* Added for better contrast */
+}
+
+span.flatpickr-day.selected, span.flatpickr-day.startRange, span.flatpickr-day.endRange {
+    background: var(--accent-color);
+    border-color: var(--accent-color);
+    color: #fff;
+}
+
+span.flatpickr-day.inRange,
+span.flatpickr-day.prevMonthDay.inRange,
+span.flatpickr-day.nextMonthDay.inRange {
+    background: var(--tertiary-bg);
+    border-color: var(--tertiary-bg);
+    box-shadow: -5px 0 0 var(--tertiary-bg), 5px 0 0 var(--tertiary-bg);
+}
+
+span.flatpickr-day.today {
+    border-color: var(--accent-hover);
+}
+
+span.flatpickr-day.today:hover {
+    background: var(--accent-hover);
+    color: #fff;
 }

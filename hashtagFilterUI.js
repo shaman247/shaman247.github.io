@@ -177,8 +177,8 @@ const HashtagFilterUI = (() => {
             return a.localeCompare(b);
         });
         sortedTags.forEach(tag => {
-            // Ensure tag has a global frequency greater than 0 before creating element
-            if ((_initialGlobalFrequencies[tag] || 0) === 0) return;
+            // Ensure tag has a global frequency of at least 2 before creating element
+            if ((_initialGlobalFrequencies[tag] || 0) < 2) return;
             const tagElement = _createTagElement(tag);
             tagsContainer.appendChild(tagElement);
         });

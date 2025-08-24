@@ -1,0 +1,3075 @@
+[
+  {
+    "location": "230 Fifth",
+    "address": "230 5th Ave, New York, NY 10001",
+    "lat": 40.675768,
+    "lng": -73.981172,
+    "emoji": "🌃"
+  },
+  {
+    "location": "54 Below",
+    "address": "254 W 54th St. Cellar, New York, NY 10019",
+    "lat": 40.76448727,
+    "lng": -73.9835012063118,
+    "emoji": "🎶"
+  },
+  {
+    "location": "59E59 Theaters",
+    "address": "59 E 59th St, New York, NY 10022",
+    "lat": 40.763412,
+    "lng": -73.970382,
+    "emoji": "🎭"
+  },
+  {
+    "location": "9/11 Memorial & Museum",
+    "address": "180 Greenwich St, New York, NY 10007",
+    "lat": 40.71146,
+    "lng": -74.012676,
+    "emoji": "🕊️"
+  },
+  {
+    "location": "92nd Street Y (92NY)",
+    "address": "1395 Lexington Ave, New York, NY 10128",
+    "lat": 40.782943,
+    "lng": -73.952519,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "A.I.R. Gallery",
+    "address": "155 Plymouth St, Brooklyn, NY 11201",
+    "lat": 40.704109,
+    "lng": -73.987069,
+    "emoji": "🎨"
+  },
+  {
+    "location": "A.R.T./New York Theatres",
+    "address": "502 W 53rd St, New York, NY 10019",
+    "lat": 40.766614,
+    "lng": -73.991235,
+    "emoji": "🎭"
+  },
+  {
+    "location": "Abrons Arts Center",
+    "address": "466 Grand St, New York, NY 10002",
+    "lat": 40.715357,
+    "lng": -73.983772,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "AKC Museum of the Dog",
+    "address": "101 Park Ave, New York, NY 10178",
+    "lat": 40.750817,
+    "lng": -73.977616,
+    "emoji": "🐶"
+  },
+  {
+    "location": "Albertine",
+    "address": "972 5th Ave, New York, NY 10075",
+    "lat": 40.776569,
+    "lng": -73.963652,
+    "emoji": "📚"
+  },
+  {
+    "location": "Alice Austen House Museum",
+    "address": "2 Hylan Blvd, Staten Island, NY 10305",
+    "lat": 40.615145,
+    "lng": -74.06303,
+    "emoji": "📷"
+  },
+  {
+    "location": "Ambassador Theatre",
+    "address": "219 W 49th Street, New York, NY 10019",
+    "lat": 40.761259,
+    "lng": -73.984991,
+    "emoji": "🎭"
+  },
+  {
+    "location": "American Museum of Natural History",
+    "address": "200 Central Park West, New York, NY 10024",
+    "lat": 40.78136,
+    "lng": -73.97406,
+    "emoji": "🦕"
+  },
+  {
+    "location": "American Princess Cruises, Pier 3",
+    "address": "2100 Emmons Ave, Brooklyn, NY 11235",
+    "lat": 40.5841285,
+    "lng": -73.9474119985431,
+    "emoji": "🐳"
+  },
+  {
+    "location": "Another World",
+    "address": "629 Nostrand Ave, Brooklyn, NY 11216",
+    "lat": 40.675529,
+    "lng": -73.949746,
+    "emoji": "👕"
+  },
+  {
+    "location": "Anthology Film Archives",
+    "address": "32 2nd Ave, New York, NY 10003",
+    "lat": 40.724679,
+    "lng": -73.990121,
+    "emoji": "🎥"
+  },
+  {
+    "location": "Apollo Theater",
+    "address": "253 W 125th St, New York, NY 10027",
+    "lat": 40.810273,
+    "lng": -73.949863,
+    "emoji": "🎶"
+  },
+  {
+    "location": "Arlene's Grocery",
+    "address": "95 Stanton St, New York, NY 10002",
+    "lat": 40.721272,
+    "lng": -73.98836,
+    "emoji": "🎶"
+  },
+  {
+    "location": "Ars Nova",
+    "address": "511 W 54th St, New York, NY 10019",
+    "lat": 40.767665,
+    "lng": -73.990498,
+    "emoji": "🎭"
+  },
+  {
+    "location": "Arsenal Gallery, Central Park",
+    "address": "830 5th Ave, New York, NY 10065",
+    "lat": 40.76764,
+    "lng": -73.971306,
+    "emoji": "🎨"
+  },
+  {
+    "location": "Asia Society and Museum",
+    "address": "725 Park Ave, New York, NY 10021",
+    "lat": 40.769847,
+    "lng": -73.964293,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "Atelier Sucré",
+    "address": "104 East 7th St, New York, NY 10009",
+    "lat": 40.726474,
+    "lng": -73.984991,
+    "emoji": "🥐"
+  },
+  {
+    "location": "Atlantic Theater Company",
+    "address": "336 W 20th St, New York, NY 10011",
+    "lat": 40.743866,
+    "lng": -74.001578,
+    "emoji": "🎭"
+  },
+  {
+    "location": "Audubon Center",
+    "address": "101 East Drive, Brooklyn, NY 11225",
+    "lat": 40.660833,
+    "lng": -73.965282,
+    "emoji": "🐦"
+  },
+  {
+    "location": "Austrian Cultural Forum New York",
+    "address": "11 E 52nd St, New York, NY 10022",
+    "lat": 40.75956,
+    "lng": -73.975274,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "Avant Gardner",
+    "address": "111 Gardner Ave, Brooklyn, NY 11237",
+    "lat": 40.711063,
+    "lng": -73.925318,
+    "emoji": "🎶"
+  },
+  {
+    "location": "Baby's All Right",
+    "address": "146 Broadway, Brooklyn, NY 11211",
+    "lat": 40.709994,
+    "lng": -73.963495,
+    "emoji": "🎶"
+  },
+  {
+    "location": "BAM Fisher",
+    "address": "321 Ashland Pl, Brooklyn, NY 11217",
+    "lat": 40.686029,
+    "lng": -73.977804,
+    "emoji": "🎭"
+  },
+  {
+    "location": "BAM Strong",
+    "address": "651 Fulton St, Brooklyn, NY 11217",
+    "lat": 40.68853,
+    "lng": -73.97875,
+    "emoji": "🎥"
+  },
+  {
+    "location": "Barbès",
+    "address": "376 9th St, Brooklyn, NY 11215",
+    "lat": 40.667744,
+    "lng": -73.9839,
+    "emoji": "🎶"
+  },
+  {
+    "location": "Barclays Center",
+    "address": "620 Atlantic Ave, Brooklyn, NY 11217",
+    "lat": 40.682579,
+    "lng": -73.975263,
+    "emoji": "🏀"
+  },
+  {
+    "location": "Barnes & Noble (Union Square)",
+    "address": "33 E 17th St, New York, NY 10003",
+    "lat": 40.737144,
+    "lng": -73.989364,
+    "emoji": "📚"
+  },
+  {
+    "location": "Barnes & Noble Upper West Side",
+    "address": "2289 Broadway, New York, NY 10024",
+    "lat": 40.786252,
+    "lng": -73.978701,
+    "emoji": "📚"
+  },
+  {
+    "location": "Bartel-Pritchard Square",
+    "address": "Prospect Park West & 15th St, Brooklyn, NY 11215",
+    "lat": 40.664048,
+    "lng": -73.977695,
+    "emoji": "🌳"
+  },
+  {
+    "location": "Baryshnikov Arts Center (BAC)",
+    "address": "450 W 37th St, New York, NY 10018",
+    "lat": 40.756055,
+    "lng": -73.997305,
+    "emoji": "💃"
+  },
+  {
+    "location": "Barzakh Cafe",
+    "address": "147 Utica Ave, Brooklyn, NY 11213",
+    "lat": 40.673787,
+    "lng": -73.930418,
+    "emoji": "☕"
+  },
+  {
+    "location": "Battery Park City",
+    "address": "River Terrace & Murray Street, New York, NY 10282",
+    "lat": 40.718234,
+    "lng": -74.014634,
+    "emoji": "🌳"
+  },
+  {
+    "location": "Beacon Theatre",
+    "address": "2124 Broadway, New York, NY 10023",
+    "lat": 40.780522,
+    "lng": -73.980818,
+    "emoji": "🎶"
+  },
+  {
+    "location": "Belasco Theatre",
+    "address": "111 W 44th Street, New York, NY 10036",
+    "lat": 40.756661,
+    "lng": -73.983787,
+    "emoji": "🎭"
+  },
+  {
+    "location": "Bella Abzug Park",
+    "address": "542 W 36th St, New York, NY 10018",
+    "lat": 40.75648,
+    "lng": -74.00021,
+    "emoji": "🌳"
+  },
+  {
+    "location": "Bernard B. Jacobs Theater",
+    "address": "242 W 45th Street, New York, NY 10036",
+    "lat": 40.758617,
+    "lng": -73.987735,
+    "emoji": "🎭"
+  },
+  {
+    "location": "Billie Holiday Theatre",
+    "address": "1368 Fulton St, Brooklyn, NY 11216",
+    "lat": 40.679927,
+    "lng": -73.945615,
+    "emoji": "🎭"
+  },
+  {
+    "location": "Birdland Jazz Club",
+    "address": "315 W 44th St, New York, NY 10036",
+    "lat": 40.759103,
+    "lng": -73.989644,
+    "emoji": "🎷"
+  },
+  {
+    "location": "Blue Note Jazz Club",
+    "address": "131 W 3rd St, New York, NY 10012",
+    "lat": 40.730952,
+    "lng": -74.000633,
+    "emoji": "🎷"
+  },
+  {
+    "location": "Bluestockings Cooperative Bookstore",
+    "address": "116 Suffolk St, New York, NY 10002",
+    "lat": 40.71892,
+    "lng": -73.98585,
+    "emoji": "📚"
+  },
+  {
+    "location": "Books Are Magic (Montague St.)",
+    "address": "122 Montague St, Brooklyn, NY 11201",
+    "lat": 40.694653,
+    "lng": -73.994607,
+    "emoji": "📚"
+  },
+  {
+    "location": "Books Are Magic (Smith St.)",
+    "address": "225 Smith St, Brooklyn, NY 11231",
+    "lat": 40.683997,
+    "lng": -73.992042,
+    "emoji": "📚"
+  },
+  {
+    "location": "BPL Park Slope",
+    "address": "431 6th Ave, Brooklyn, NY 11215",
+    "lat": 40.668222,
+    "lng": -73.98344,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "BRIC House",
+    "address": "647 Fulton St, Brooklyn, NY 11217",
+    "lat": 40.688666,
+    "lng": -73.979088,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "Broadhurst Theatre",
+    "address": "235 W 44th St., New York, NY 10036",
+    "lat": 40.758281,
+    "lng": -73.987616,
+    "emoji": "🎭"
+  },
+  {
+    "location": "Broadway Theatre",
+    "address": "1681 Broadway, New York, NY 10019",
+    "lat": 40.763304,
+    "lng": -73.983437,
+    "emoji": "🎭"
+  },
+  {
+    "location": "Brooklyn Academy of Music (BAM)",
+    "address": "30 Lafayette Ave, Brooklyn, NY 11217",
+    "lat": 40.6865007603653,
+    "lng": -73.977723890666,
+    "emoji": "🎭"
+  },
+  {
+    "location": "Brooklyn Botanic Garden",
+    "address": "990 Washington Ave, Brooklyn, NY 11225",
+    "lat": 40.66944,
+    "lng": -73.962647,
+    "emoji": "🌺"
+  },
+  {
+    "location": "Brooklyn Bowl",
+    "address": "61 Wythe Ave, Brooklyn, NY 11249",
+    "lat": 40.721767,
+    "lng": -73.957234,
+    "emoji": "🎳"
+  },
+  {
+    "location": "Brooklyn Brainery (Park Slope)",
+    "address": "1110 8th Ave, Brooklyn, NY 11215",
+    "lat": 40.66434825,
+    "lng": -73.980596014787,
+    "emoji": "🧠"
+  },
+  {
+    "location": "Brooklyn Brainery (Prospect Heights)",
+    "address": "190 Underhill Ave, Brooklyn, NY 11238",
+    "lat": 40.67491206,
+    "lng": -73.9669497176961,
+    "emoji": "🧠"
+  },
+  {
+    "location": "Brooklyn Bridge Park",
+    "address": "Brooklyn Bridge Park, Brooklyn, NY",
+    "lat": 40.69978,
+    "lng": -73.99782,
+    "emoji": "🌳"
+  },
+  {
+    "location": "Brooklyn Children's Museum",
+    "address": "145 Brooklyn Ave, Brooklyn, NY 11213",
+    "lat": 40.674511,
+    "lng": -73.943896,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "Brooklyn Grange at Navy Park",
+    "address": "Building 3, 63 Flushing Ave, Brooklyn, NY 11205",
+    "lat": 40.69817148,
+    "lng": -73.9725727104974,
+    "emoji": "🥕"
+  },
+  {
+    "location": "Brooklyn Grange at Sunset Park",
+    "address": "850 3rd Ave Roof, Brooklyn, NY 11232",
+    "lat": 40.65916676,
+    "lng": -74.0045181811994,
+    "emoji": "🥕"
+  },
+  {
+    "location": "Brooklyn Museum",
+    "address": "200 Eastern Parkway, Brooklyn, NY 11238",
+    "lat": 40.670907,
+    "lng": -73.963321,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "Brooklyn Navy Yard",
+    "address": "141 Flushing Ave, Brooklyn, NY 11205",
+    "lat": 40.698574,
+    "lng": -73.971151,
+    "emoji": "⚓"
+  },
+  {
+    "location": "Brooklyn Paramount",
+    "address": "385 Flatbush Ave Ext, Brooklyn, NY 11201",
+    "lat": 40.690311,
+    "lng": -73.980934,
+    "emoji": "🎶"
+  },
+  {
+    "location": "Brooklyn Society for Ethical Culture",
+    "address": "269 4th Avenue, Brooklyn NY 11215",
+    "lat": 40.6754679492105,
+    "lng": -73.9842168241234,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "Brooklyn Steel",
+    "address": "319 Frost St, Brooklyn, NY 11222",
+    "lat": 40.719401,
+    "lng": -73.938748,
+    "emoji": "🎶"
+  },
+  {
+    "location": "Brooklyn's Finest Garden",
+    "address": "48 Lefferts Pl, Brooklyn, NY 11238",
+    "lat": 40.6814434,
+    "lng": -73.9616116563153,
+    "emoji": "🌱"
+  },
+  {
+    "location": "Brower Park",
+    "address": "Brooklyn Ave & Prospect Pl, Brooklyn, NY 11213",
+    "lat": 40.648713,
+    "lng": -73.943867,
+    "emoji": "🌳"
+  },
+  {
+    "location": "Bryant Park",
+    "address": "Between 5th and 6th Ave, 40th and 42nd St, New York, NY 10018",
+    "lat": 40.75350848,
+    "lng": -73.9829556650901,
+    "emoji": "🌳"
+  },
+  {
+    "location": "Café Carlyle",
+    "address": "35 E 76th St, New York, NY 10021",
+    "lat": 40.774395,
+    "lng": -73.963005,
+    "emoji": "🎶"
+  },
+  {
+    "location": "Cafe Wha?",
+    "address": "115 Macdougal St, New York, NY 10012",
+    "lat": 40.679779,
+    "lng": -73.917371,
+    "emoji": "🎶"
+  },
+  {
+    "location": "Calabar Gallery at Refettorio Harlem",
+    "address": "111 W 119th St, New York, NY 10026",
+    "lat": 40.804468,
+    "lng": -73.948954,
+    "emoji": "🎨"
+  },
+  {
+    "location": "Camp Friendship",
+    "address": "339 8th St, Brooklyn, NY 11215",
+    "lat": 40.669078,
+    "lng": -73.98377,
+    "emoji": "🏘️"
+  },
+  {
+    "location": "Carnegie Hall",
+    "address": "57th Street and, 7th Ave, New York, NY 10019",
+    "lat": 40.76545122,
+    "lng": -73.9795375442312,
+    "emoji": "🎶"
+  },
+  {
+    "location": "Carnegie Hall",
+    "address": "881 7th Ave, New York, NY 10019",
+    "lat": 40.765007,
+    "lng": -73.979914,
+    "emoji": "🎶"
+  },
+  {
+    "location": "Carousel",
+    "address": "454 Flatbush Ave, Brooklyn, NY 11225",
+    "lat": 40.663744,
+    "lng": -73.964229,
+    "emoji": "🎠"
+  },
+  {
+    "location": "Carroll Hall",
+    "address": "207 Starr Street, Brooklyn, NY",
+    "lat": 40.705095,
+    "lng": -73.923488,
+    "emoji": "🪴"
+  },
+  {
+    "location": "Castillo Theatre",
+    "address": "543 W 42nd St, New York, NY 10036",
+    "lat": 40.760679,
+    "lng": -73.996982,
+    "emoji": "🎭"
+  },
+  {
+    "location": "Cathedral of St. John the Divine",
+    "address": "1047 Amsterdam Ave, New York, NY 10025",
+    "lat": 40.803775,
+    "lng": -73.961788,
+    "emoji": "⛪"
+  },
+  {
+    "location": "Caveat",
+    "address": "21 A Clinton St, New York, NY 10002",
+    "lat": 40.72111261,
+    "lng": -73.9834407320074,
+    "emoji": "💡"
+  },
+  {
+    "location": "Center for Brooklyn History",
+    "address": "128 Pierrepont St, Brooklyn, NY 11201",
+    "lat": 40.694798,
+    "lng": -73.992413,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "Center for Fiction",
+    "address": "15 Lafayette Ave, Brooklyn, NY 11217",
+    "lat": 40.687051,
+    "lng": -73.978589,
+    "emoji": "📚"
+  },
+  {
+    "location": "Center for Jewish History",
+    "address": "15 W 16th St, New York, NY 10011",
+    "lat": 40.738071,
+    "lng": -73.993804,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "Central Park",
+    "address": "5 Av To Central Park W, 59 St To 110 St, New York, NY",
+    "lat": 40.77143884,
+    "lng": -73.9738747647436,
+    "emoji": "🌳"
+  },
+  {
+    "location": "Chelsea Market",
+    "address": "75 9th Ave, New York, NY 10011",
+    "lat": 40.742563,
+    "lng": -74.006051,
+    "emoji": "🍽️"
+  },
+  {
+    "location": "China Institute",
+    "address": "40 Rector St, New York, NY 10006",
+    "lat": 40.708621,
+    "lng": -74.014697,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "Church Avenue & Flatbush Avenue",
+    "address": "Church Ave & Flatbush Ave, Brooklyn, NY",
+    "lat": 40.641675,
+    "lng": -73.982814,
+    "emoji": "🚏"
+  },
+  {
+    "location": "Circle In The Square Theatre",
+    "address": "235 W 50th Street, New York, NY 10019",
+    "lat": 40.762189,
+    "lng": -73.984909,
+    "emoji": "🎭"
+  },
+  {
+    "location": "Circus Academy New York",
+    "address": "30 Tompkins Ave, Brooklyn, NY 11206",
+    "lat": 40.69894,
+    "lng": -73.94845,
+    "emoji": "🎪"
+  },
+  {
+    "location": "City Winery New York City",
+    "address": "25 11th Ave, New York, NY 10011",
+    "lat": 40.74344,
+    "lng": -74.009904,
+    "emoji": "🍷"
+  },
+  {
+    "location": "Classic Stage Company",
+    "address": "136 E 13th St, New York, NY 10003",
+    "lat": 40.732647,
+    "lng": -73.988379,
+    "emoji": "🎭"
+  },
+  {
+    "location": "Columbia University's Lenfest Center for the Arts",
+    "address": "615 W 129th St, New York, NY 10027",
+    "lat": 40.817002,
+    "lng": -73.958488,
+    "emoji": "🎓"
+  },
+  {
+    "location": "Community Bookstore",
+    "address": "143 7th Ave, Brooklyn, NY 11215",
+    "lat": 40.672662,
+    "lng": -73.976425,
+    "emoji": "📚"
+  },
+  {
+    "location": "Coney Island",
+    "address": "1208 Surf Avenue, Brooklyn, NY 11224",
+    "lat": 40.575235,
+    "lng": -73.979841,
+    "emoji": "🎡"
+  },
+  {
+    "location": "Coney Island Amphitheater",
+    "address": "3052 W 21st St, Brooklyn, NY 11224",
+    "lat": 40.57291,
+    "lng": -73.98761,
+    "emoji": "🎶"
+  },
+  {
+    "location": "Cooper Hewitt, Smithsonian Design Museum",
+    "address": "2 E 91st St, New York, NY 10128",
+    "lat": 40.784327,
+    "lng": -73.957762,
+    "emoji": "💡"
+  },
+  {
+    "location": "CUNY Graduate Center",
+    "address": "365 5th Ave, New York, NY 10016",
+    "lat": 40.671252,
+    "lng": -73.984268,
+    "emoji": "🎓"
+  },
+  {
+    "location": "David Geffen Hall at Lincoln Center",
+    "address": "10 Lincoln Center Plaza, New York, NY 10023",
+    "lat": 40.772826,
+    "lng": -73.983019,
+    "emoji": "🎶"
+  },
+  {
+    "location": "David H. Koch Theater",
+    "address": "20 Lincoln Center Plaza, New York, NY 10023",
+    "lat": 40.771801,
+    "lng": -73.983769,
+    "emoji": "💃"
+  },
+  {
+    "location": "Delia's Lounge & Restaurant",
+    "address": "9224 3rd Ave, Brooklyn, NY 11209",
+    "lat": 40.618834,
+    "lng": -74.033286,
+    "emoji": "🥂"
+  },
+  {
+    "location": "Dixon Place",
+    "address": "161A Chrystie St, New York, NY 10002",
+    "lat": 40.720679,
+    "lng": -73.993144,
+    "emoji": "🎭"
+  },
+  {
+    "location": "Dizzy's Club",
+    "address": "10 Columbus Cir, New York, NY 10019",
+    "lat": 40.768554,
+    "lng": -73.983181,
+    "emoji": "🎶"
+  },
+  {
+    "location": "Domino Park",
+    "address": "300 Kent Ave, Brooklyn, NY 11249",
+    "lat": 40.714433,
+    "lng": -73.967313,
+    "emoji": "🌳"
+  },
+  {
+    "location": "Drom",
+    "address": "85 Avenue A, New York, NY 10009",
+    "lat": 40.72533252,
+    "lng": -73.984306002787,
+    "emoji": "🎶"
+  },
+  {
+    "location": "Dwyer Cultural Center",
+    "address": "258 St Nicholas Ave, New York, NY 10027",
+    "lat": 40.702311,
+    "lng": -73.913236,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "Dyckman Farmhouse Museum",
+    "address": "4881 Broadway, New York, NY 10034",
+    "lat": 40.867386,
+    "lng": -73.922889,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "El Museo del Barrio",
+    "address": "1230 5th Ave, New York, NY 10029",
+    "lat": 40.793115,
+    "lng": -73.951396,
+    "emoji": "🎨"
+  },
+  {
+    "location": "Elsewhere",
+    "address": "599 Johnson Ave, Brooklyn, NY 11237",
+    "lat": 40.709451,
+    "lng": -73.923221,
+    "emoji": "🎶"
+  },
+  {
+    "location": "Entrance—Grand Army Plaza",
+    "address": "Grand Army Plaza, Brooklyn, NY 11238",
+    "lat": 40.76446,
+    "lng": -73.97449,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "Environmental Education Center, Brooklyn Bridge Park",
+    "address": "99 Plymouth St, Brooklyn, NY 11201",
+    "lat": 40.704105,
+    "lng": -73.989285,
+    "emoji": "🌳"
+  },
+  {
+    "location": "Essex Market",
+    "address": "88 Essex St, New York, NY 10002",
+    "lat": 40.717928,
+    "lng": -73.988044,
+    "emoji": "🍽️"
+  },
+  {
+    "location": "Eugene O'Neill Theatre",
+    "address": "230 W 49th St, New York, NY 10019",
+    "lat": 40.761094,
+    "lng": -73.985756,
+    "emoji": "🎭"
+  },
+  {
+    "location": "Family Community Garden",
+    "address": "294 Sumpter St, Brooklyn, NY 11233",
+    "lat": 40.680688,
+    "lng": -73.912307,
+    "emoji": "🌱"
+  },
+  {
+    "location": "Film at Lincoln Center",
+    "address": "70 Lincoln Center Plaza, New York, NY 10023",
+    "lat": 40.774239,
+    "lng": -73.984373,
+    "emoji": "🎥"
+  },
+  {
+    "location": "Film Forum",
+    "address": "209 W Houston St, New York, NY 10014",
+    "lat": 40.728219,
+    "lng": -74.004492,
+    "emoji": "🎥"
+  },
+  {
+    "location": "Flushing Town Hall",
+    "address": "137-35 Northern Blvd, Queens, NY 11354",
+    "lat": 40.763883,
+    "lng": -73.830072,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "Flux Factory",
+    "address": "39-31 29th St, Long Island City, NY 11101",
+    "lat": 40.7526,
+    "lng": -73.934972,
+    "emoji": "🎨"
+  },
+  {
+    "location": "Forbidden Planet NYC",
+    "address": "832 Broadway, New York, NY 10003",
+    "lat": 40.733476,
+    "lng": -73.990763,
+    "emoji": "🤖"
+  },
+  {
+    "location": "Fordham Plaza",
+    "address": "1 Fordham Plaza, Bronx, NY 10458",
+    "lat": 40.860381,
+    "lng": -73.889582,
+    "emoji": "🏬"
+  },
+  {
+    "location": "Fordham University at Lincoln Center",
+    "address": "113 W 60th St, New York, NY 10023",
+    "lat": 40.770616,
+    "lng": -73.985259,
+    "emoji": "🎓"
+  },
+  {
+    "location": "Forest Hills Stadium",
+    "address": "1 Tennis Pl, Forest Hills, NY 11375",
+    "lat": 40.719606,
+    "lng": -73.847302,
+    "emoji": "🎶"
+  },
+  {
+    "location": "Fort Hamilton Army Base",
+    "address": "101st St & Fort Hamilton Pkwy, Brooklyn, NY 11209",
+    "lat": 40.684762,
+    "lng": -73.840954,
+    "emoji": "🪖"
+  },
+  {
+    "location": "Fort Tryon Park",
+    "address": "Fort Tryon Park",
+    "lat": 40.86192883,
+    "lng": -73.9323965365503,
+    "emoji": "🌳"
+  },
+  {
+    "location": "Fosun Plaza",
+    "address": "28 Liberty St, New York, NY 10005",
+    "lat": 40.707858,
+    "lng": -74.008983,
+    "emoji": "🗿"
+  },
+  {
+    "location": "Fraunces Tavern Museum",
+    "address": "54 Pearl St, New York, NY 10004",
+    "lat": 40.70338,
+    "lng": -74.011332,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "Freddy's Bar",
+    "address": "627 5th Ave, Brooklyn, NY 11215",
+    "lat": 40.758553,
+    "lng": -73.97626,
+    "emoji": "🥂"
+  },
+  {
+    "location": "Frigid New York",
+    "address": "94 St. Marks Place, New York, NY 10019",
+    "lat": 40.68123,
+    "lng": -73.97926,
+    "emoji": "🎭"
+  },
+  {
+    "location": "Gagosian",
+    "address": "522 W 21st St, New York, NY 10011",
+    "lat": 40.746762,
+    "lng": -74.006502,
+    "emoji": "🎨"
+  },
+  {
+    "location": "Gagosian",
+    "address": "555 W 24 St, New York, NY 10011",
+    "lat": 40.749541,
+    "lng": -74.005886,
+    "emoji": "🎨"
+  },
+  {
+    "location": "Gagosian",
+    "address": "821 Park Ave, New York, NY 10021",
+    "lat": 40.699542,
+    "lng": -73.942288,
+    "emoji": "🎨"
+  },
+  {
+    "location": "Gagosian",
+    "address": "980 Madison Ave, New York, NY 10075",
+    "lat": 40.774817,
+    "lng": -73.963605,
+    "emoji": "🎨"
+  },
+  {
+    "location": "Gantry Plaza State Park",
+    "address": "4-44 47th Rd, Long Island City, NY 11101",
+    "lat": 40.74672087,
+    "lng": -73.9582079472452,
+    "emoji": "🌳"
+  },
+  {
+    "location": "General Grant National Memorial",
+    "address": "W 122nd St &, Riverside Dr, New York, NY 10027",
+    "lat": 40.80618,
+    "lng": -73.948455,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "Gentlemen's Factory",
+    "address": "1082 Fulton St, Brooklyn, NY 11238",
+    "lat": 40.6813505361761,
+    "lng": -73.957598,
+    "emoji": "🤵🏿‍♂️"
+  },
+  {
+    "location": "George Bruce Library",
+    "address": "518 W 125th St, New York, NY 10027",
+    "lat": 40.813791,
+    "lng": -73.957023,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "Gerald Schoenfeld Theatre",
+    "address": "236 W 45th Street, New York, NY 10036",
+    "lat": 40.758512,
+    "lng": -73.987434,
+    "emoji": "🎭"
+  },
+  {
+    "location": "Gershwin Theatre",
+    "address": "222 W. 51st Street, New York, NY 10019",
+    "lat": 40.762189,
+    "lng": -73.984909,
+    "emoji": "🎭"
+  },
+  {
+    "location": "Gibney Dance",
+    "address": "280 Broadway, New York, NY 10007",
+    "lat": 40.634393,
+    "lng": -74.117311,
+    "emoji": "💃"
+  },
+  {
+    "location": "Ginger's Bar",
+    "address": "363 5th Ave, Brooklyn, NY 11215",
+    "lat": 40.67134463,
+    "lng": -73.9843274797777,
+    "emoji": "🥂"
+  },
+  {
+    "location": "Goethe-Institut New York",
+    "address": "30 Irving Pl, New York, NY 10003",
+    "lat": 40.735,
+    "lng": -73.987712,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "Gold Sounds",
+    "address": "44 Wilson Ave, Brooklyn, NY 11237",
+    "lat": 40.702633,
+    "lng": -73.929618,
+    "emoji": "🎶"
+  },
+  {
+    "location": "Gotham Comedy Club",
+    "address": "208 W 23rd St, New York, NY 10011",
+    "lat": 40.744112,
+    "lng": -73.996463,
+    "emoji": "🎤"
+  },
+  {
+    "location": "Governors Island",
+    "address": "New York, NY 10004",
+    "lat": 40.70215,
+    "lng": -74.01202,
+    "emoji": "⛴️"
+  },
+  {
+    "location": "Grand Bazaar NYC",
+    "address": "100 W 77th St, New York, NY 10024",
+    "lat": 40.780897,
+    "lng": -73.978186,
+    "emoji": "🛍️"
+  },
+  {
+    "location": "Greenlight Bookstore",
+    "address": "686 Fulton St, Brooklyn, NY 11217",
+    "lat": 40.68605,
+    "lng": -73.974694,
+    "emoji": "📚"
+  },
+  {
+    "location": "Groove",
+    "address": "125 MacDougal St, New York, NY 10012",
+    "lat": 40.679746,
+    "lng": -73.916793,
+    "emoji": "🎶"
+  },
+  {
+    "location": "Hana House",
+    "address": "345 Adams St, Brooklyn, NY 11201",
+    "lat": 40.692729,
+    "lng": -73.988425,
+    "emoji": "☕"
+  },
+  {
+    "location": "Harlem Stage",
+    "address": "150 Convent Ave, New York, NY 10031",
+    "lat": 40.818394,
+    "lng": -73.951448,
+    "emoji": "🎶"
+  },
+  {
+    "location": "Her-King Alagbantic Community Garden",
+    "address": "106 Herkimer St, Brooklyn, NY 11216",
+    "lat": 40.679508,
+    "lng": -73.949908,
+    "emoji": "🌺"
+  },
+  {
+    "location": "Herbert Von King Park",
+    "address": "677 Lafayette Ave, Brooklyn, NY 11216",
+    "lat": 40.690603,
+    "lng": -73.946945,
+    "emoji": "🌳"
+  },
+  {
+    "location": "HERE Arts Center",
+    "address": "145 6th Ave, New York, NY 10013",
+    "lat": 40.725131,
+    "lng": -74.004951,
+    "emoji": "🎭"
+  },
+  {
+    "location": "Home Cooking New York",
+    "address": "158 Grand St #207, New York, NY 10013",
+    "lat": 40.720088,
+    "lng": -73.998572,
+    "emoji": "🧑‍🍳"
+  },
+  {
+    "location": "Hook Studio",
+    "address": "76 Verona St, Brooklyn, NY 11231",
+    "lat": 40.679712,
+    "lng": -74.008876,
+    "emoji": "📹"
+  },
+  {
+    "location": "Hope Ballfield",
+    "address": "249 Grove St, Brooklyn, NY 11237",
+    "lat": 40.6974676,
+    "lng": -73.9169153611298,
+    "emoji": "⚾"
+  },
+  {
+    "location": "House of Yes",
+    "address": "2 Wyckoff Ave, Brooklyn, NY 11237",
+    "lat": 40.706772,
+    "lng": -73.923611,
+    "emoji": "🎪"
+  },
+  {
+    "location": "Housing Works Bookstore",
+    "address": "126 Crosby St, New York, NY 10012",
+    "lat": 40.724812,
+    "lng": -73.996541,
+    "emoji": "📚"
+  },
+  {
+    "location": "Hudson River Park",
+    "address": "Hudson River Park",
+    "lat": 40.7295065,
+    "lng": -74.012717711149,
+    "emoji": "🌳"
+  },
+  {
+    "location": "Hunter’s Point South Park",
+    "address": "Center Blvd, Long Island City, NY 11109",
+    "lat": 40.742708,
+    "lng": -73.959301,
+    "emoji": "🌳"
+  },
+  {
+    "location": "IFC Center",
+    "address": "323 6th Ave, New York, NY 10014",
+    "lat": 40.731233,
+    "lng": -74.001667,
+    "emoji": "🎥"
+  },
+  {
+    "location": "Imperial Theatre",
+    "address": "249 W 45th Street, New York, NY 10036",
+    "lat": 40.759209,
+    "lng": -73.987146,
+    "emoji": "🎭"
+  },
+  {
+    "location": "Industry City",
+    "address": "220 36th St, Brooklyn, NY 11232",
+    "lat": 40.65623,
+    "lng": -74.007951,
+    "emoji": "🏭"
+  },
+  {
+    "location": "Institute of Culinary Education",
+    "address": "225 Liberty St, New York, NY 10281",
+    "lat": 40.71249,
+    "lng": -74.0154,
+    "emoji": "🧑‍🍳"
+  },
+  {
+    "location": "International Center of Photography (ICP)",
+    "address": "79 Essex St, New York, NY 10002",
+    "lat": 40.718163,
+    "lng": -73.988907,
+    "emoji": "📷"
+  },
+  {
+    "location": "Intrepid Sea, Air & Space Museum",
+    "address": "Pier 86, W 46th St, New York, NY 10036",
+    "lat": 40.764747,
+    "lng": -74.00081,
+    "emoji": "✈️"
+  },
+  {
+    "location": "Irish Arts Center",
+    "address": "726 11th Ave, New York, NY 10019",
+    "lat": 40.766635,
+    "lng": -73.993679,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "Irish Repertory Theatre",
+    "address": "132 W 22nd St, New York, NY 10011",
+    "lat": 40.742627,
+    "lng": -73.994765,
+    "emoji": "🎭"
+  },
+  {
+    "location": "Irving Plaza",
+    "address": "17 Irving Pl, New York, NY 10003",
+    "lat": 40.684537,
+    "lng": -73.959926,
+    "emoji": "🎶"
+  },
+  {
+    "location": "Isola Brooklyn",
+    "address": "361 Metropolitan Ave, Brooklyn, NY 11211",
+    "lat": 40.714327,
+    "lng": -73.955802,
+    "emoji": "🎤"
+  },
+  {
+    "location": "Italian Cultural Institute of New York",
+    "address": "686 Park Ave, New York, NY 10065",
+    "lat": 40.768996,
+    "lng": -73.965819,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "Jalopy Theatre",
+    "address": "315 Columbia St, Brooklyn, NY 11231",
+    "lat": 40.681342,
+    "lng": -74.004211,
+    "emoji": "🪕"
+  },
+  {
+    "location": "Jamaica Center for Arts & Learning",
+    "address": "161-04 Jamaica Ave, Queens, NY 11432",
+    "lat": 40.703813,
+    "lng": -73.798132,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "James Earl Jones Theatre",
+    "address": "138 W. 48th Street, New York, NY 10036",
+    "lat": 40.759129,
+    "lng": -73.983074,
+    "emoji": "🎭"
+  },
+  {
+    "location": "Japan Society",
+    "address": "333 E 47th St, New York, NY 10017",
+    "lat": 40.752565,
+    "lng": -73.968248,
+    "emoji": "🏯"
+  },
+  {
+    "location": "Javits Center",
+    "address": "429 11th Ave, New York, NY 10001",
+    "lat": 40.75773,
+    "lng": -74.002562,
+    "emoji": "🏢"
+  },
+  {
+    "location": "Jerry Orbach Theater at The Theater Center",
+    "address": "210 W. 50th Street, New York, NY 10019",
+    "lat": 40.761438,
+    "lng": -73.984533,
+    "emoji": "🎭"
+  },
+  {
+    "location": "Joe's Pub",
+    "address": "425 Lafayette St, New York, NY 10003",
+    "lat": 40.728924,
+    "lng": -73.991761,
+    "emoji": "🎶"
+  },
+  {
+    "location": "Kaiser Park",
+    "address": "2529 Neptune Ave, Brooklyn, NY 11224",
+    "lat": 40.578527,
+    "lng": -73.995414,
+    "emoji": "🌳"
+  },
+  {
+    "location": "Kaufman Music Center",
+    "address": "129 W 67th St, New York, NY 10023",
+    "lat": 40.775277,
+    "lng": -73.982988,
+    "emoji": "🎶"
+  },
+  {
+    "location": "Keybar",
+    "address": "143 Troutman St, Brooklyn, NY 11206",
+    "lat": 40.70008,
+    "lng": -73.929547,
+    "emoji": "🍸"
+  },
+  {
+    "location": "King Manor Museum",
+    "address": "150-03 Jamaica Ave, Queens, NY 11432",
+    "lat": 40.703125,
+    "lng": -73.803769,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "Kings Theatre",
+    "address": "1027 Flatbush Ave, Brooklyn, NY 11226",
+    "lat": 40.64604,
+    "lng": -73.957348,
+    "emoji": "🎭"
+  },
+  {
+    "location": "Knitting Factory at Baker Falls",
+    "address": "101 Avenue A, New York, NY 10009",
+    "lat": 40.679244,
+    "lng": -73.864492,
+    "emoji": "🎶"
+  },
+  {
+    "location": "La MaMa Experimental Theatre Club",
+    "address": "74A E 4th St, New York, NY 10003",
+    "lat": 40.72669947,
+    "lng": -73.9893804808295,
+    "emoji": "🎭"
+  },
+  {
+    "location": "Le Poisson Rouge",
+    "address": "158 Bleecker St, New York, NY 10012",
+    "lat": 40.696361,
+    "lng": -73.919719,
+    "emoji": "🎶"
+  },
+  {
+    "location": "Lefferts Historic House, Prospect Park",
+    "address": "452 Flatbush Ave, Brooklyn, NY 11225",
+    "lat": 40.664372,
+    "lng": -73.963799,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "Lehman Center for the Performing Arts",
+    "address": "250 Bedford Park Blvd W, The Bronx, NY 10468",
+    "lat": 40.874614,
+    "lng": -73.892839,
+    "emoji": "🎶"
+  },
+  {
+    "location": "Leland Eating and Drinking House",
+    "address": "755 Dean St, Brooklyn, NY 11238",
+    "lat": 40.679805,
+    "lng": -73.965169,
+    "emoji": "🥂"
+  },
+  {
+    "location": "Lena Horne Bandshell, Prospect Park",
+    "address": "Prospect Park West & 9th St, Brooklyn, NY 11215",
+    "lat": 40.672302,
+    "lng": -73.97094,
+    "emoji": "🎶"
+  },
+  {
+    "location": "Lena Horne Theatre",
+    "address": "256 W 47th St, New York, NY 10036",
+    "lat": 40.759958,
+    "lng": -73.986987,
+    "emoji": "🎭"
+  },
+  {
+    "location": "Leroy's Place",
+    "address": "353 7th Ave, Brooklyn, NY 11215",
+    "lat": 40.66606266,
+    "lng": -73.9821131224094,
+    "emoji": "👾"
+  },
+  {
+    "location": "Leslie-Lohman Museum of Art",
+    "address": "26 Wooster St, New York, NY 10013",
+    "lat": 40.721607,
+    "lng": -74.003037,
+    "emoji": "🎨"
+  },
+  {
+    "location": "Lewis Latimer House Museum",
+    "address": "34-41 137th St, Queens, NY 11354",
+    "lat": 40.766757,
+    "lng": -73.829338,
+    "emoji": "💡"
+  },
+  {
+    "location": "Lincoln Center for the Performing Arts",
+    "address": "Lincoln Center Plaza, New York, NY 10023",
+    "lat": 40.77272,
+    "lng": -73.98386,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "Little Island",
+    "address": "Pier 55 at Hudson River Park, NY 10014",
+    "lat": 40.74210592,
+    "lng": -74.0102617158495,
+    "emoji": "🌳"
+  },
+  {
+    "location": "Littlefield",
+    "address": "635 Sackett St, Brooklyn, NY 11217",
+    "lat": 40.678617,
+    "lng": -73.983416,
+    "emoji": "🎶"
+  },
+  {
+    "location": "Logan's Run",
+    "address": "375a 5th Ave, Brooklyn, NY 11215",
+    "lat": 40.67115513,
+    "lng": -73.9841784250286,
+    "emoji": "🚀"
+  },
+  {
+    "location": "Long Meadow North",
+    "address": "Long Meadow, Brooklyn, NY 11215",
+    "lat": 40.66138,
+    "lng": -73.96963,
+    "emoji": "🌳"
+  },
+  {
+    "location": "LunÀtico",
+    "address": "486 Halsey St, Brooklyn, NY 11233",
+    "lat": 40.683398,
+    "lng": -73.934682,
+    "emoji": "🎶"
+  },
+  {
+    "location": "Lyric Theatre",
+    "address": "214 W 43rd Street, New York, NY 10036",
+    "lat": 40.756889,
+    "lng": -73.987467,
+    "emoji": "🎭"
+  },
+  {
+    "location": "Mabou Mines",
+    "address": "150 1st Ave, New York, NY 10009",
+    "lat": 40.728197,
+    "lng": -73.984416,
+    "emoji": "🎭"
+  },
+  {
+    "location": "Madison Square Garden",
+    "address": "4 Pennsylvania Plaza, New York, NY 10001",
+    "lat": 40.750518,
+    "lng": -73.993527,
+    "emoji": "🏟️"
+  },
+  {
+    "location": "Madison Square Park",
+    "address": "11 Madison Ave, New York, NY 10010",
+    "lat": 40.741518,
+    "lng": -73.986485,
+    "emoji": "🌳"
+  },
+  {
+    "location": "Magnet Theater",
+    "address": "254 W 29th St, New York, NY 10001",
+    "lat": 40.748694,
+    "lng": -73.995352,
+    "emoji": "🎭"
+  },
+  {
+    "location": "Majestic Theatre",
+    "address": "245 W 44th St, New York, NY 10036",
+    "lat": 40.758423,
+    "lng": -73.988023,
+    "emoji": "🎭"
+  },
+  {
+    "location": "Maria Hernandez Park",
+    "address": "Knickerbocker Ave & Starr St, Brooklyn, NY 11237",
+    "lat": 40.694469,
+    "lng": -73.910969,
+    "emoji": "🌳"
+  },
+  {
+    "location": "Mark Morris Dance Center",
+    "address": "3 Lafayette Ave, Brooklyn, NY 11217",
+    "lat": 40.687027,
+    "lng": -73.978892,
+    "emoji": "💃"
+  },
+  {
+    "location": "Marquis Theatre",
+    "address": "211 West 45th Street, New York, NY 10036",
+    "lat": 40.758605,
+    "lng": -73.986181,
+    "emoji": "🎭"
+  },
+  {
+    "location": "McNally Jackson (Seaport)",
+    "address": "4 Fulton St, New York, NY 10038",
+    "lat": 40.706401,
+    "lng": -74.003556,
+    "emoji": "📚"
+  },
+  {
+    "location": "McNally Jackson (SoHo)",
+    "address": "52 Prince St, New York, NY 10012",
+    "lat": 40.723275,
+    "lng": -73.996038,
+    "emoji": "📚"
+  },
+  {
+    "location": "McNally Jackson (Williamsburg)",
+    "address": "76 N 4th St, Brooklyn, NY 11249",
+    "lat": 40.717295,
+    "lng": -73.961643,
+    "emoji": "📚"
+  },
+  {
+    "location": "Merchant's House Museum",
+    "address": "29 E 4th St, New York, NY 10003",
+    "lat": 40.652023,
+    "lng": -73.977881,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "Mercury Lounge",
+    "address": "217 E Houston St, New York, NY 10002",
+    "lat": 40.722069,
+    "lng": -73.986801,
+    "emoji": "🎶"
+  },
+  {
+    "location": "Mezzrow",
+    "address": "163 W 10th St, New York, NY 10014",
+    "lat": 40.734592,
+    "lng": -74.001929,
+    "emoji": "🎹"
+  },
+  {
+    "location": "Mill Basin Library",
+    "address": "2385 Ralph Ave, Brooklyn, NY 11234",
+    "lat": 40.619849,
+    "lng": -73.916979,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "Miller Theatre at Columbia University",
+    "address": "2960 Broadway, New York, NY 10027",
+    "lat": 40.807976,
+    "lng": -73.963192,
+    "emoji": "🎶"
+  },
+  {
+    "location": "Minskoff Theatre",
+    "address": "200 W 45th Street, New York, NY 10036",
+    "lat": 40.757925,
+    "lng": -73.986425,
+    "emoji": "🦁"
+  },
+  {
+    "location": "MoMA PS1",
+    "address": "22-25 Jackson Ave, Queens, NY 11101",
+    "lat": 40.745592,
+    "lng": -73.946932,
+    "emoji": "🎨"
+  },
+  {
+    "location": "Mood Ring",
+    "address": "1260 Myrtle Ave, Brooklyn, NY 11221",
+    "lat": 40.697743,
+    "lng": -73.926906,
+    "emoji": "🪐"
+  },
+  {
+    "location": "Morningside Park",
+    "address": "Morningside Ave, New York, NY 10026",
+    "lat": 40.805737,
+    "lng": -73.957806,
+    "emoji": "🌳"
+  },
+  {
+    "location": "Mount Vernon Hotel Museum & Garden",
+    "address": "421 E 61st St, New York, NY 10065",
+    "lat": 40.76053,
+    "lng": -73.959714,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "Mt. Olivet Baptist Church",
+    "address": "201 Malcolm X Blvd, New York, NY 10026",
+    "lat": 40.686139,
+    "lng": -73.929472,
+    "emoji": "⛪"
+  },
+  {
+    "location": "Murray's Cheese",
+    "address": "254 Bleecker St, New York, NY 10012",
+    "lat": 40.730992,
+    "lng": -74.003102,
+    "emoji": "🧀"
+  },
+  {
+    "location": "Museum at Eldridge Street",
+    "address": "12 Eldridge St, New York, NY 10002",
+    "lat": 40.714737,
+    "lng": -73.993462,
+    "emoji": "🕍"
+  },
+  {
+    "location": "Museum Mile",
+    "address": "5th Ave, New York, NY 10128",
+    "lat": 40.782844553302,
+    "lng": -73.959469352439,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "Museum Mile (Fifth Ave from 82nd to 105th Sts)",
+    "address": "Fifth Avenue, New York, NY",
+    "lat": 40.639384,
+    "lng": -74.01651,
+    "emoji": "🚶‍♀️"
+  },
+  {
+    "location": "Museum of Chinese in America (MOCA)",
+    "address": "215 Centre St, New York, NY 10013",
+    "lat": 40.719457,
+    "lng": -73.999085,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "Museum of Illustration at the Society of Illustrators",
+    "address": "128 E 63rd St, New York, NY 10065",
+    "lat": 40.764719,
+    "lng": -73.966907,
+    "emoji": "🖌️"
+  },
+  {
+    "location": "Museum of Jewish Heritage",
+    "address": "36 Battery Pl, New York, NY 10280",
+    "lat": 40.706017,
+    "lng": -74.018603,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "Museum of Modern Art (MoMA)",
+    "address": "11 W 53rd St, New York, NY 10019",
+    "lat": 40.761194,
+    "lng": -73.977013,
+    "emoji": "🎨"
+  },
+  {
+    "location": "Museum of Reclaimed Urban Space",
+    "address": "155 Avenue C, New York, NY 10009",
+    "lat": 40.725771,
+    "lng": -73.977949,
+    "emoji": "🌱"
+  },
+  {
+    "location": "Museum of the City of New York",
+    "address": "1220 5th Ave, New York, NY 10029",
+    "lat": 40.792426,
+    "lng": -73.95191,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "Museum of the Moving Image",
+    "address": "36-01 35th Ave, Queens, NY 11106",
+    "lat": 40.756305,
+    "lng": -73.923916,
+    "emoji": "🎥"
+  },
+  {
+    "location": "Music at St. Paul's Chapel",
+    "address": "209 Broadway, New York, NY 10007",
+    "lat": 40.711323,
+    "lng": -74.009196,
+    "emoji": "⛪"
+  },
+  {
+    "location": "Music Hall of Williamsburg",
+    "address": "66 N 6th St, Brooklyn, NY 11211",
+    "lat": 40.719161,
+    "lng": -73.961785,
+    "emoji": "🎶"
+  },
+  {
+    "location": "National Black Theatre",
+    "address": "2031 5th Ave, New York, NY 10035",
+    "lat": 40.80666,
+    "lng": -73.94171,
+    "emoji": "🎭"
+  },
+  {
+    "location": "National Sawdust",
+    "address": "80 N 6th St, Brooklyn, NY 11249",
+    "lat": 40.718897,
+    "lng": -73.961372,
+    "emoji": "🎶"
+  },
+  {
+    "location": "Neil Simon Theatre",
+    "address": "250 W 52nd Street, New York, NY 10019",
+    "lat": 40.763019,
+    "lng": -73.984532,
+    "emoji": "🎭"
+  },
+  {
+    "location": "Nelson A. Rockefeller Park",
+    "address": "River Terrace & Warren St, New York, NY 10280",
+    "lat": 40.718234,
+    "lng": -74.014634,
+    "emoji": "🌳"
+  },
+  {
+    "location": "New Amsterdam Theatre",
+    "address": "214 W 42nd Street, New York, NY 10036",
+    "lat": 40.755955,
+    "lng": -73.988103,
+    "emoji": "🎭"
+  },
+  {
+    "location": "New Museum",
+    "address": "235 Bowery, New York, NY 10002",
+    "lat": 40.722354,
+    "lng": -73.992831,
+    "emoji": "🎨"
+  },
+  {
+    "location": "New Victory Theater",
+    "address": "209 W 42nd St, New York, NY 10036",
+    "lat": 40.756567,
+    "lng": -73.987454,
+    "emoji": "🧒"
+  },
+  {
+    "location": "New World Stages",
+    "address": "340 W. 50th Street, New York, NY 10019",
+    "lat": 40.762768,
+    "lng": -73.987563,
+    "emoji": "🎭"
+  },
+  {
+    "location": "New York Botanical Garden",
+    "address": "2900 Southern Blvd, Bronx, NY 10458",
+    "lat": 40.86434,
+    "lng": -73.87779,
+    "emoji": "🌺"
+  },
+  {
+    "location": "New York City Center",
+    "address": "131 W 55th St, New York, NY 10019",
+    "lat": 40.763893,
+    "lng": -73.979407,
+    "emoji": "💃"
+  },
+  {
+    "location": "New York City Fire Museum",
+    "address": "278 Spring St, New York, NY 10013",
+    "lat": 40.725576,
+    "lng": -74.006936,
+    "emoji": "🚒"
+  },
+  {
+    "location": "New York Comedy Club",
+    "address": "241 E 24th St, New York, NY 10010",
+    "lat": 40.73896,
+    "lng": -73.980785,
+    "emoji": "🎤"
+  },
+  {
+    "location": "New York Hall of Science",
+    "address": "47-01 111th St, Queens, NY 11368",
+    "lat": 40.747359,
+    "lng": -73.851695,
+    "emoji": "🧪"
+  },
+  {
+    "location": "New York Live Arts",
+    "address": "219 W 19th St, New York, NY 10011",
+    "lat": 40.742223,
+    "lng": -73.998201,
+    "emoji": "💃"
+  },
+  {
+    "location": "New York Public Library - Stephen A. Schwarzman Building",
+    "address": "476 5th Ave, New York, NY 10018",
+    "lat": 40.75332695,
+    "lng": -73.9814850289975,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "New York Public Library for the Performing Arts",
+    "address": "40 Lincoln Center Plaza, New York, NY 10023",
+    "lat": 40.77355,
+    "lng": -73.9845,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "New York Society for Ethical Culture, Adler Hall",
+    "address": "2 W 64th St, New York, NY 10023",
+    "lat": 40.770842,
+    "lng": -73.980187,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "New York Studio School",
+    "address": "8 W 8th St, New York, NY 10011",
+    "lat": 40.732385,
+    "lng": -73.997236,
+    "emoji": "🎨"
+  },
+  {
+    "location": "New York Transit Museum",
+    "address": "99 Schermerhorn St, Brooklyn, NY 11201",
+    "lat": 40.690802,
+    "lng": -73.990001,
+    "emoji": "🚇"
+  },
+  {
+    "location": "New-York Historical Society",
+    "address": "170 Central Park West, New York, NY 10024",
+    "lat": 40.77931,
+    "lng": -73.974266,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "Nitehawk Cinema (Williamsburg)",
+    "address": "136 Metropolitan Ave, Brooklyn, NY 11249",
+    "lat": 40.715985,
+    "lng": -73.962586,
+    "emoji": "🎥"
+  },
+  {
+    "location": "Nowadays",
+    "address": "56-06 Cooper Ave, Queens, NY 11385",
+    "lat": 40.692509,
+    "lng": -73.901593,
+    "emoji": "💃"
+  },
+  {
+    "location": "Nuyorican Poets Cafe",
+    "address": "236 E 3rd St, New York, NY 10009",
+    "lat": 40.721996,
+    "lng": -73.98179,
+    "emoji": "✍️"
+  },
+  {
+    "location": "NYU Skirball Center for the Performing Arts",
+    "address": "566 LaGuardia Pl, New York, NY 10012",
+    "lat": 40.7298,
+    "lng": -73.997904,
+    "emoji": "🎭"
+  },
+  {
+    "location": "NYU Tisch School of the Arts",
+    "address": "721 Broadway, New York, NY 10003",
+    "lat": 40.729623,
+    "lng": -73.99384,
+    "emoji": "🎓"
+  },
+  {
+    "location": "Oceana Theater",
+    "address": "1029 Brighton Beach Ave, Brooklyn, NY 11235",
+    "lat": 40.578626,
+    "lng": -73.958347,
+    "emoji": "🎭"
+  },
+  {
+    "location": "Old Stone House",
+    "address": "336 3rd St, Brooklyn, NY 11215",
+    "lat": 40.673008,
+    "lng": -73.98462,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "Onassis ONX",
+    "address": "645 5th Ave, New York, NY 10022",
+    "lat": 40.759209,
+    "lng": -73.976139,
+    "emoji": "🎨"
+  },
+  {
+    "location": "Ornithology Jazz Club",
+    "address": "6 Suydam St, Brooklyn, NY 11221",
+    "lat": 40.695475,
+    "lng": -73.932079,
+    "emoji": "🎷"
+  },
+  {
+    "location": "Our Wicked Lady",
+    "address": "173 Morgan Ave, Brooklyn, NY 11237",
+    "lat": 40.710113,
+    "lng": -73.933605,
+    "emoji": "🎶"
+  },
+  {
+    "location": "P&T Knitwear",
+    "address": "180 Orchard St, New York, NY 10002",
+    "lat": 40.721757,
+    "lng": -73.987937,
+    "emoji": "📚"
+  },
+  {
+    "location": "Park Avenue Armory",
+    "address": "643 Park Avenue, New York, NY 10065",
+    "lat": 40.76724,
+    "lng": -73.965501,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "Parklife",
+    "address": "636 Degraw St, Brooklyn, NY 11217",
+    "lat": 40.67876447,
+    "lng": -73.9832199422571,
+    "emoji": "🥂"
+  },
+  {
+    "location": "Performance Space New York",
+    "address": "150 1st Ave 4th floor, New York, NY 10009",
+    "lat": 40.72834278,
+    "lng": -73.9845447705512,
+    "emoji": "🎭"
+  },
+  {
+    "location": "Pianos",
+    "address": "158 Ludlow St, New York, NY 10002",
+    "lat": 40.721012,
+    "lng": -73.987622,
+    "emoji": "🎶"
+  },
+  {
+    "location": "Pier 17",
+    "address": "89 South St, New York, NY 10038",
+    "lat": 40.705523,
+    "lng": -74.001567,
+    "emoji": "🎶"
+  },
+  {
+    "location": "Pier 76 in Hudson River Park",
+    "address": "408 12th Ave, New York, NY 10018",
+    "lat": 40.75773,
+    "lng": -74.002562,
+    "emoji": "🌳"
+  },
+  {
+    "location": "Pine Box Rock Shop",
+    "address": "12 Grattan St, Brooklyn, NY 11206",
+    "lat": 40.705285,
+    "lng": -73.932681,
+    "emoji": "🎶"
+  },
+  {
+    "location": "Pioneer Works",
+    "address": "159 Pioneer St, Brooklyn, NY 11231",
+    "lat": 40.679224,
+    "lng": -74.012128,
+    "emoji": "🎨"
+  },
+  {
+    "location": "Plaza at 140 Broadway",
+    "address": "140 Broadway, New York, NY 10005",
+    "lat": 40.709955,
+    "lng": -73.963693,
+    "emoji": "🗿"
+  },
+  {
+    "location": "Plum Restaurant & Lounge",
+    "address": "2913 Avenue L, Brooklyn, NY 11210",
+    "lat": 40.622184,
+    "lng": -73.946347,
+    "emoji": "🥂"
+  },
+  {
+    "location": "Poets House",
+    "address": "10 River Terrace, New York, NY 10282",
+    "lat": 40.715401,
+    "lng": -74.016061,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "Points of Interest—Parade Ground",
+    "address": "Caton Ave. and Argyle Rd., Brooklyn, NY 11226",
+    "lat": 40.65078228,
+    "lng": -73.96848452819,
+    "emoji": "⚽"
+  },
+  {
+    "location": "Polygon Brooklyn",
+    "address": "299 Vandervoort Ave, Brooklyn, NY 11211",
+    "lat": 40.715472,
+    "lng": -73.934334,
+    "emoji": "💃"
+  },
+  {
+    "location": "Poster House",
+    "address": "119 W 23rd St, New York, NY 10011",
+    "lat": 40.74357,
+    "lng": -73.993335,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "Powerhouse Arts",
+    "address": "322 3rd Ave, Brooklyn, NY 11215",
+    "lat": 40.6764111,
+    "lng": -73.9881676329513,
+    "emoji": "🏭"
+  },
+  {
+    "location": "Pregones/Puerto Rican Traveling Theater (Bronx)",
+    "address": "575 Walton Ave, The Bronx, NY 10451",
+    "lat": 40.819584,
+    "lng": -73.928358,
+    "emoji": "🎭"
+  },
+  {
+    "location": "Pregones/Puerto Rican Traveling Theater (Manhattan)",
+    "address": "304 W 47th St, New York, NY 10036",
+    "lat": 40.7605738710457,
+    "lng": -73.9880370769617,
+    "emoji": "🎭"
+  },
+  {
+    "location": "Prospect Farm",
+    "address": "1194 Prospect Ave, Brooklyn, NY 11218",
+    "lat": 40.65392,
+    "lng": -73.976703,
+    "emoji": "🌱"
+  },
+  {
+    "location": "Prospect Park",
+    "address": "200 Well House Dr, Brooklyn, NY 11218",
+    "lat": 40.656907,
+    "lng": -73.970375,
+    "emoji": "🌳"
+  },
+  {
+    "location": "Prospect Park Bandshell",
+    "address": "141 Prospect Park West, Brooklyn, NY 11215",
+    "lat": 40.655997,
+    "lng": -73.974033,
+    "emoji": "🎶"
+  },
+  {
+    "location": "Prospect Park Carousel",
+    "address": "95 Prospect Park West, Brooklyn, NY 11215",
+    "lat": 40.666995,
+    "lng": -73.973706,
+    "emoji": "🎠"
+  },
+  {
+    "location": "Public Records",
+    "address": "233 Butler St, Brooklyn, NY 11217",
+    "lat": 40.682176,
+    "lng": -73.98639,
+    "emoji": "🎧"
+  },
+  {
+    "location": "Quad Cinema",
+    "address": "34 W 13th St, New York, NY 10011",
+    "lat": 40.735858,
+    "lng": -73.99605,
+    "emoji": "🎥"
+  },
+  {
+    "location": "Queens Botanical Garden",
+    "address": "43-50 Main St, Queens, NY 11355",
+    "lat": 40.751085,
+    "lng": -73.827732,
+    "emoji": "🌺"
+  },
+  {
+    "location": "Queens Museum",
+    "address": "New York City Building, Flushing Meadows Corona Park, Queens, NY 11368",
+    "lat": 40.74591438,
+    "lng": -73.84672562279,
+    "emoji": "🎨"
+  },
+  {
+    "location": "Queens Night Market",
+    "address": "New York Hall of Science, Flushing Meadows Corona Park, Queens",
+    "lat": 40.747359,
+    "lng": -73.851695,
+    "emoji": "🍽️"
+  },
+  {
+    "location": "Radio City Music Hall",
+    "address": "1260 6th Ave, New York, NY 10020",
+    "lat": 40.760062,
+    "lng": -73.979837,
+    "emoji": "🎭"
+  },
+  {
+    "location": "Rainbow Den Studio",
+    "address": "195 Plymouth St #605, Brooklyn, NY 11201",
+    "lat": 40.7038202525044,
+    "lng": -73.9855135719253,
+    "emoji": "🌈"
+  },
+  {
+    "location": "Repertorio Español",
+    "address": "138 E 27th St, New York, NY 10016",
+    "lat": 40.74165,
+    "lng": -73.982589,
+    "emoji": "🎭"
+  },
+  {
+    "location": "Rizzoli Bookstore",
+    "address": "1133 Broadway, New York, NY 10010",
+    "lat": 40.743702,
+    "lng": -73.989296,
+    "emoji": "📚"
+  },
+  {
+    "location": "Rockefeller Center",
+    "address": "30 Rockefeller Plaza, New York, NY 10112",
+    "lat": 40.759149,
+    "lng": -73.979598,
+    "emoji": "🏙️"
+  },
+  {
+    "location": "Rockefeller Park",
+    "address": "River Terrace &, Warren St, New York, NY 10282",
+    "lat": 40.718234,
+    "lng": -74.014634,
+    "emoji": "🌳"
+  },
+  {
+    "location": "Roulette",
+    "address": "509 Atlantic Ave, Brooklyn, NY 11217",
+    "lat": 40.685676,
+    "lng": -73.980738,
+    "emoji": "🎶"
+  },
+  {
+    "location": "Roxy Cinema",
+    "address": "2 6th Ave, New York, NY 10013",
+    "lat": 40.71939,
+    "lng": -74.004787,
+    "emoji": "🎥"
+  },
+  {
+    "location": "Rumsey Playfield, Central Park",
+    "address": "E 72nd St, New York, NY 10021",
+    "lat": 40.627728,
+    "lng": -73.916994,
+    "emoji": "🎶"
+  },
+  {
+    "location": "Saint Vitus Bar",
+    "address": "1120 Manhattan Ave, Brooklyn, NY 11222",
+    "lat": 40.736797,
+    "lng": -73.955019,
+    "emoji": "🤘"
+  },
+  {
+    "location": "Salt Marsh Nature Center (in Marine Park)",
+    "address": "3301 Avenue U, Brooklyn, NY 11229",
+    "lat": 40.605339,
+    "lng": -73.929781,
+    "emoji": "🐦"
+  },
+  {
+    "location": "Samuel J. Friedman Theatre",
+    "address": "261 West 47th Street, New York, NY 10036",
+    "lat": 40.760386,
+    "lng": -73.986738,
+    "emoji": "🎭"
+  },
+  {
+    "location": "Scandinavia House",
+    "address": "58 Park Ave, New York, NY 10016",
+    "lat": 40.749496,
+    "lng": -73.980094,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "ShapeShifter Lab",
+    "address": "837 Union St, Brooklyn, NY 11215",
+    "lat": 40.674948,
+    "lng": -73.976021,
+    "emoji": "🎶"
+  },
+  {
+    "location": "Sheffield Garden",
+    "address": "673 Sheffield Ave, Brooklyn, NY 11207",
+    "lat": 40.66068669,
+    "lng": -73.8929898691349,
+    "emoji": "🌱"
+  },
+  {
+    "location": "Shubert Theatre",
+    "address": "225 W 44th Street, New York, NY 10036",
+    "lat": 40.758147,
+    "lng": -73.987262,
+    "emoji": "🎭"
+  },
+  {
+    "location": "Signature Theatre Company",
+    "address": "480 W 42nd St, New York, NY 10036",
+    "lat": 40.759054,
+    "lng": -73.995084,
+    "emoji": "🎭"
+  },
+  {
+    "location": "Silo",
+    "address": "90 Scott Ave, Brooklyn, NY 11237",
+    "lat": 40.710564,
+    "lng": -73.922686,
+    "emoji": "💃"
+  },
+  {
+    "location": "Smalls Jazz Club",
+    "address": "183 W 10th St, New York, NY 10014",
+    "lat": 40.734396,
+    "lng": -74.002705,
+    "emoji": "🎷"
+  },
+  {
+    "location": "Smoke Jazz Club",
+    "address": "2751 Broadway, New York, NY 10025",
+    "lat": 40.801174,
+    "lng": -73.968364,
+    "emoji": "🎷"
+  },
+  {
+    "location": "Snug Harbor Cultural Center",
+    "address": "1000 Richmond Terrace, Staten Island, NY 10301",
+    "lat": 40.6433709558954,
+    "lng": -74.1027436161545,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "Soho Rep",
+    "address": "46 Walker St, New York, NY 10013",
+    "lat": 40.719318,
+    "lng": -74.003518,
+    "emoji": "🎭"
+  },
+  {
+    "location": "Solomon R. Guggenheim Museum",
+    "address": "1071 5th Ave, New York, NY 10128",
+    "lat": 40.783008,
+    "lng": -73.958886,
+    "emoji": "🎨"
+  },
+  {
+    "location": "Somewhere Nowhere",
+    "address": "112 W 25th St, New York, NY 10001",
+    "lat": 40.74431,
+    "lng": -73.992745,
+    "emoji": "💃"
+  },
+  {
+    "location": "Sounds of Brazil (SOB's)",
+    "address": "204 Varick St, New York, NY 10014",
+    "lat": 40.728219,
+    "lng": -74.004492,
+    "emoji": "🎶"
+  },
+  {
+    "location": "South Street Seaport Museum",
+    "address": "12 Fulton St, New York, NY 10038",
+    "lat": 40.706604,
+    "lng": -74.003732,
+    "emoji": "🚢"
+  },
+  {
+    "location": "Spectacle Theater",
+    "address": "124 S 3rd St, Brooklyn, NY 11249",
+    "lat": 40.712477,
+    "lng": -73.962848,
+    "emoji": "🎥"
+  },
+  {
+    "location": "St. Ann's Warehouse",
+    "address": "45 Water St, Brooklyn, NY 11201",
+    "lat": 40.703665,
+    "lng": -73.992959,
+    "emoji": "🎭"
+  },
+  {
+    "location": "St. Bartholomew's Church",
+    "address": "325 Park Ave, New York, NY 10022",
+    "lat": 40.69633,
+    "lng": -73.965072,
+    "emoji": "🎶"
+  },
+  {
+    "location": "St. George Theatre",
+    "address": "35 Hyatt St, Staten Island, NY 10301",
+    "lat": 40.642059,
+    "lng": -74.077327,
+    "emoji": "🎭"
+  },
+  {
+    "location": "St. James Theatre",
+    "address": "246 W 44th Street, New York, NY 10036",
+    "lat": 40.757999,
+    "lng": -73.988155,
+    "emoji": "🎭"
+  },
+  {
+    "location": "St. Marks Church-In-The-Bowery",
+    "address": "131 East 10th Street, New York, NY 10003",
+    "lat": 40.730362,
+    "lng": -73.98709,
+    "emoji": "⛪"
+  },
+  {
+    "location": "St. Mazie Bar & Supper Club",
+    "address": "345 Grand Street, Brooklyn, NY, 11211",
+    "lat": 40.716706,
+    "lng": -73.989736,
+    "emoji": "🎶"
+  },
+  {
+    "location": "Stage 42",
+    "address": "422 W 42nd St, New York, NY 10036",
+    "lat": 40.758568,
+    "lng": -73.993918,
+    "emoji": "🎭"
+  },
+  {
+    "location": "Staten Island Museum",
+    "address": "1000 Richmond Terrace, Staten Island, NY 10301",
+    "lat": 40.644476250828,
+    "lng": -74.102756961982,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "Stephen Sondheim Theatre",
+    "address": "124 West 43rd Street, New York, NY 10036",
+    "lat": 40.755566,
+    "lng": -73.984708,
+    "emoji": "🎭"
+  },
+  {
+    "location": "Sugar Hill Children's Museum of Art & Storytelling",
+    "address": "898 St Nicholas Ave, New York, NY 10032",
+    "lat": 40.830393,
+    "lng": -73.940947,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "Sultan Room",
+    "address": "234 Starr St, Brooklyn, NY 11237",
+    "lat": 40.705556,
+    "lng": -73.92234,
+    "emoji": "🎶"
+  },
+  {
+    "location": "Swiss Institute",
+    "address": "38 St Marks Pl, New York, NY 10003",
+    "lat": 40.728377,
+    "lng": -73.987493,
+    "emoji": "🎨"
+  },
+  {
+    "location": "Symphony Space",
+    "address": "2537 Broadway, New York, NY 10025",
+    "lat": 40.793907,
+    "lng": -73.972888,
+    "emoji": "🎭"
+  },
+  {
+    "location": "Taste Buds Kitchen",
+    "address": "109 W 27th St, New York, NY 10019",
+    "lat": 40.745887,
+    "lng": -73.991499,
+    "emoji": "🧑‍🍳"
+  },
+  {
+    "location": "Terminal 5",
+    "address": "610 W 56th St, New York, NY 10019",
+    "lat": 40.769722,
+    "lng": -73.992769,
+    "emoji": "🎶"
+  },
+  {
+    "location": "Terrace Books (Community Bookstore annex)",
+    "address": "1624 10th Ave, Brooklyn, NY 11215",
+    "lat": 40.658866,
+    "lng": -73.978676,
+    "emoji": "📚"
+  },
+  {
+    "location": "The Africa Center",
+    "address": "1280 5th Ave, New York, NY 10029",
+    "lat": 40.796308,
+    "lng": -73.949104,
+    "emoji": "🌍"
+  },
+  {
+    "location": "The American Irish Historical Society",
+    "address": "991 5th Ave, New York, NY 10028",
+    "lat": 40.777723,
+    "lng": -73.962805,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "The Barrow Group",
+    "address": "520 8th Ave, New York, NY 10018",
+    "lat": 40.753625,
+    "lng": -73.991907,
+    "emoji": "🎭"
+  },
+  {
+    "location": "The Bell House",
+    "address": "149 7th St, Brooklyn, NY 11215",
+    "lat": 40.673739,
+    "lng": -73.991677,
+    "emoji": "🎶"
+  },
+  {
+    "location": "The Bitter End",
+    "address": "147 Bleecker St, New York, NY 10012",
+    "lat": 40.728433,
+    "lng": -73.999141,
+    "emoji": "🎶"
+  },
+  {
+    "location": "The Bowery Ballroom",
+    "address": "6 Delancey St, New York, NY 10002",
+    "lat": 40.720445,
+    "lng": -73.993338,
+    "emoji": "🎶"
+  },
+  {
+    "location": "The Bowery Electric",
+    "address": "327 Bowery, New York, NY 10003",
+    "lat": 40.725712,
+    "lng": -73.991683,
+    "emoji": "🎶"
+  },
+  {
+    "location": "The Brick Theater",
+    "address": "579 Metropolitan Ave, Brooklyn, NY",
+    "lat": 40.714299,
+    "lng": -73.949742,
+    "emoji": "🎭"
+  },
+  {
+    "location": "The Bronx Museum of the Arts",
+    "address": "1040 Grand Concourse, The Bronx, NY 10456",
+    "lat": 40.83106,
+    "lng": -73.919785,
+    "emoji": "🎨"
+  },
+  {
+    "location": "The Brooklyn Monarch",
+    "address": "23 Meadow St, Brooklyn, NY 11206",
+    "lat": 40.710971,
+    "lng": -73.936257,
+    "emoji": "🎶"
+  },
+  {
+    "location": "The Bushwick Starr",
+    "address": "419 Eldert St, Brooklyn, NY 11237",
+    "lat": 40.695496,
+    "lng": -73.904813,
+    "emoji": "🎭"
+  },
+  {
+    "location": "The Center for Fiction",
+    "address": "15 Lafayette Ave, Brooklyn, NY 11217",
+    "lat": 40.687051,
+    "lng": -73.978589,
+    "emoji": "📚"
+  },
+  {
+    "location": "The Center for Jewish History",
+    "address": "15 W 16th St, New York, NY 10011",
+    "lat": 40.738071,
+    "lng": -73.993804,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "The Chocolate Factory Theater",
+    "address": "38-33 24th St, Long Island City, NY 11101",
+    "lat": 40.755239,
+    "lng": -73.937189,
+    "emoji": "🎭"
+  },
+  {
+    "location": "The City Reliquary",
+    "address": "370 Metropolitan Ave, Brooklyn, NY 11211",
+    "lat": 40.713902,
+    "lng": -73.955723,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "The Clemente Center",
+    "address": "107 Suffolk St, New York, NY 10002",
+    "lat": 40.719106,
+    "lng": -73.986275,
+    "emoji": "🎨"
+  },
+  {
+    "location": "The Comedy Cellar",
+    "address": "117 MacDougal St, New York, NY 10012",
+    "lat": 40.679788,
+    "lng": -73.917289,
+    "emoji": "🎤"
+  },
+  {
+    "location": "The Comic Strip",
+    "address": "1568 2nd Ave, New York, NY 10028",
+    "lat": 40.774819,
+    "lng": -73.953569,
+    "emoji": "🎤"
+  },
+  {
+    "location": "The Connelly Theater",
+    "address": "220 E 4th St, New York, NY 10009",
+    "lat": 40.646882,
+    "lng": -73.977372,
+    "emoji": "🎭"
+  },
+  {
+    "location": "The Cooper Union",
+    "address": "41 Cooper Sq, New York, NY 10003",
+    "lat": 40.728513,
+    "lng": -73.990257,
+    "emoji": "🎓"
+  },
+  {
+    "location": "The Delancey",
+    "address": "168 Delancey St, New York, NY 10002",
+    "lat": 40.718037,
+    "lng": -73.985277,
+    "emoji": "💃"
+  },
+  {
+    "location": "The Django",
+    "address": "2 6th Ave, New York, NY 10013",
+    "lat": 40.7194074817637,
+    "lng": -74.0049086296089,
+    "emoji": "🎷"
+  },
+  {
+    "location": "The DL",
+    "address": "95 Delancey St, New York, NY 10002",
+    "lat": 40.718601,
+    "lng": -73.989385,
+    "emoji": "🌃"
+  },
+  {
+    "location": "The Drama Book Shop",
+    "address": "266 W 39th St, New York, NY 10018",
+    "lat": 40.75488,
+    "lng": -73.990685,
+    "emoji": "📚"
+  },
+  {
+    "location": "The Drawing Center",
+    "address": "35 Wooster St, New York, NY 10013",
+    "lat": 40.722454,
+    "lng": -74.002892,
+    "emoji": "✏️"
+  },
+  {
+    "location": "The Flea Theater",
+    "address": "20 Thomas St, New York, NY 10007",
+    "lat": 40.716072,
+    "lng": -74.006035,
+    "emoji": "🎭"
+  },
+  {
+    "location": "The Freehold",
+    "address": "289 Kent Ave, Brooklyn, NY 11249",
+    "lat": 40.715055,
+    "lng": -73.966263,
+    "emoji": "🥂"
+  },
+  {
+    "location": "The Frick Collection",
+    "address": "945 Madison Avenue, New York, NY 10021",
+    "lat": 40.773417,
+    "lng": -73.963818,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "The Gene Frankel Theatre",
+    "address": "24 Bond St, New York, NY 10012",
+    "lat": 40.726678,
+    "lng": -73.993643,
+    "emoji": "🎭"
+  },
+  {
+    "location": "The Gramercy Theatre",
+    "address": "127 E 23rd St, New York, NY 10010",
+    "lat": 40.739896,
+    "lng": -73.984931,
+    "emoji": "🎶"
+  },
+  {
+    "location": "The Green Room 42",
+    "address": "570 10th Ave, New York, NY 10036",
+    "lat": 40.759054,
+    "lng": -73.995084,
+    "emoji": "🎶"
+  },
+  {
+    "location": "The Green-Wood Cemetery",
+    "address": "500 25th St, Brooklyn, NY 11232",
+    "lat": 40.658098,
+    "lng": -73.994843,
+    "emoji": "🪦"
+  },
+  {
+    "location": "The Greene Space",
+    "address": "44 Charlton St, New York, NY 10014",
+    "lat": 40.726762,
+    "lng": -74.005202,
+    "emoji": "📻"
+  },
+  {
+    "location": "The Grolier Club",
+    "address": "47 E 60th St, New York, NY 10022",
+    "lat": 40.764003,
+    "lng": -73.969857,
+    "emoji": "📚"
+  },
+  {
+    "location": "The Gutter",
+    "address": "200 N 14th St, Brooklyn, NY 11249",
+    "lat": 40.722696,
+    "lng": -73.955605,
+    "emoji": "🎳"
+  },
+  {
+    "location": "The High Line",
+    "address": "The High Line, New York, NY",
+    "lat": 40.74808987,
+    "lng": -74.0048077407858,
+    "emoji": "🌳"
+  },
+  {
+    "location": "The Hispanic Society Museum & Library",
+    "address": "613 W 155th St, New York, NY 10032",
+    "lat": 40.833373,
+    "lng": -73.946648,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "The Iridium",
+    "address": "1650 Broadway, New York, NY 10019",
+    "lat": 40.761757,
+    "lng": -73.983274,
+    "emoji": "🎶"
+  },
+  {
+    "location": "The Jazz Gallery",
+    "address": "1160 Broadway, New York, NY 10001",
+    "lat": 40.744629,
+    "lng": -73.988574,
+    "emoji": "🎷"
+  },
+  {
+    "location": "The Jewish Museum",
+    "address": "1109 5th Ave, New York, NY 10128",
+    "lat": 40.785413,
+    "lng": -73.957187,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "The Joyce Theater",
+    "address": "175 8th Ave, New York, NY 10011",
+    "lat": 40.670864,
+    "lng": -73.974552,
+    "emoji": "💃"
+  },
+  {
+    "location": "The Kitchen",
+    "address": "512 W 19th St, New York, NY 10011",
+    "lat": 40.74539,
+    "lng": -74.006883,
+    "emoji": "🎭"
+  },
+  {
+    "location": "The Lilac Preservation Project",
+    "address": "229 West St Pier 25 North, New York, NY 10013",
+    "lat": 40.72047668,
+    "lng": -74.0139417426631,
+    "emoji": "🚢"
+  },
+  {
+    "location": "The Living Gallery",
+    "address": "1094 Broadway, Brooklyn, NY 11221",
+    "lat": 40.694164,
+    "lng": -73.930648,
+    "emoji": "🎨"
+  },
+  {
+    "location": "The Louis Armstrong House Museum",
+    "address": "34-56 107th St, Queens, NY 11368",
+    "lat": 40.754578,
+    "lng": -73.861545,
+    "emoji": "🎺"
+  },
+  {
+    "location": "The Magnet Theater",
+    "address": "254 W 29th St, New York, NY 10001",
+    "lat": 40.748694,
+    "lng": -73.995352,
+    "emoji": "🎭"
+  },
+  {
+    "location": "The McKittrick Hotel",
+    "address": "530 W 27th St, New York, NY 10001",
+    "lat": 40.750616,
+    "lng": -74.003868,
+    "emoji": "🎭"
+  },
+  {
+    "location": "The Met Cloisters",
+    "address": "99 Margaret Corbin Dr, New York, NY 10040",
+    "lat": 40.864819,
+    "lng": -73.931805,
+    "emoji": "🏰"
+  },
+  {
+    "location": "The Metropolitan Museum of Art",
+    "address": "1000 5th Ave, New York, NY 10028",
+    "lat": 40.779393,
+    "lng": -73.963409,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "The Morgan Library & Museum",
+    "address": "225 Madison Ave, New York, NY 10016",
+    "lat": 40.749302,
+    "lng": -73.981311,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "The Mysterious Bookshop",
+    "address": "58 Warren St, New York, NY 10007",
+    "lat": 40.714947,
+    "lng": -74.009149,
+    "emoji": "📚"
+  },
+  {
+    "location": "The New York Academy of Medicine",
+    "address": "1216 5th Ave, New York, NY 10029",
+    "lat": 40.791999,
+    "lng": -73.952246,
+    "emoji": "⚕️"
+  },
+  {
+    "location": "The New York Aquarium",
+    "address": "602 Surf Ave, Brooklyn, NY 11224",
+    "lat": 40.574008,
+    "lng": -73.975672,
+    "emoji": "🐠"
+  },
+  {
+    "location": "The New York Historical Society, Robert H. Smith Auditorium",
+    "address": "170 Central Park W, New York, NY 10024",
+    "lat": 40.77931,
+    "lng": -73.974266,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "The Noble Maritime Collection",
+    "address": "1000 Richmond Terrace, Staten Island, NY 10301",
+    "lat": 40.6443686762674,
+    "lng": -74.1017659345162,
+    "emoji": "⚓"
+  },
+  {
+    "location": "The Noguchi Museum",
+    "address": "9-01 33rd Rd, Queens, NY 11106",
+    "lat": 40.766809,
+    "lng": -73.938091,
+    "emoji": "🗿"
+  },
+  {
+    "location": "The Owl Music Parlor",
+    "address": "497 Rogers Ave, Brooklyn, NY 11225",
+    "lat": 40.66011048,
+    "lng": -73.9532885167475,
+    "emoji": "🎶"
+  },
+  {
+    "location": "The Peoples Improv Theater (The PIT)",
+    "address": "123 E 24th St, New York, NY 10010",
+    "lat": 40.740604,
+    "lng": -73.984727,
+    "emoji": "🎭"
+  },
+  {
+    "location": "The Ruby Theatre NYC",
+    "address": "355 W 52nd St, New York, NY 10019",
+    "lat": 40.764495,
+    "lng": -73.98687,
+    "emoji": "🎭"
+  },
+  {
+    "location": "The Shed",
+    "address": "545 W 30th St, New York, NY 10001",
+    "lat": 40.75327,
+    "lng": -74.00284,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "The Sheen Center for Thought & Culture",
+    "address": "18 Bleecker St, New York, NY 10012",
+    "lat": 40.72534,
+    "lng": -73.993369,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "The Skyscraper Museum",
+    "address": "39 Battery Pl, New York, NY 10280",
+    "lat": 40.705711,
+    "lng": -74.017478,
+    "emoji": "🏙️"
+  },
+  {
+    "location": "The Space at Irondale",
+    "address": "85 S Oxford St, Brooklyn, NY 11217",
+    "lat": 40.686995,
+    "lng": -73.97328,
+    "emoji": "🎭"
+  },
+  {
+    "location": "The Stand NYC",
+    "address": "116 E 16th St, New York, NY 10003",
+    "lat": 40.73533,
+    "lng": -73.98847,
+    "emoji": "🎤"
+  },
+  {
+    "location": "The Stone",
+    "address": "55 W 13th St, New York, NY 10011",
+    "lat": 40.73659,
+    "lng": -73.99649,
+    "emoji": "🎶"
+  },
+  {
+    "location": "The Strand (Rare Book Room)",
+    "address": "828 Broadway, New York, NY 10003",
+    "lat": 40.733199,
+    "lng": -73.990661,
+    "emoji": "📚"
+  },
+  {
+    "location": "The Studio Museum in Harlem",
+    "address": "144 W 125th St, New York, NY 10027",
+    "lat": 40.80825,
+    "lng": -73.94772,
+    "emoji": "🎨"
+  },
+  {
+    "location": "The Tank",
+    "address": "312 W 36th St, New York, NY 10018",
+    "lat": 40.753583,
+    "lng": -73.99328,
+    "emoji": "🎭"
+  },
+  {
+    "location": "The Tenement Museum",
+    "address": "103 Orchard St, New York, NY 10002",
+    "lat": 40.846622,
+    "lng": -73.786813,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "The Town Hall",
+    "address": "123 W 43rd St, New York, NY 10036",
+    "lat": 40.756087,
+    "lng": -73.984389,
+    "emoji": "🎶"
+  },
+  {
+    "location": "The Ukrainian Museum",
+    "address": "222 E 6th St, New York, NY 10003",
+    "lat": 40.727675,
+    "lng": -73.989767,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "The Way Station",
+    "address": "683 Washington Ave, Brooklyn, NY 11238",
+    "lat": 40.67689,
+    "lng": -73.963388,
+    "emoji": "🚀"
+  },
+  {
+    "location": "The Windjammer",
+    "address": "552 Grandview Ave, Ridgewood, NY 11385",
+    "lat": 40.709075,
+    "lng": -73.907053,
+    "emoji": "🎶"
+  },
+  {
+    "location": "Theater for the New City",
+    "address": "155 1st Ave, New York, NY 10003",
+    "lat": 40.728815,
+    "lng": -73.98529,
+    "emoji": "🎭"
+  },
+  {
+    "location": "Theater Row",
+    "address": "410 W 42nd St, New York, NY 10036",
+    "lat": 40.758484,
+    "lng": -73.993423,
+    "emoji": "🎭"
+  },
+  {
+    "location": "Theatre for a New Audience",
+    "address": "262 Ashland Pl, Brooklyn, NY 11217",
+    "lat": 40.687446,
+    "lng": -73.978796,
+    "emoji": "🎭"
+  },
+  {
+    "location": "Tibet House US",
+    "address": "22 W 15th St, New York, NY 10011",
+    "lat": 40.737061,
+    "lng": -73.994607,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "Time Out Market New York",
+    "address": "55 Water St, Brooklyn, NY 11201",
+    "lat": 40.703236,
+    "lng": -74.00907,
+    "emoji": "🍽️"
+  },
+  {
+    "location": "Trans-Pecos",
+    "address": "9-15 Wyckoff Ave, Queens, NY 11385",
+    "lat": 40.69706547,
+    "lng": -73.9061790571531,
+    "emoji": "🎶"
+  },
+  {
+    "location": "Triskelion Arts",
+    "address": "106 Calyer St, Brooklyn, NY 11222",
+    "lat": 40.726927,
+    "lng": -73.956549,
+    "emoji": "💃"
+  },
+  {
+    "location": "TV Eye",
+    "address": "1647 Weirfield St, Ridgewood, NY 11385",
+    "lat": 40.697919,
+    "lng": -73.905335,
+    "emoji": "💃"
+  },
+  {
+    "location": "UCB Theatre",
+    "address": "242 E 14th St, New York, NY 10003",
+    "lat": 40.643729,
+    "lng": -73.966084,
+    "emoji": "🎭"
+  },
+  {
+    "location": "Union Hall",
+    "address": "702 Union St, Brooklyn, NY 11215",
+    "lat": 40.6761188997802,
+    "lng": -73.9800501515241,
+    "emoji": "🥂"
+  },
+  {
+    "location": "Union Pool",
+    "address": "484 Union Ave, Brooklyn, NY 11211",
+    "lat": 40.715004,
+    "lng": -73.951552,
+    "emoji": "🎶"
+  },
+  {
+    "location": "Upright Citizens Brigade (UCB)",
+    "address": "348 W 46th St, New York, NY 10036",
+    "lat": 40.760384,
+    "lng": -73.98978,
+    "emoji": "🎭"
+  },
+  {
+    "location": "Vanderbilt Hall at Grand Central Terminal",
+    "address": "89 E 42nd St, New York, NY 10017",
+    "lat": 40.752732,
+    "lng": -73.977218,
+    "emoji": "🏢"
+  },
+  {
+    "location": "Village East by Angelika",
+    "address": "181-189 2nd Ave, New York, NY 10003",
+    "lat": 40.73095391,
+    "lng": -73.986198083644,
+    "emoji": "🎥"
+  },
+  {
+    "location": "Village Vanguard",
+    "address": "178 7th Ave S, New York, NY 10014",
+    "lat": 40.74268,
+    "lng": -73.997077,
+    "emoji": "🎷"
+  },
+  {
+    "location": "Virginia/August Wilson Theatre",
+    "address": "245 W. 52nd Street, New York, NY 10019",
+    "lat": 40.763381,
+    "lng": -73.984195,
+    "emoji": "🎭"
+  },
+  {
+    "location": "Washington Square Park",
+    "address": "Washington Square Park, New York, NY 10012",
+    "lat": 40.73089,
+    "lng": -73.9976,
+    "emoji": "🌳"
+  },
+  {
+    "location": "Waterfront Museum",
+    "address": "290 Conover St, Brooklyn, NY 11231",
+    "lat": 40.675222,
+    "lng": -74.018337,
+    "emoji": "🚢"
+  },
+  {
+    "location": "Wave Hill",
+    "address": "4900 Independence Ave, The Bronx, NY 10471",
+    "lat": 40.89889,
+    "lng": -73.91244,
+    "emoji": "🌺"
+  },
+  {
+    "location": "Webster Hall",
+    "address": "125 E 11th St, New York, NY 10003",
+    "lat": 40.645667,
+    "lng": -73.968792,
+    "emoji": "🎶"
+  },
+  {
+    "location": "Weeksville Heritage Center",
+    "address": "158 Buffalo Ave, Brooklyn, NY 11213",
+    "lat": 40.674092,
+    "lng": -73.925595,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "Weill Recital Hall at Carnegie Hall",
+    "address": "154 W 57th St, New York, NY 10019",
+    "lat": 40.765007,
+    "lng": -73.979914,
+    "emoji": "🎶"
+  },
+  {
+    "location": "Westside Theatre",
+    "address": "407 W. 43rd Street, New York, NY 10036",
+    "lat": 40.759525,
+    "lng": -73.992557,
+    "emoji": "🎭"
+  },
+  {
+    "location": "Whiskey Cellar NYC",
+    "address": "214 W 50th Street, New York, NY 10019",
+    "lat": 40.761503,
+    "lng": -73.984765,
+    "emoji": "🥃"
+  },
+  {
+    "location": "White Eagle Hall",
+    "address": "337 Newark Ave, Jersey City, NJ 07302",
+    "lat": 40.72500379,
+    "lng": -74.05154214233,
+    "emoji": "🎶"
+  },
+  {
+    "location": "Whitney Museum of American Art",
+    "address": "99 Gansevoort St, New York, NY 10014",
+    "lat": 40.739636,
+    "lng": -74.008938,
+    "emoji": "🎨"
+  },
+  {
+    "location": "Winter Garden Theatre",
+    "address": "1634 Broadway, New York, NY 10019",
+    "lat": 40.684679,
+    "lng": -73.914163,
+    "emoji": "🎭"
+  },
+  {
+    "location": "Wonderville",
+    "address": "1186 Broadway, Brooklyn, NY 11221",
+    "lat": 40.692404,
+    "lng": -73.927613,
+    "emoji": "🕹️"
+  },
+  {
+    "location": "WORD Bookstore",
+    "address": "126 Franklin St, Brooklyn, NY 11222",
+    "lat": 40.729084,
+    "lng": -73.95721,
+    "emoji": "📚"
+  },
+  {
+    "location": "World Trade Center, North Oculus Plaza",
+    "address": "Church St &, Dey St, New York, NY 10007",
+    "lat": 40.711139,
+    "lng": -74.010176,
+    "emoji": "🗿"
+  },
+  {
+    "location": "Xanadu",
+    "address": "262 Starr St, Brooklyn, NY 11237",
+    "lat": 40.7064674043887,
+    "lng": -73.9214449602184,
+    "emoji": "🛼"
+  },
+  {
+    "location": "Young Ethel's",
+    "address": "506 5th Ave, Brooklyn, NY",
+    "lat": 40.667219,
+    "lng": -73.988275,
+    "emoji": "🥂"
+  },
+  {
+    "location": "Zinc Bar",
+    "address": "82 W 3rd St, New York, NY 10012",
+    "lat": 40.72968,
+    "lng": -73.998999,
+    "emoji": "🎷"
+  }
+]
