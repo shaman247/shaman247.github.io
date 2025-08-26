@@ -1,7 +1,7 @@
 /* style.css */
 :root {
-    --primary-bg: #111111; /* Very dark gray / near black */
-    --secondary-bg: #282828; /* Dark gray for panels */
+    --primary-bg: #111; /* Very dark gray / near black */
+    --secondary-bg: #222; /* Dark gray for panels */
     --tertiary-bg: #3f3f3f; /* Slightly lighter gray for interactive elements */
     --tertiary-hover-bg: #626262; /* Lighter gray for hover on tertiary elements */
     --primary-text: #ffffff; /* White text */
@@ -38,10 +38,9 @@ body {
 }
 
 #left-panel { /* Renamed from #filters-panel to match JS */
-    width: max(300px, 30%); /* Initial width, can be adjusted */
+    width: max(350px, 30%); /* Initial width, can be adjusted */
     background-color: var(--secondary-bg);
     padding: 20px;
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
     display: flex;
     flex-direction: column;
     height: 100vh; 
@@ -50,6 +49,17 @@ body {
     flex-shrink: 0; /* Prevent panel from shrinking if map content is too wide */
     box-sizing: border-box; /* Include padding and border in the element's total width and height */
     transition: width 0.3s ease, padding 0.3s ease;
+}
+
+/* Animate the content fading as the panel collapses */
+#left-panel > * {
+    transition: opacity 0.15s ease-out;
+    min-width: 0; /* Prevent flex children from resisting shrinking */
+}
+
+#left-panel.collapsed > * {
+    opacity: 0;
+    transition: opacity 0.1s ease-in; /* Fade out a bit faster */
 }
 
 
@@ -79,6 +89,28 @@ body {
     margin-bottom: 8px;
     color: var(--secondary-text);
     font-size: 0.95em;
+}
+
+#title-and-date-filter {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+#title-and-date-filter label {
+    display: block;
+    font-family: var(--font-family-heading);
+    color: var(--primary-text);
+    font-weight: 700;
+    font-size: 1.1em;
+    margin-bottom: 0;
+    margin-right: 0;
+}
+
+.date-picker-container {
+    position: relative;
 }
 
 #resize-handle {
@@ -135,15 +167,27 @@ body {
     padding: 10px;
     background-color: var(--primary-bg); /* Match panel background */
     border-radius: 4px;
+    /* Hide scrollbar for IE, Edge and Firefox */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
 }
-
+ 
+#tags-wrapper {
+    position: relative;
+    flex-grow: 1;
+    min-height: 0;
+}
+ 
+#toggle-tags-btn {
+    display: none; /* Hidden by default on large screens */
+}
+ 
 /* New container for the actual tags, enabling flex layout */
 .hashtag-tags-container {
     display: flex;
     flex-wrap: wrap;
     gap: 5px; /* Spacing between tags, adjust as needed */
 }
-
 /* New rule for popup tags */
 .popup-tags-container {
     margin-top: 8px;
@@ -163,16 +207,11 @@ body {
     overflow: hidden;
     text-align: center;
     line-height: 1.2; /* Ensure text fits well */
-    text-shadow: 0 0 8px rgba(0, 0, 0, 1);
 }
 
 /* Class for FLIP animation */
 .hashtag-button.moving {
     transition: transform 0.3s ease-in-out;
-}
-
-.hashtag-button:hover {
-    opacity: 0.85;
 }
 
 /* Unselected State (Default) */
@@ -181,6 +220,7 @@ body {
     color: var(--secondary-text);
     border-color: var(--border-color);
 }
+
 .hashtag-button.state-unselected:hover {
     background-color: var(--tertiary-hover-bg);
     color: var(--primary-text);
@@ -189,12 +229,13 @@ body {
 /* Selected State (OR) */
 .hashtag-button.state-selected {
     font-weight: bold;
+    text-shadow: 0 0 8px #000
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
-#hashtag-filters-container::-webkit-scrollbar {
-    width: 0;  /* Effectively hide the vertical scrollbar */
-    height: 0; /* Effectively hide the horizontal scrollbar (if one were to appear) */
+#hashtag-filters-container::-webkit-scrollbar,
+#left-panel::-webkit-scrollbar {
+    display: none;
 }
 
 button#reset-filters {
@@ -311,7 +352,7 @@ button#reset-filters:hover {
     cursor: pointer;
     font-weight: 700;
     padding: 2px 0; /* Added some vertical padding */
-    color: #28a745; /* Green for collapsed */
+    color: #a75885; /* Green for collapsed */
     outline: none;
     list-style: none; /* Remove the default arrow */
     display: flex; /* Use flexbox for alignment */
@@ -329,7 +370,7 @@ button#reset-filters:hover {
 }
 
 .leaflet-popup-content details:not([open]) > summary:hover {
-    color: #34d058; /* Brighter green for hover */
+    color: #d06488; /* Brighter green for hover */
     opacity: 1; /* Override any potential dimming */
 }
 
@@ -412,7 +453,11 @@ button#reset-filters:hover {
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); /* Shadow on the bottom */
         overflow-y: auto; /* Ensure it's scrollable if content overflows */
         box-sizing: border-box;
+        padding: 5px; /* Greatly reduced padding for small screens */
         transition: height 0.3s ease, padding 0.3s ease; /* Animate height for collapse */
+        /* Hide scrollbar for IE, Edge and Firefox */
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
     }
     #left-panel.collapsed {
         height: 0;
@@ -431,7 +476,63 @@ button#reset-filters:hover {
         min-width: 400px; /* Adjust min-width for smaller screens */
         max-width: 90vw; /* Prevent popup from being wider than the screen */
     }
+
+    #title-and-date-filter {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0;
+    }
+
+    #title-and-date-filter label {
+        margin-right: 15px;
+    }
     .leaflet-popup-content { max-height: 450px; } /* Larger max height for popups on mobile */
+
+    #hashtag-filters-container {
+        transition: max-height 0.3s ease;
+    }
+
+    #hashtag-filters-container.collapsed {
+        max-height: 50px; /* Small fixed height when collapsed */
+        overflow-y: hidden; /* Hide the rest of the tags */
+    }
+
+    #toggle-tags-btn {
+        display: flex;
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        z-index: 1001;
+        background-color: var(--accent-color);
+        color: var(--primary-bg);
+        border: none;
+        border-radius: 50%;
+        width: 44px;
+        height: 44px;
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.2s ease;
+    }
+
+    #toggle-tags-btn:hover { background-color: var(--accent-hover); }
+
+    #toggle-tags-btn svg {
+        stroke: var(--primary-bg);
+        stroke-width: 3;
+        transition: transform 0.3s ease;
+    }
+
+    #hashtag-filters-container.collapsed + #toggle-tags-btn svg {
+        transform: rotate(180deg);
+    }
+
+    /* Hide Leaflet's zoom controls on small screens */
+    .leaflet-control-zoom {
+        display: none;
+    }
 }
 
 #left-panel.collapsed + #resize-handle {
@@ -442,20 +543,29 @@ button#reset-filters:hover {
     text-shadow: var(--reset-text-shadow);
 }
 
-/* New styles for flatpickr */
+.calendar-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: var(--accent-color);
+}
+
 #date-picker {
-    width: 100%;
-    padding: 8px;
+    width: 210px;
+    padding: 8px 8px 8px 35px;
     background-color: var(--primary-bg);
     border: 0px solid var(--border-color);
     color: var(--primary-text);
     border-radius: 4px;
     box-sizing: border-box;
     font-family: var(--font-family-body);
-    font-size: 0.9em;
+    font-size: 0.95em;
     cursor: pointer;
-    margin-bottom: 10px;
-    text-align: center;
+    margin-bottom: 0;
+    text-align: left;
+    line-height: 1.2;
 }
 
 .flatpickr-calendar {

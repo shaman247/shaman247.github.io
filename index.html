@@ -11,7 +11,7 @@
     <!-- Custom Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;700&family=Libre+Franklin:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;700&family=Libre+Franklin:ital,wght@0,100..900;1,100..900&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <!-- flatpickr CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
      crossorigin="anonymous">
@@ -21,13 +21,21 @@
 <body>
     <div id="app-container">
         <div id="left-panel">
-            <div class="filter-group">
+            <div class="filter-group" id="title-and-date-filter">
                 <label for="date-picker"><strong>🗽 NYC Event Explorer</strong></label>
-                <input type="text" id="date-picker" placeholder="Select date range...">
+                <div class="date-picker-container">
+                    <input type="text" id="date-picker" placeholder="Select date range...">
+                    <svg class="calendar-icon" xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 0 24 24" width="18px" fill="currentColor"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM7 11h5v5H7v-5z"/></svg>
+                </div>
             </div>
 
-            <div id="hashtag-filters-container">
-                <!-- Hashtags will be populated here -->
+            <div id="tags-wrapper">
+                <div id="hashtag-filters-container">
+                    <!-- Hashtags will be populated here -->
+                </div>
+                <button id="toggle-tags-btn" aria-label="Toggle Tag Filters" title="Toggle Tag Filters">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
+                </button>
             </div>
         </div>
 

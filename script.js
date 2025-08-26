@@ -58,6 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             HashtagFilterUI.populateInitialFilters();
             initDatePicker();
+            initTagCollapseButton();
             filterAndDisplayEvents();
         } catch (error) {
             console.error("Failed to initialize app:", error);
@@ -218,7 +219,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }).addTo(map);
 
         // Initialize the MapManager with the existing map instance. It will create and return the markers layer.
-        const mapManagerInstances = MapManager.init(map, hashtagColors, CONFIG.DEFAULT_MARKER_COLOR);
+        const mapManagerInstances = MapManager.init(map, hashtagColors, CONFIG.DEFAULT_MARKER_COLOR, tagConfig.markerColors);
         markersLayer = mapManagerInstances.markersLayer;
     }
 
@@ -244,6 +245,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function processTagHierarchy() {
+        // Use the colors defined in tags.json
+        hashtagColors = tagConfig.colors || {};
+
         // Collect all unique hashtags from events
         const allUniqueTagsSet = new Set();
         allEvents.forEach(event => {
@@ -254,6 +258,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         allAvailableTags = Array.from(allUniqueTagsSet).sort();
 
+        // Assign colors from the palette only to tags that don't have a color defined in tags.json
         let paletteIndex = 0;
         allAvailableTags.forEach(tag => {
             if (!hashtagColors[tag]) {
@@ -274,7 +279,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         datePickerInstance = flatpickr("#date-picker", {
             mode: "range",
-            dateFormat: "M j, Y",
+            dateFormat: "M j",
             defaultDate: [initialStartDate, CONFIG.END_DATE],
             minDate: CONFIG.START_DATE,
             maxDate: CONFIG.END_DATE,
@@ -456,20 +461,17 @@ document.addEventListener('DOMContentLoaded', () => {
             if (eventsMatchingFiltersAtThisLocation.length === 0) continue;
 
             visibleLocationCount++;
-            visibleEventCountTotal += eventsMatchingFiltersAtThisLocation.length; 
+            visibleEventCountTotal += eventsMatchingFiltersAtThisLocation.length;
 
-            // Determine if the marker should be prominent
-            let isProminent = false;
-            if (selectedTags.length > 1) {
+            // Determine the prominence of the marker based on matching tags
+            let numMatchingTags = 0;
+            if (selectedTags.length > 0) {
                 const uniqueTagsAtLocation = new Set();
                 eventsMatchingFiltersAtThisLocation.forEach(event => {
                     (event.hashtags || []).forEach(tag => uniqueTagsAtLocation.add(tag));
                 });
 
-                const matchedTagsCount = selectedTags.filter(tag => uniqueTagsAtLocation.has(tag)).length;
-                if (matchedTagsCount > 1) {
-                    isProminent = true;
-                }
+                numMatchingTags = selectedTags.filter(tag => uniqueTagsAtLocation.has(tag)).length;
             }
 
             const [lat, lng] = locationKey.split(',').map(Number);
@@ -477,8 +479,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const markerEmoji = locationInfo ? locationInfo.emoji : '📍';
             const locationName = locationInfo ? locationInfo.location : 'Unknown Location';
 
-            const markerColor = MapManager.getMarkerColor(eventsMatchingFiltersAtThisLocation);
-            const customIcon = MapManager.createCustomMarkerIcon(markerColor[0], markerEmoji, isProminent);
+            const markerColor = MapManager.getMarkerColor(eventsMatchingFiltersAtThisLocation, locationInfo);
+            const customIcon = MapManager.createCustomMarkerIcon(markerColor, markerEmoji, selectedTags.length, numMatchingTags);
             
             const hoverTooltipText = locationName;
 
@@ -493,7 +495,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return createLocationPopupContent(locationInfo, allEventsForThisPhysicalLocation, currentPopupFilters);
             };
             if (lat!=0 && lng!=0) { 
-                const marker = MapManager.addMarkerToMap([lat, lng], customIcon, hoverTooltipText, popupContentCallback, isProminent);
+                const marker = MapManager.addMarkerToMap([lat, lng], customIcon, hoverTooltipText, popupContentCallback, numMatchingTags);
                 if (marker) {
                     newMarkers[locationKey] = marker;
                 }
@@ -600,5 +602,21 @@ document.addEventListener('DOMContentLoaded', () => {
         HashtagFilterUI.updateView(allMatchingEventsFlatList);
     }
 
+    function initTagCollapseButton() {
+        const toggleBtn = document.getElementById('toggle-tags-btn');
+        const tagsContainer = document.getElementById('hashtag-filters-container');
+
+        if (toggleBtn && tagsContainer) {
+            // Start with it collapsed on mobile if the panel is not already collapsed
+            if (window.innerWidth <= 768 && !document.getElementById('left-panel').classList.contains('collapsed')) {
+                tagsContainer.classList.add('collapsed');
+            }
+
+            toggleBtn.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent event from bubbling up
+                tagsContainer.classList.toggle('collapsed');
+            });
+        }
+    }
     initializeApp();
 });
