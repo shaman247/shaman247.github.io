@@ -1,9 +1,8 @@
 // hashtagFilterUI.js
 const HashtagFilterUI = (() => {
     const TAG_STATE_UNSELECTED = 'unselected';
-    const TAG_STATE_SELECTED = 'selected'; // Logical OR
-    const TAG_STATE_REQUIRED = 'required'; // Logical AND
-    const TAG_STATE_FORBIDDEN = 'forbidden'; // Logical NOT
+    const TAG_STATE_SELECTED = 'selected';
+    const MAX_TAGS_TO_SHOW = 100;
 
     let _allAvailableTags = [];
     let _hashtagColors = {};
@@ -36,19 +35,6 @@ const HashtagFilterUI = (() => {
 
         }
     }
-    
-    function _cycleTagState(tag) {
-        const currentState = _tagStates[tag];
-        if (currentState === TAG_STATE_UNSELECTED) {
-            _tagStates[tag] = TAG_STATE_SELECTED;
-        } else if (currentState === TAG_STATE_SELECTED) {
-            _tagStates[tag] = TAG_STATE_REQUIRED;
-        } else if (currentState === TAG_STATE_REQUIRED) {
-            _tagStates[tag] = TAG_STATE_FORBIDDEN;
-        } else { // TAG_STATE_FORBIDDEN
-            _tagStates[tag] = TAG_STATE_UNSELECTED;
-        }
-    }
 
     function _updateTagVisuals(buttonElement, tagValue) {
         const state = _tagStates[tagValue];
@@ -57,27 +43,20 @@ const HashtagFilterUI = (() => {
 
         // Reset classes and styles
         buttonElement.className = 'hashtag-button'; // Base class
-        buttonElement.style.backgroundColor = '';
-        buttonElement.style.color = '';
+        buttonElement.style.background = ''; // Use 'background' to clear gradients
+        buttonElement.style.backgroundColor = ''; // Also clear solid color
+        buttonElement.style.color = ''; // Let CSS handle color for unselected/forbidden
         buttonElement.style.borderColor = '';
         buttonElement.style.borderWidth = '';
 
         switch (state) {
-            case TAG_STATE_SELECTED: // OR
+            case TAG_STATE_SELECTED:
                 buttonElement.classList.add('state-selected');
-                buttonElement.style.backgroundColor = tagColor;
-                buttonElement.style.color = 'white';
-                buttonElement.textContent = displayName;
-                break;
-            case TAG_STATE_REQUIRED: // AND
-                buttonElement.classList.add('state-required');
-                buttonElement.style.backgroundColor = tagColor;
-                buttonElement.style.color = 'white';
-                buttonElement.textContent = displayName;
-                break;
-            case TAG_STATE_FORBIDDEN: // NOT
-                buttonElement.classList.add('state-forbidden');
-                buttonElement.style.backgroundColor = '';
+                if (Array.isArray(tagColor)) {
+                    buttonElement.style.background = `linear-gradient(to bottom, ${tagColor[0]}, ${tagColor[1]})`;
+                } else {
+                    buttonElement.style.backgroundColor = tagColor;
+                }
                 buttonElement.style.color = 'white';
                 buttonElement.textContent = displayName;
                 break;
@@ -96,29 +75,42 @@ const HashtagFilterUI = (() => {
         _updateTagVisuals(button, tag); // Set initial appearance
 
         button.addEventListener('click', () => {
-            _cycleTagState(tag);
+            // Simple toggle between 'unselected' and 'selected'
+            _tagStates[tag] = _tagStates[tag] === TAG_STATE_SELECTED ? TAG_STATE_UNSELECTED : TAG_STATE_SELECTED;
             _updateTagVisuals(button, tag); // Update just this button's visuals immediately
 
             if (_onFilterChangeCallback) {
                 _onFilterChangeCallback();
             }
         });
-
+        
         button.addEventListener('contextmenu', (e) => {
-            e.preventDefault(); // Prevent default right-click menu
-            const currentState = _tagStates[tag];
+            e.preventDefault(); // Prevent default right-click menu, but do nothing else.
+        });
+        return button;
+    }
 
-            if (currentState === TAG_STATE_UNSELECTED) {
-                _tagStates[tag] = TAG_STATE_SELECTED; // If unselected, make it selected (OR)
-            } else {
-                _tagStates[tag] = TAG_STATE_UNSELECTED; // If selected, required, or forbidden, make it unselected
-            }
+    function createInteractiveTagButton(tag) {
+        const button = document.createElement('button');
+        button.dataset.tag = tag;
 
-            _updateTagVisuals(button, tag); // Update just this button's visuals immediately
+        _updateTagVisuals(button, tag);
+
+        button.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent map click-through
+            _tagStates[tag] = _tagStates[tag] === TAG_STATE_SELECTED ? TAG_STATE_UNSELECTED : TAG_STATE_SELECTED;
+            _updateTagVisuals(button, tag); // Update visuals immediately
             if (_onFilterChangeCallback) {
                 _onFilterChangeCallback();
             }
         });
+    
+        button.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            e.stopPropagation(); // Prevent map context menu
+            // Right-click now does nothing on popup tags
+        });
+
         return button;
     }
 
@@ -142,10 +134,8 @@ const HashtagFilterUI = (() => {
         _hashtagFiltersContainerDOM.appendChild(tagsContainer); // Attach it to the DOM
 
         const statePriority = {
-            [TAG_STATE_REQUIRED]: 1,
-            [TAG_STATE_SELECTED]: 2,
-            [TAG_STATE_FORBIDDEN]: 3,
-            [TAG_STATE_UNSELECTED]: 4
+            [TAG_STATE_SELECTED]: 1,
+            [TAG_STATE_UNSELECTED]: 2
         };
 
         const sortedTags = [..._allAvailableTags].sort((a, b) => {
@@ -176,9 +166,11 @@ const HashtagFilterUI = (() => {
             // 4. Finally, sort alphabetically
             return a.localeCompare(b);
         });
-        sortedTags.forEach(tag => {
-            // Ensure tag has a global frequency of at least 2 before creating element
-            if ((_initialGlobalFrequencies[tag] || 0) < 2) return;
+
+        // Take only the top N tags to display, based on the sorting logic.
+        const tagsToDisplay = sortedTags.slice(0, MAX_TAGS_TO_SHOW);
+
+        tagsToDisplay.forEach(tag => {
             const tagElement = _createTagElement(tag);
             tagsContainer.appendChild(tagElement);
         });
@@ -242,19 +234,30 @@ const HashtagFilterUI = (() => {
 
     // Public method to update the view based on externally filtered events
     function updateView(filteredEvents) {
+        // This now calculates the frequency of distinct locations for each tag.
         _currentDynamicFrequencies = {};
-        _allAvailableTags.forEach(tag => _currentDynamicFrequencies[tag] = 0); // Initialize all to 0
+        _allAvailableTags.forEach(tag => _currentDynamicFrequencies[tag] = 0);
 
         if (filteredEvents && Array.isArray(filteredEvents)) {
+            const tagLocationSets = {};
             filteredEvents.forEach(event => {
-                if (event.hashtags && Array.isArray(event.hashtags)) {
+                // Ensure the event has a locationKey to be counted.
+                if (event.hashtags && Array.isArray(event.hashtags) && event.locationKey && event.locationKey !== 'unknown_location') {
                     event.hashtags.forEach(tag => {
-                        if (_allAvailableTags.includes(tag)) { // Only count available tags
-                            _currentDynamicFrequencies[tag] = (_currentDynamicFrequencies[tag] || 0) + 1;
+                        if (_allAvailableTags.includes(tag)) {
+                            if (!tagLocationSets[tag]) {
+                                tagLocationSets[tag] = new Set();
+                            }
+                            tagLocationSets[tag].add(event.locationKey);
                         }
                     });
                 }
             });
+
+            // Update the frequencies based on the size of the location sets.
+            for (const tag in tagLocationSets) {
+                _currentDynamicFrequencies[tag] = tagLocationSets[tag].size;
+            }
         }
 
         _renderFilters(); // Re-render with new frequencies and preserved selections
@@ -280,16 +283,10 @@ const HashtagFilterUI = (() => {
         populateInitialFilters,
         updateView,
         getTagStates,
-        resetSelections
+        resetSelections,
+        createInteractiveTagButton
     };
 })();
-
-
-
-
-
-
-
 
 // Ensure Utils.formatHashtagForDisplay is available if this file is loaded before utils.js
 // or if it's used by other parts of the application.

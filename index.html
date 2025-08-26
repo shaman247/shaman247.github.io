@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Event Explorer</title>
+    <title>NYC Event Explorer</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🗽</text></svg>">
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
      crossorigin=""/>
@@ -19,36 +20,18 @@
 </head>
 <body>
     <div id="app-container">
-        <div id="left-panel"> <!-- Changed ID to left-panel -->
-            <div class="filter-group"> <!-- This is the date filter group -->
-                <label for="date-picker">🗽 NYC Events</label>
+        <div id="left-panel">
+            <div class="filter-group">
+                <label for="date-picker"><strong>🗽 NYC Event Explorer</strong></label>
                 <input type="text" id="date-picker" placeholder="Select date range...">
             </div>
 
-            <button id="reset-filters">Reset Filters</button>
- 
-            <!-- WRAP the hashtag label and its container -->
-            <div class="filter-group" id="hashtag-group-wrapper"> 
-                <label>Tags</label> 
-                <div id="hashtag-filters-container">
-                    <!-- Hashtags will be populated here -->
-                </div>
+            <div id="hashtag-filters-container">
+                <!-- Hashtags will be populated here -->
             </div>
-
-            <!-- Theme Switcher -->
-            <div class="theme-switcher-container">
-                <label class="theme-switch" for="theme-switch-checkbox" title="Toggle light/dark theme">
-                    <input type="checkbox" id="theme-switch-checkbox">
-                    <span class="slider round"></span>
-                </label>
-            </div>
-           <div id="event-count-display">Showing 0 events at 0 locations.</div>
-
         </div>
 
-        <div id="resize-handle"></div> <!-- Added resize handle -->
         <div id="map-container">
-            <button id="toggle-panel-btn" title="Hide Panel">&#9776;</button>
             <div id="map"></div>
         </div>
     </div>

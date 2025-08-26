@@ -32,16 +32,49 @@ const MapManager = (() => {
         return _defaultMarkerColorRef;
     }
 
-    function createCustomMarkerIcon(markerColor, emoji) {
-        // Get the current theme from the body's data attribute to set the stroke color.
-        const currentTheme = document.body.dataset.theme || 'dark';
-        const strokeColor = currentTheme === 'light' ? 'white' : 'black';
+    function createCustomMarkerIcon(markerColor, emoji, isProminent = false) {
+        // Dark theme is now the only theme. The stroke color is for non-prominent markers.
+        const originalStrokeColor = 'black';
+
+        // Define styling based on prominence
+        let dropShadowFilter;
+        let stroke;
+        let strokeWidth;
+
+        if (isProminent) {
+            dropShadowFilter = 'none'; // No shadow for prominent markers
+            stroke = 'white';          // Large white border
+            strokeWidth = 2.5;         // A "large" border
+        } else {
+            dropShadowFilter = 'drop-shadow(0 2px 3px rgba(0,0,0,0.5))'; // Default shadow
+            stroke = originalStrokeColor; // Original stroke color
+            strokeWidth = 0;              // Original stroke width (no border)
+        }
+        
+        let fillValue;
+        let defs = '';
+
+        if (Array.isArray(markerColor) && markerColor.length === 2) {
+            const gradId = `grad-${markerColor[0].substring(1)}-${markerColor[1].substring(1)}`;
+            defs = `
+            <defs>
+                <linearGradient id="${gradId}" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" style="stop-color:${markerColor[0]}" />
+                    <stop offset="100%" style="stop-color:${markerColor[1]}" />
+                </linearGradient>
+            </defs>
+            `;
+            fillValue = `url(#${gradId})`;
+        } else {
+            fillValue = markerColor;
+        }
 
         // Using an SVG for a pin shape allows for more complex shapes and better scaling.
         const iconHtml = `
-            <svg width="34" height="45" viewBox="0 0 28 35" xmlns="http://www.w3.org/2000/svg" style="filter: drop-shadow(0 2px 3px rgba(0,0,0,0.5));">
+            <svg width="34" height="45" viewBox="0 0 28 35" xmlns="http://www.w3.org/2000/svg" style="filter: ${dropShadowFilter};">
+                ${defs}
                 <g transform="translate(0, 1)">
-                    <path d="M14 0C7.37258 0 2 5.37258 2 12C2 21.056 14 32 14 32C14 32 26 21.056 26 12C26 5.37258 20.6274 0 14 0Z" fill="${markerColor}" stroke="${strokeColor}" stroke-width="0"/>
+                    <path d="M14 0C7.37258 0 2 5.37258 2 12C2 21.056 14 32 14 32C14 32 26 21.056 26 12C26 5.37258 20.6274 0 14 0Z" fill="${fillValue}" stroke="${stroke}" stroke-width="${strokeWidth}"/>
                     <text x="14" y="13" font-size="20" text-anchor="middle" dominant-baseline="central">${emoji}</text>
                 </g>
             </svg>`;
@@ -54,12 +87,22 @@ const MapManager = (() => {
         });
     }
     
-    function addMarkerToMap(latLng, icon, tooltipText, popupContentCallback) {
+    function addMarkerToMap(latLng, icon, tooltipText, popupContentCallback, isProminent = false) {
         if (!_markersLayerInstance) return;
-        const marker = L.marker(latLng, { icon: icon });
+
+        const markerOptions = {
+            icon: icon,
+        };
+
+        if (isProminent) {
+            markerOptions.zIndexOffset = 1000; // A high value to ensure it's on top of other markers
+        }
+
+        const marker = L.marker(latLng, markerOptions);
         marker.bindTooltip(tooltipText);
         marker.bindPopup(popupContentCallback);
         _markersLayerInstance.addLayer(marker);
+        return marker;
     }
 
     return {

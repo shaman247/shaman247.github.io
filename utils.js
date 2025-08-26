@@ -10,6 +10,13 @@ const Utils = (() => {
              .replace(/'/g, "&#039;");
     }
 
+    function decodeHtml(html) {
+        if (typeof html !== 'string') return '';
+        const txt = document.createElement("textarea");
+        txt.innerHTML = html;
+        return txt.value;
+    }
+
     function isValidUrl(string) {
         return string && (string.startsWith('http://') || string.startsWith('https://'));
     }
@@ -197,6 +204,7 @@ const Utils = (() => {
 
     return {
         escapeHtml,
+        decodeHtml,
         isValidUrl,
         formatDateForDisplay,
         formatEventDateTimeCompactly,
