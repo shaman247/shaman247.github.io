@@ -1,7 +1,7 @@
 /* style.css */
 :root {
     --primary-bg: #111; /* Very dark gray / near black */
-    --secondary-bg: #222; /* Dark gray for panels */
+    --secondary-bg: #111; /* Dark gray for panels */
     --tertiary-bg: #3f3f3f; /* Slightly lighter gray for interactive elements */
     --tertiary-hover-bg: #626262; /* Lighter gray for hover on tertiary elements */
     --primary-text: #ffffff; /* White text */
@@ -13,7 +13,7 @@
     --accent-color: #9cf;
     --accent-hover: #9ff;
     
-    --border-color: #534;
+    --border-color: #777;
     --marker-default-color: #757575;
 
     --attribution-bg: rgba(0, 0, 0, 0.7);
@@ -38,9 +38,9 @@ body {
 }
 
 #left-panel { /* Renamed from #filters-panel to match JS */
-    width: max(350px, 30%); /* Initial width, can be adjusted */
+    width: min(400px, max(330px, 35%)); /* Initial width, can be adjusted */
     background-color: var(--secondary-bg);
-    padding: 20px;
+    padding: 20px 5px 20px 5px;
     display: flex;
     flex-direction: column;
     height: 100vh; 
@@ -94,19 +94,23 @@ body {
 #title-and-date-filter {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     gap: 10px;
-    margin-bottom: 15px;
+    margin-bottom: 0px;
 }
 
 #title-and-date-filter label {
     display: block;
     font-family: var(--font-family-heading);
-    color: var(--primary-text);
+    color: var(--secondary-text);
     font-weight: 700;
     font-size: 1.1em;
     margin-bottom: 0;
     margin-right: 0;
+}
+
+.title-emoji {
+    font-size: 1.2em;
 }
 
 .date-picker-container {
@@ -170,12 +174,16 @@ body {
     /* Hide scrollbar for IE, Edge and Firefox */
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
+    -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
 }
  
 #tags-wrapper {
     position: relative;
     flex-grow: 1;
     min-height: 0;
+    display: flex;
+    flex-direction: column;
 }
  
 #toggle-tags-btn {
@@ -190,7 +198,8 @@ body {
 }
 /* New rule for popup tags */
 .popup-tags-container {
-    margin-top: 8px;
+    margin-top: 6px;
+    margin-bottom: 12px;
 }
 /* New Hashtag Button Styling */
 .hashtag-button {
@@ -323,7 +332,7 @@ button#reset-filters:hover {
     flex-grow: 1; /* Allow the list to take up remaining space */
     /* Hide scrollbar for IE, Edge, and Firefox */
     -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+    scrollbar-width: none;  /* Firefox */    
 }
 
 .popup-events-list::-webkit-scrollbar {
@@ -352,12 +361,12 @@ button#reset-filters:hover {
     cursor: pointer;
     font-weight: 700;
     padding: 2px 0; /* Added some vertical padding */
-    color: #a75885; /* Green for collapsed */
+    color: #c8535b; /* Green for collapsed */
     outline: none;
     list-style: none; /* Remove the default arrow */
     display: flex; /* Use flexbox for alignment */
     align-items: center; /* Vertically align emoji and text */
-    gap: 0px; /* Increased space between emoji and text */
+    gap: 2px; /* Increased space between emoji and text */
     font-size: 1.1em; /* Increase event title font size */
 }
 
@@ -366,16 +375,16 @@ button#reset-filters:hover {
     line-height: 1;
 }
 .leaflet-popup-content details[open] > summary {
-    color: #ffc107; /* Yellow for expanded */
+    color: #f1c160; /* Yellow for expanded */
 }
 
 .leaflet-popup-content details:not([open]) > summary:hover {
-    color: #d06488; /* Brighter green for hover */
+    color: #ff858b; /* Brighter green for hover */
     opacity: 1; /* Override any potential dimming */
 }
 
 .leaflet-popup-content details[open] > summary:hover {
-    color: #ffd700; /* Brighter yellow for hover */
+    color: #fff2a7; /* Brighter yellow for hover */
     opacity: 1; /* Override any potential dimming */
 }
 
@@ -402,8 +411,18 @@ button#reset-filters:hover {
 .leaflet-popup-close-button {
     color: var(--primary-text) !important;
     padding: 8px 8px 0 0 !important;
+    width: 36px !important;
+    height: 36px !important;
+    padding: 0 !important;
+    top: 0 !important;
+    right: 0 !important;
+    font-size: 24px !important;
+    line-height: 30px !important;
+    color: var(--primary-text);
+    text-align: center;
+    border-radius: 0 8px 0 0; /* Match top-right corner of popup */
 }
-.leaflet-popup-close-button:hover { color: var(--accent-color) !important; }
+.leaflet-popup-close-button:hover { color: #ff8a80 !important; }
 
 /* This class is the container for the SVG marker. */
 .custom-marker-icon {
@@ -425,6 +444,26 @@ button#reset-filters:hover {
     box-shadow: 0 1px 3px rgba(0,0,0,0.3) !important;
     font-size: 1.2em !important;
     font-weight: bold;
+}
+
+/* Custom Zoom Control Styles */
+.leaflet-control-zoom {
+    border: 1px solid var(--border-color);
+    box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+}
+
+.leaflet-bar a, .leaflet-bar a:hover {
+    background-color: var(--tertiary-bg);
+    color: var(--primary-text);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.leaflet-bar a:hover {
+    background-color: var(--tertiary-hover-bg);
+}
+
+.leaflet-bar a:last-child {
+    border-bottom: none;
 }
 .popup-event-datetime {
     font-style: italic;
@@ -453,7 +492,7 @@ button#reset-filters:hover {
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); /* Shadow on the bottom */
         overflow-y: auto; /* Ensure it's scrollable if content overflows */
         box-sizing: border-box;
-        padding: 5px; /* Greatly reduced padding for small screens */
+        padding: 10px; /* Reduced padding for small screens */
         transition: height 0.3s ease, padding 0.3s ease; /* Animate height for collapse */
         /* Hide scrollbar for IE, Edge and Firefox */
         -ms-overflow-style: none;  /* IE and Edge */
@@ -507,9 +546,9 @@ button#reset-filters:hover {
         background-color: var(--accent-color);
         color: var(--primary-bg);
         border: none;
-        border-radius: 50%;
-        width: 44px;
-        height: 44px;
+        border-radius: 8px;
+        width: 30px;
+        height: 30px;
         cursor: pointer;
         box-shadow: 0 2px 8px rgba(0,0,0,0.4);
         align-items: center;
@@ -552,12 +591,28 @@ button#reset-filters:hover {
     color: var(--accent-color);
 }
 
+.date-picker-container:hover .calendar-icon {
+    color: var(--accent-hover);
+    transition: color 0.2s ease;
+}
+
+#date-picker-sizer {
+    position: absolute;
+    visibility: hidden;
+    height: auto;
+    width: auto;
+    white-space: nowrap;
+    font-family: var(--font-family-body);
+    font-size: 0.95em;
+    padding-left: 35px; /* Match input's left padding */
+    padding-right: 6px; /* Match input's right padding */
+}
+
 #date-picker {
-    width: 210px;
-    padding: 8px 8px 8px 35px;
+    padding: 6px 6px 6px 35px;
     background-color: var(--primary-bg);
-    border: 0px solid var(--border-color);
-    color: var(--primary-text);
+    border: 1px solid var(--tertiary-bg);
+    color: var(--secondary-text);
     border-radius: 4px;
     box-sizing: border-box;
     font-family: var(--font-family-body);

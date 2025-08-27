@@ -21,12 +21,31 @@ document.addEventListener('DOMContentLoaded', () => {
         START_DATE: new Date(2025, 7, 1),
         END_DATE: new Date(2025, 8, 30),
         ONE_DAY_IN_MS: 24 * 60 * 60 * 1000,
-        DEFAULT_MARKER_COLOR: '#757575',
-        HASHTAG_COLOR_PALETTE: [ // A more saturated and distinct color palette with gradients between different hues
-            ['#d62828', '#0077b6'], ['#f77f00', '#7209b7'], ['#fca311', '#00a896'], ['#222', '#8ac926'], ['#008000', '#480ca8'],
-            ['#00a896', '#f77f00'], ['#00b4d8', '#ffbe0b'], ['#0077b6', '#e63946'], ['#3a86ff', '#fca311'], ['#480ca8', '#52b788'],
-            ['#7209b7', '#8ac926'], ['#c724b1', '#00b4d8'], ['#f72585', '#8ac926'], ['#e63946', '#3a86ff'], ['#ffbe0b', '#5a189a'],
-            ['#52b788', '#a44a3f'], ['#3a5a40', '#8c5a35'], ['#5a189a', '#ffbe0b'], ['#a44a3f', '#52b788'], ['#8c5a35', '#3a5a40']
+        DEFAULT_MARKER_COLOR: '#777777',
+        // A slightly desaturated and more harmonious color palette.
+        // Pairs are generally closer in hue for a softer look.
+        HASHTAG_COLOR_PALETTE: [ 
+            ['#d16a6f', '#d19f6a'], // Muted Red & Muted Orange
+            ['#e88c4b', '#e8c54b'], // Muted Orange & Muted Yellow
+            ['#d9c35c', '#a6d95c'], // Muted Yellow & Muted Lime Green
+            ['#68b08f', '#689db0'], // Muted Green & Muted Teal
+            ['#5f8fe3', '#8f5fe3'], // Muted Blue & Muted Violet
+            ['#a65b9a', '#d15a63'], // Muted Purple & Muted Red
+            ['#4cb3a2', '#9ac44c'], // Muted Teal & Muted Chartreuse
+            ['#e0528b', '#e08b52'], // Muted Pink & Muted Orange
+            ['#5a7a60', '#9c7a55'], // Muted Dark Green & Muted Brown
+            ['#82b340', '#5f8fe3'], // Muted Green & Muted Blue
+            // Reversed pairs for more variety
+            ['#d19f6a', '#d16a6f'],
+            ['#e8c54b', '#e88c4b'],
+            ['#a6d95c', '#d9c35c'],
+            ['#689db0', '#68b08f'],
+            ['#8f5fe3', '#5f8fe3'],
+            ['#d15a63', '#a65b9a'],
+            ['#9ac44c', '#4cb3a2'],
+            ['#e08b52', '#e0528b'],
+            ['#9c7a55', '#5a7a60'],
+            ['#5f8fe3', '#82b340']
         ],
         MAP_INITIAL_VIEW: [40.72, -73.95],
         MAP_INITIAL_ZOOM: 12,
@@ -209,8 +228,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function initMap() {
         // Initialize the map once and store the instance.
-        map = L.map('map').setView(CONFIG.MAP_INITIAL_VIEW, CONFIG.MAP_INITIAL_ZOOM);
+        map = L.map('map', {
+            zoomControl: false // Disable default zoom control
+        }).setView(CONFIG.MAP_INITIAL_VIEW, CONFIG.MAP_INITIAL_ZOOM);
 
+        // Add zoom control to the top right
+        L.control.zoom({
+            position: 'topright'
+        }).addTo(map);
         // Create the tile layer instance. The URL will be set by initTheme().
         // We can give it a default URL to start.
         tileLayer = L.tileLayer(CONFIG.MAP_TILE_URL_DARK, {
@@ -261,13 +286,25 @@ document.addEventListener('DOMContentLoaded', () => {
         // Assign colors from the palette only to tags that don't have a color defined in tags.json
         let paletteIndex = 0;
         allAvailableTags.forEach(tag => {
-            if (!hashtagColors[tag]) {
+            //if (!hashtagColors[tag]) {
                 hashtagColors[tag] = CONFIG.HASHTAG_COLOR_PALETTE[paletteIndex % CONFIG.HASHTAG_COLOR_PALETTE.length];
                 paletteIndex++;
-            }
+            //}
         });
     }
 
+    function resizeDatePickerInput(instance) {
+        const input = instance.input;
+        const sizer = document.getElementById('date-picker-sizer');
+        if (!sizer || !input) return;
+
+        // Use the input's value for sizing, or its placeholder if empty
+        sizer.textContent = input.value || input.placeholder;
+        
+        // Set the input's width to the sizer's width. 
+        // Add a small buffer (e.g., 5px) for the cursor or minor rendering differences.
+        input.style.width = `${sizer.offsetWidth + 5}px`;
+    }
     function initDatePicker() {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
@@ -284,12 +321,16 @@ document.addEventListener('DOMContentLoaded', () => {
             minDate: CONFIG.START_DATE,
             maxDate: CONFIG.END_DATE,
             monthSelectorType: "static", // Disables the month dropdown/selector
+            onReady: function(selectedDates, dateStr, instance) {
+                resizeDatePickerInput(instance);
+            },
             onClose: function(selectedDates, dateStr, instance) {
                 // This is called when the calendar is closed.
                 // A good time to trigger the filter.
                 if (selectedDates.length === 2) {
                     filterAndDisplayEvents();
                 }
+                resizeDatePickerInput(instance);
             }
         });
     }

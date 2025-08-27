@@ -81,8 +81,8 @@ const MapManager = (() => {
         // When tags are selected, markers that match more tags should be larger.
         // Markers with low prominence are scaled down, up to a maximum of their base size (100%).
         const scale = numSelectedTags > 0 ? 0.5 + (prominence * 0.5) : 1.0; // Scale from 50% to 100%, or 100% if no tags.
-        const baseWidth = 40;
-        const baseHeight = 55;
+        const baseWidth = 45;
+        const baseHeight = 60;
         const iconWidth = Math.round(baseWidth * scale);
         const iconHeight = Math.round(baseHeight * scale);
         const iconSize = [iconWidth, iconHeight];
@@ -94,13 +94,13 @@ const MapManager = (() => {
             stroke = markerColor[1];
         } else {
             baseFillColor = markerColor;
-            stroke = 'black'; // Default stroke color
+            stroke = '#333';
         }
 
         // Set stroke width based on the number of matching tags
         strokeWidth = numMatchingTags >= 2 ? 2 : 1;
         if (numMatchingTags < 2) {
-            stroke = 'black';
+            stroke = '#333';
         }
 
 
@@ -115,7 +115,7 @@ const MapManager = (() => {
             fillValue = _interpolateColor(baseFillColor, subduedGray, factor);
             
             // Also reduce emoji opacity. Using the same scale as size for consistency.
-            emojiOpacity = scale;
+            emojiOpacity = Math.min(0.8, scale);
         }
 
         // Using an SVG for a pin shape allows for more complex shapes and better scaling.
@@ -124,7 +124,7 @@ const MapManager = (() => {
                 ${defs}
                 <g transform="translate(0, 1)">
                     <path d="M14 0C7.37258 0 2 5.37258 2 12C2 21.056 14 32 14 32C14 32 26 21.056 26 12C26 5.37258 20.6274 0 14 0Z" fill="${fillValue}" stroke="${stroke}" stroke-width="${strokeWidth}"/>
-                    <text x="14" y="13" font-size="20" text-anchor="middle" dominant-baseline="central" style="opacity: ${emojiOpacity};">${emoji}</text>
+                    <text x="14" y="13" font-size="16" text-anchor="middle" dominant-baseline="central" style="opacity: ${emojiOpacity};">${emoji}</text>
                 </g>
             </svg>`;
 
