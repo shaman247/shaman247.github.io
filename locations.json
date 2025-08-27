@@ -658,13 +658,6 @@
     "emoji": "🎭"
   },
   {
-    "location": "Clay Pit Ponds Interpretive Center",
-    "address": "2351 Veterans Rd W, Staten Island, NY 10309",
-    "lat": 40.5375038149942,
-    "lng": -74.2259526392487,
-    "emoji": "🏢"
-  },
-  {
     "location": "Clay Pit Ponds State Park",
     "address": "83 Nielsen Ave, Staten Island, NY 10309",
     "lat": 40.539397444623,
@@ -1040,7 +1033,7 @@
     "address": "44 Wilson Ave, Brooklyn, NY 11237",
     "lat": 40.702633,
     "lng": -73.929618,
-    "emoji": "🎵"
+    "emoji": "💽"
   },
   {
     "location": "Gotham Comedy Club",
@@ -1418,13 +1411,6 @@
     "address": "Lincoln Center Plaza, New York, NY 10023",
     "lat": 40.77272,
     "lng": -73.98386,
-    "emoji": "🏛️"
-  },
-  {
-    "location": "Lincoln Center for the Performing Arts",
-    "address": "Lincoln Center Plaza, New York, NY 10023",
-    "lat": 40.7724803214705,
-    "lng": -73.9834889024057,
     "emoji": "🎭"
   },
   {
@@ -1722,7 +1708,7 @@
     "emoji": "🎥"
   },
   {
-    "location": "Music at St. Paul's Chapel",
+    "location": "St. Paul's Chapel",
     "address": "209 Broadway, New York, NY 10007",
     "lat": 40.711323,
     "lng": -74.009196,
@@ -2098,6 +2084,13 @@
     "lat": 40.65392,
     "lng": -73.976703,
     "emoji": "🌱"
+  },
+  {
+    "location": "Prospect Park (Grand Army Plaza Entrance)",
+    "address": "Prospect Park West, Flatbush Ave, Brooklyn, NY 11215",
+    "lat": 40.6723663496528,
+    "lng": -73.9697916439673,
+    "emoji": "🌳"
   },
   {
     "location": "Prospect Park",
@@ -2520,6 +2513,13 @@
     "emoji": "🎭"
   },
   {
+    "location": "Brick Aux",
+    "address": "628 Metropolitan Ave, Brooklyn, NY 11211",
+    "lat": 40.7138997068733,
+    "lng": -73.9481075031406,
+    "emoji": "🎭"
+  },
+  {
     "location": "The Bronx Museum of the Arts",
     "address": "1040 Grand Concourse, The Bronx, NY 10456",
     "lat": 40.83106,
@@ -2884,7 +2884,7 @@
     "emoji": "🎵"
   },
   {
-    "location": "The Peoples Improv Theater (The PIT)",
+    "location": "The Peoples Improv Theater (PIT)",
     "address": "123 E 24th St, New York, NY 10010",
     "lat": 40.740604,
     "lng": -73.984727,
@@ -3038,7 +3038,7 @@
     "emoji": "🏛️"
   },
   {
-    "location": "Time Out Market New York",
+    "location": "Time Out Market",
     "address": "55 Water St, Brooklyn, NY 11201",
     "lat": 40.703236,
     "lng": -74.00907,
@@ -3052,7 +3052,7 @@
     "emoji": "🌳"
   },
   {
-    "location": "Tracksmith Trackhouse Brooklyn",
+    "location": "Tracksmith Trackhouse",
     "address": "147 Wythe Ave, Brooklyn, NY 11249",
     "lat": 40.7193414492365,
     "lng": -73.9604829895999,
@@ -3267,5 +3267,145 @@
     "lat": 40.72968,
     "lng": -73.998999,
     "emoji": "🎷"
+  },
+  {
+    "location": "CUNY School of Law",
+    "address": "2 Ct Square W, Long Island City, NY",
+    "lat": 40.7477908231169,
+    "lng": -73.9440631662677,
+    "emoji": "🎓"
+  },
+  {
+    "location": "The Greats of Craft",
+    "address": "10-15 43rd Ave, Long Island City, NY 11101",
+    "lat": 40.7521743437441,
+    "lng": -73.9480423743032,
+    "emoji": "🥂"
+  },
+  {
+    "location": "J.J. Byrne Playground",
+    "address": "5th Ave, Brooklyn, NY 11215",
+    "lat": 40.6726636766024,
+    "lng": -73.9840165711642,
+    "emoji": "🌳"
+  },
+  {
+    "location": "Society of Illustrators",
+    "address": "128 E 63rd St, New York, NY 10065",
+    "lat": 40.7648331,
+    "lng": -73.9668281355821,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "The Billie Holiday Theatre",
+    "address": "1368 Fulton St, Brooklyn, NY 11216",
+    "lat": 40.6800549395655,
+    "lng": -73.9456361034358,
+    "emoji": "🎭"
+  },
+  {
+    "location": "SOUK Yoga Studio",
+    "address": "12 W 27th St 2nd floor, New York, NY 10001",
+    "lat": 40.7446709357792,
+    "lng": -73.9893837288355,
+    "emoji": "🧘"
+  },
+  {
+    "location": "Lewis Latimer House",
+    "address": "34-41 137th St, Flushing, NY 11354",
+    "lat": 40.7661048197486,
+    "lng": -73.829459275762,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "Starr Bar",
+    "address": "214 Starr St, Brooklyn, NY 11237",
+    "lat": 40.7049971713328,
+    "lng": -73.9229048027505,
+    "emoji": "🥂"
+  },
+  {
+    "location": "Isaac Brown Healing & Community Center",
+    "address": "882 3rd Ave 10th Floor, Brooklyn, NY 11232",
+    "lat": 40.6577628103414,
+    "lng": -74.0048579315926,
+    "emoji": "🏛️"
+  },
+  {
+    "location": "Trinity Church",
+    "address": "89 Broadway, New York, NY 10006",
+    "lat": 40.7078832140098,
+    "lng": -74.0117883723438,
+    "emoji": "⛪"
+  },
+  {
+    "location": "Rodney's",
+    "address": "1118 1st Ave, New York, NY 10065",
+    "lat": 40.7609539493586,
+    "lng": -73.9606152536781,
+    "emoji": "🎤"
+  },
+  {
+    "location": "Atolye",
+    "address": "236b 6th St, Brooklyn, NY 11215",
+    "lat": 40.6726640107995,
+    "lng": -73.9885164054046,
+    "emoji": "🎉"
+  },
+  {
+    "location": "Harlem Rose Garden",
+    "address": "6 E 129th St, New York, NY 10035",
+    "lat": 40.8085027712639,
+    "lng": -73.9400855027517,
+    "emoji": "🌹"
+  },
+  {
+    "location": "Open Arts Studio",
+    "address": "68 Jay St Studio 605A, Brooklyn, NY 11201",
+    "lat": 40.7027570712798,
+    "lng": -73.986844931591,
+    "emoji": "💃"
+  },
+  {
+    "location": "Jamaica Performing Arts Center (JPAC)",
+    "address": "153-10 Jamaica Ave, Jamaica, NY 11432",
+    "lat": 40.702521376909,
+    "lng": -73.8016910334404,
+    "emoji": "🎭"
+  },
+  {
+    "location": "Jamaica Center for Arts and Learning (JCAL)",
+    "address": "161-04 Jamaica Ave, Jamaica, NY 11432",
+    "lat": 40.7040117722586,
+    "lng": -73.7982065180978,
+    "emoji": "🎨"
+  },
+  {
+    "location": "ZeroSpace",
+    "address": "337-345 Butler St, Brooklyn, NY 11217",
+    "lat": 40.6806859307595,
+    "lng": -73.9820884831847,
+    "emoji": "🎨"
+  },
+  {
+    "location": "New York Insight Meditation Center",
+    "address": "115 W 29th St 12th floor, New York, NY 10001",
+    "lat": 40.7471200640713,
+    "lng": -73.9908039067465,
+    "emoji": "🧘"
+  },
+  {
+    "location": "The Strother School of Radical Attention",
+    "address": "55 Washington St # 736",
+    "lat": 40.7028501378447,
+    "lng": -73.9894082966416,
+    "emoji": "🧠"
+  },
+  {
+    "location": "Brooklyn Public Library (Central Library)",
+    "address": "10 Grand Army Plz, Brooklyn, NY 11238",
+    "lat": 40.6725070027721,
+    "lng": -73.9682107321814,
+    "emoji": "📖"
   }
 ]

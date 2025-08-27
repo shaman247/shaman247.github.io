@@ -1,9 +1,9 @@
 /* style.css */
 :root {
     --primary-bg: #111; /* Very dark gray / near black */
-    --secondary-bg: #111; /* Dark gray for panels */
-    --tertiary-bg: #3f3f3f; /* Slightly lighter gray for interactive elements */
-    --tertiary-hover-bg: #626262; /* Lighter gray for hover on tertiary elements */
+    --secondary-bg: #222; /* Dark gray for panels */
+    --tertiary-bg: #3c3c3c; /* Slightly lighter gray for interactive elements */
+    --tertiary-hover-bg: #666; /* Lighter gray for hover on tertiary elements */
     --primary-text: #ffffff; /* White text */
     --secondary-text: #bbbbbb; /* Light gray text */
     
@@ -39,7 +39,7 @@ body {
 
 #left-panel { /* Renamed from #filters-panel to match JS */
     width: min(400px, max(330px, 35%)); /* Initial width, can be adjusted */
-    background-color: var(--secondary-bg);
+    background-color: var(--primary-bg);
     padding: 20px 5px 20px 5px;
     display: flex;
     flex-direction: column;
@@ -294,7 +294,7 @@ button#reset-filters:hover {
     width: auto !important; /* Override Leaflet's inline width style */
 }
 .popup-header {
-    padding: 8px 0px;
+    padding: 12px 0px;
     flex-shrink: 0; /* Prevent the header from shrinking */
     display: flex;
     align-items: center;
@@ -332,7 +332,7 @@ button#reset-filters:hover {
     flex-grow: 1; /* Allow the list to take up remaining space */
     /* Hide scrollbar for IE, Edge, and Firefox */
     -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */    
+    scrollbar-width: none;  /* Firefox */
 }
 
 .popup-events-list::-webkit-scrollbar {
