@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
         START_DATE: new Date(2025, 7, 1),
         END_DATE: new Date(2025, 8, 30),
         ONE_DAY_IN_MS: 24 * 60 * 60 * 1000,
-        DEFAULT_MARKER_COLOR: '#777777',
+        DEFAULT_MARKER_COLOR: ['#444', '#ccc'],
         // A slightly desaturated and more harmonious color palette.
         // Pairs are generally closer in hue for a softer look.
         HASHTAG_COLOR_PALETTE: [ 
@@ -58,11 +58,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const hashtagFiltersContainer = document.getElementById('hashtag-filters-container');
 
     async function initializeApp() {
-        // Add scroll listener for the tag container fade effect
-        if (hashtagFiltersContainer) {
-            // hashtagFiltersContainer.addEventListener('scroll', () => updateScrollFade(hashtagFiltersContainer));
-        }
-
         try {
             const eventData = await loadEventsFromFile(CONFIG.EVENT_DATA_URL);
             const locationData = await loadEventsFromFile('locations.json');
@@ -260,15 +255,6 @@ document.addEventListener('DOMContentLoaded', () => {
         map.on('popupopen', function(e) {
             const popupEl = e.popup.getElement();
             if (!popupEl) return;
-
-            // Use a timeout to ensure the content is fully rendered and dimensions are correct
-            setTimeout(() => {
-                const eventsList = popupEl.querySelector('.popup-events-list');
-                if (eventsList) {
-                    updateScrollFade(eventsList);
-                    eventsList.addEventListener('scroll', () => updateScrollFade(eventsList));
-                }
-            }, 100);
         });
     }
 
@@ -328,37 +314,6 @@ document.addEventListener('DOMContentLoaded', () => {
         // Set the input's width to the sizer's width. 
         // Add a small buffer (e.g., 5px) for the cursor or minor rendering differences.
         input.style.width = `${sizer.offsetWidth + 5}px`;
-    }
-
-    function updateScrollFade(element) {
-        if (!element) return;
-
-        // Use a small tolerance to avoid issues with fractional pixel values
-        const tolerance = 1;
-        const scrollTop = element.scrollTop;
-        const scrollHeight = element.scrollHeight;
-        const clientHeight = element.clientHeight;
-
-        const isOverflowing = scrollHeight > clientHeight;
-        const atTop = scrollTop <= tolerance;
-        const atBottom = scrollTop + clientHeight >= scrollHeight - tolerance;
-
-        let newMask = 'none';
-
-        if (isOverflowing) {
-            if (!atTop && !atBottom) {
-                // Both top and bottom fade
-                newMask = 'linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)';
-            } else if (!atTop) {
-                // Top fade only
-                newMask = 'linear-gradient(to bottom, transparent 0%, black 10%, black 100%)';
-            } else if (!atBottom) {
-                // Bottom fade only
-                newMask = 'linear-gradient(to bottom, black 90%, transparent 100%)';
-            }
-        }
-        element.style.webkitMaskImage = newMask;
-        element.style.maskImage = newMask;
     }
 
     function initDatePicker() {
@@ -543,13 +498,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
         popupContainer.appendChild(eventsListWrapper);
 
-        // Add event listener to the list wrapper to handle toggling details,
-        // which can change the scroll height and require a fade update.
-        eventsListWrapper.addEventListener('toggle', () => {
-            // A brief timeout allows the DOM to update before we check dimensions.
-            setTimeout(() => updateScrollFade(eventsListWrapper), 50);
-        }, true); // Use capture phase to ensure it fires.
-
         return popupContainer;
     }
 
@@ -705,9 +653,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Update the HashtagFilterUI view with the new set of filtered events and current selections
         HashtagFilterUI.updateView(allMatchingEventsFlatList);
-
-        // After updating the view, re-check the scroll fade for the tag container
-        // setTimeout(() => updateScrollFade(hashtagFiltersContainer), 100);
     }
 
     function initTagCollapseButton() {

@@ -55,13 +55,6 @@ const MapManager = (() => {
             if (locationInfo && locationInfo.emoji && _markerColorsRef[locationInfo.emoji]) {
                 return _markerColorsRef[locationInfo.emoji];
             }
-
-            // 2. Fallback to color from the first event's first hashtag
-            const firstEvent = eventsAtThisLocation[0];
-            if (firstEvent.hashtags && firstEvent.hashtags.length > 0) {
-                const firstTag = firstEvent.hashtags[0];
-                return _hashtagColorsRef[firstTag] || _defaultMarkerColorRef;
-            }
         }
         return _defaultMarkerColorRef;
     }

@@ -39,7 +39,7 @@ const HashtagFilterUI = (() => {
     function _updateTagVisuals(buttonElement, tagValue) {
         const state = _tagStates[tagValue];
         const displayName = _hashtagDisplayNames[tagValue] || Utils.formatHashtagForDisplay(tagValue);
-        const tagColor = _hashtagColors[tagValue] || _defaultMarkerColor;
+        const tagColor = _hashtagColors[tagValue] || _defaultMarkerColor[0];
 
         // Reset classes and styles
         buttonElement.className = 'hashtag-button'; // Base class
