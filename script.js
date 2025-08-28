@@ -1,10 +1,9 @@
 // script.js
 document.addEventListener('DOMContentLoaded', () => {
     let map;
-    let markersLayer;
     let allEvents = [];
+    let eventsById = {}; // For quick lookup of events by ID
     let tagConfig = {}; // To store data from tags.json
-    let tileLayer;
     let eventsByLatLng = {};
     let locationsByLatLng = {};
     let hashtagColors = {};
@@ -12,16 +11,15 @@ document.addEventListener('DOMContentLoaded', () => {
     let hashtagFrequencies = {}; // To store calculated frequencies
     let datePickerInstance;
     let allAvailableTags = [];
-    let resizeHandle;
-    // let mapContainer; // map div's parent, if needed for layout adjustments
+    let eventTagIndex = {}; // New: For pre-processed event data by tag
 
     const CONFIG = {
         EVENT_DATA_URL: 'events.json',
         TAG_CONFIG_URL: 'tags.json',
         START_DATE: new Date(2025, 7, 1),
-        END_DATE: new Date(2025, 8, 30),
+        END_DATE: new Date(2025, 11, 31),
         ONE_DAY_IN_MS: 24 * 60 * 60 * 1000,
-        DEFAULT_MARKER_COLOR: ['#444', '#ccc'],
+        DEFAULT_MARKER_COLOR: ['#0f0', '#ccc'],
         // A slightly desaturated and more harmonious color palette.
         // Pairs are generally closer in hue for a softer look.
         HASHTAG_COLOR_PALETTE: [ 
@@ -52,7 +50,8 @@ document.addEventListener('DOMContentLoaded', () => {
         MAP_TILE_URL_DARK: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
         MAP_TILE_URL_LIGHT: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
         MAP_ATTRIBUTION: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors © <a href="https://carto.com/attributions">CARTO</a>',
-        MAP_MAX_ZOOM: 20
+        MAP_MAX_ZOOM: 20,
+        MARKER_DISPLAY_LIMIT: 500 // Limit the number of markers displayed
     };
 
     const hashtagFiltersContainer = document.getElementById('hashtag-filters-container');
@@ -65,6 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
             processEventData(eventData, locationData, tagConfig);
             calculateHashtagFrequencies();
             processTagHierarchy();
+            buildTagIndex();
             initMap();
             HashtagFilterUI.init({
                 allAvailableTags: allAvailableTags,
@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const hashtagRewriteRules = tagConfig.rewrite || {};
     
         // Use .flatMap to process and filter in one go, handling the new JSON structure
-        allEvents = eventData.flatMap(rawEvent => {
+                allEvents = eventData.flatMap((rawEvent, index) => {
             const { lat, lng, hashtags: rawHashtags, occurrences: occurrencesJson, ...restOfEvent } = rawEvent;
 
             // Decode HTML entities from key fields to handle encoded characters like &amp; or &#039;
@@ -205,6 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // 4. Construct and return the final event object in an array for flatMap
             return [{
+                id: index, // Add a unique ID
                 ...restOfEvent,
                 latitude: lat,
                 longitude: lng,
@@ -214,9 +215,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }];
         });
 
-        // Rebuild eventsByLatLng from the new allEvents structure
+        // Rebuild eventsByLatLng and eventsById from the new allEvents structure
         eventsByLatLng = {};
+        eventsById = {};
         allEvents.forEach(event => {
+            if (event.id) {
+                eventsById[event.id] = event;
+            }
             if (event.locationKey !== 'unknown_location') {
                 if (!eventsByLatLng[event.locationKey]) {
                     eventsByLatLng[event.locationKey] = [];
@@ -230,6 +235,20 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log("First processed event sample:", JSON.parse(JSON.stringify(allEvents[0])));
             }
         }
+
+    function buildTagIndex() {
+        eventTagIndex = {};
+        allEvents.forEach(event => {
+            if (event.hashtags && Array.isArray(event.hashtags)) {
+                event.hashtags.forEach(tag => {
+                    if (!eventTagIndex[tag]) {
+                        eventTagIndex[tag] = [];
+                    }
+                    eventTagIndex[tag].push(event.id);
+                });
+            }
+        });
+    }
 
     function initMap() {
         // Initialize the map once and store the instance.
@@ -325,10 +344,14 @@ document.addEventListener('DOMContentLoaded', () => {
             initialStartDate = today;
         }
 
+        // Set the default end date to two weeks from today, but not past the max date.
+        const defaultEndDate = new Date(today.getTime() + (14 * CONFIG.ONE_DAY_IN_MS));
+        const finalDefaultEndDate = defaultEndDate > CONFIG.END_DATE ? CONFIG.END_DATE : defaultEndDate;
+
         datePickerInstance = flatpickr("#date-picker", {
             mode: "range",
             dateFormat: "M j",
-            defaultDate: [initialStartDate, CONFIG.END_DATE],
+            defaultDate: [initialStartDate, finalDefaultEndDate],
             minDate: CONFIG.START_DATE,
             maxDate: CONFIG.END_DATE,
             monthSelectorType: "static", // Disables the month dropdown/selector
@@ -508,6 +531,10 @@ document.addEventListener('DOMContentLoaded', () => {
         let visibleLocationCount = 0;
 
         for (const locationKey in locationsToDisplay) {
+            if (visibleLocationCount >= CONFIG.MARKER_DISPLAY_LIMIT) {
+                console.warn(`Marker display limit (${CONFIG.MARKER_DISPLAY_LIMIT}) reached. Not displaying further markers.`);
+                break; // Stop adding markers if the limit is reached
+            }
             if (locationKey === 'unknown_location') continue;
 
             const eventsMatchingFiltersAtThisLocation = locationsToDisplay[locationKey];
@@ -632,9 +659,32 @@ document.addEventListener('DOMContentLoaded', () => {
             .filter(([, state]) => state === 'selected')
             .map(([tag]) => tag);
 
-        // First, filter all events based on date and selected tags to get a flat list
-        // This list will be used to update the HashtagFilterUI's dynamic frequencies
-        const allMatchingEventsFlatList = allEvents.filter(event => {
+        // If tags are selected, pre-filter events using the index for performance.
+        let eventsToFilterByDate;
+        if (selectedTags.length > 0) {
+            const matchingEventIds = new Set();
+            selectedTags.forEach(tag => {
+                if (eventTagIndex[tag]) {
+                    eventTagIndex[tag].forEach(eventId => {
+                        matchingEventIds.add(eventId);
+                    });
+                }
+            });
+            
+            eventsToFilterByDate = [];
+            matchingEventIds.forEach(id => {
+                if (eventsById[id]) {
+                    eventsToFilterByDate.push(eventsById[id]);
+                }
+            });
+        } else {
+            // If no tags are selected, filter all events.
+            eventsToFilterByDate = allEvents;
+        }
+
+        // Now, filter the potentially smaller list of events.
+        // isEventFilteredOut handles date filtering. It also re-checks tags, but this is fast enough on the smaller list.
+        const allMatchingEventsFlatList = eventsToFilterByDate.filter(event => {
             return !isEventFilteredOut(event, currentSliderStartDate, currentSliderEndDate, currentTagStates);
         });
 

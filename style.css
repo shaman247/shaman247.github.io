@@ -78,8 +78,13 @@ body {
 }
 
 .filter-group {
-    margin-bottom: 0; /* Reduced slightly */
+    margin-bottom: 15px; /* Default spacing between filter groups */
     flex-shrink: 0; /* Prevent general filter groups from shrinking or growing by default */
+}
+
+#hashtag-search-filter {
+    padding: 0 15px;
+    align-self: flex-start; /* Align to the start of the flex container */
 }
 
 .filter-group label {
@@ -93,10 +98,13 @@ body {
 
 #title-and-date-filter {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap; /* Allow items to wrap */
+    justify-content: space-between;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 0px;
+    gap: 20px;
+    margin-bottom: 15px;
+    padding: 0 15px;
 }
 
 #title-and-date-filter label {
@@ -107,6 +115,7 @@ body {
     font-size: 1.1em;
     margin-bottom: 0;
     margin-right: 0;
+    white-space: nowrap; /* Prevent title from wrapping */
 }
 
 .title-emoji {
@@ -330,7 +339,7 @@ button#reset-filters:hover {
     padding: 8px 12px 12px; /* Add horizontal padding to match header */
     overflow-y: auto; /* Enable scrolling ONLY on the list */
     flex-grow: 1; /* Allow the list to take up remaining space */
-    /* Hide scrollbar for IE, Edge, and Firefox */
+    /* Hide scrollbar for IE, Edge and Firefox */
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
 }
@@ -518,13 +527,20 @@ button#reset-filters:hover {
 
     #title-and-date-filter {
         flex-direction: row;
+        flex-wrap: wrap; /* Allow items to wrap */
         justify-content: space-between;
         align-items: center;
-        gap: 0;
+        gap: 0; /* Keep small gap for small screens */
+        padding: 0 10px; /* Adjust padding for small screens */
+        margin-bottom: 10px; /* Adjust margin for small screens */
     }
 
     #title-and-date-filter label {
         margin-right: 15px;
+    }
+    #hashtag-search-filter {
+        padding: 0 10px; /* Matches small screen padding of title-and-date-filter */
+        align-self: flex-start;
     }
     .leaflet-popup-content { max-height: 450px; } /* Larger max height for popups on mobile */
 
@@ -708,4 +724,38 @@ span.flatpickr-day.today {
 span.flatpickr-day.today:hover {
     background: var(--accent-hover);
     color: #fff;
+}
+
+.search-input-container {
+    position: relative;
+}
+
+#hashtag-search-input {
+    padding: 6px 6px 6px 35px; /* Adjusted padding-left for icon */
+    background-color: var(--primary-bg);
+    border: 1px solid var(--tertiary-bg);
+    color: var(--secondary-text);
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-family: var(--font-family-body);
+    font-size: 0.95em;
+    cursor: text; /* Changed to text cursor for input */
+    margin-bottom: 0;
+    text-align: left;
+    line-height: 1.2;
+    max-width: 300px; /* Decreased width */
+}
+
+.search-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: var(--accent-color);
+}
+
+.search-input-container:hover .search-icon {
+    color: var(--accent-hover);
+    transition: color 0.2s ease;
 }

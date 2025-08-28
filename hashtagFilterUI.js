@@ -14,6 +14,23 @@ const HashtagFilterUI = (() => {
     let _currentDynamicFrequencies = {};
     let _tagStates = {}; // Stores state for each tag: 'unselected', 'selected', 'required', 'forbidden'
     let _tagPositions = new Map(); // To store tag positions for animations
+    let _searchInputDOM;
+    let _searchTerm = '';
+    let _tagDisplayNameMap = {};
+
+    function _preprocessTags() {
+        _allAvailableTags.forEach(tag => {
+            _tagDisplayNameMap[tag] = (_hashtagDisplayNames[tag] || Utils.formatHashtagForDisplay(tag)).toLowerCase();
+        });
+    }
+
+    function _clearSearch() {
+        if (_searchInputDOM) {
+            _searchInputDOM.value = '';
+        }
+        _searchTerm = '';
+        _renderFilters();
+    }
 
     function init(config) {
         _allAvailableTags = config.allAvailableTags;
@@ -25,6 +42,8 @@ const HashtagFilterUI = (() => {
         _initialGlobalFrequencies = { ...config.initialGlobalFrequencies };
         _currentDynamicFrequencies = { ...config.initialGlobalFrequencies };
 
+        _preprocessTags();
+
         _allAvailableTags.forEach(tag => {
             _tagStates[tag] = TAG_STATE_UNSELECTED;
         });
@@ -32,7 +51,20 @@ const HashtagFilterUI = (() => {
         if (!_hashtagFiltersContainerDOM) {
             console.error("HashtagFilterUI: hashtagFiltersContainerDOM is not provided.");
             return;
+        }
 
+        _searchInputDOM = document.getElementById('hashtag-search-input');
+        if (_searchInputDOM) {
+            _searchInputDOM.addEventListener('input', (e) => {
+                _searchTerm = e.target.value.toLowerCase();
+                _renderFilters();
+            });
+
+            _searchInputDOM.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    _clearSearch();
+                }
+            });
         }
     }
 
@@ -138,7 +170,14 @@ const HashtagFilterUI = (() => {
             [TAG_STATE_UNSELECTED]: 2
         };
 
-        const sortedTags = [..._allAvailableTags].sort((a, b) => {
+        const filteredTags = _allAvailableTags.filter(tag => {
+            if (_tagStates[tag] === TAG_STATE_SELECTED) {
+                return true;
+            }
+            return _tagDisplayNameMap[tag].includes(_searchTerm);
+        });
+
+        const sortedTags = filteredTags.sort((a, b) => {
             const stateA = _tagStates[a];
             const stateB = _tagStates[b];
 
@@ -232,6 +271,10 @@ const HashtagFilterUI = (() => {
         _renderFilters();
     }
 
+    function rebuildDisplayNameMap() {
+        _preprocessTags();
+    }
+
     // Public method to update the view based on externally filtered events
     function updateView(filteredEvents) {
         // This now calculates the frequency of distinct locations for each tag.
@@ -260,6 +303,7 @@ const HashtagFilterUI = (() => {
             }
         }
 
+        rebuildDisplayNameMap();
         _renderFilters(); // Re-render with new frequencies and preserved selections
     }
 
@@ -272,8 +316,8 @@ const HashtagFilterUI = (() => {
     function resetSelections() {
         _allAvailableTags.forEach(tag => {
             _tagStates[tag] = TAG_STATE_UNSELECTED;
-
         });
+        _clearSearch();
         // The main app (script.js) will call filterAndDisplayEvents,
         // which will then call updateView, causing a re-render.
     }
@@ -284,7 +328,8 @@ const HashtagFilterUI = (() => {
         updateView,
         getTagStates,
         resetSelections,
-        createInteractiveTagButton
+        createInteractiveTagButton,
+        rebuildDisplayNameMap
     };
 })();
 
