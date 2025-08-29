@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
             allAvailableTags: [],
             eventTagIndex: {},
             allEventsFilteredByDate: [],
+            lastSelectedDates: [],
         },
 
         // Configuration constants
@@ -77,7 +78,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 this.initHashtagFilterUI();
                 UIManager.initDatePicker(this.elements, this.config, this.state, {
                     onDatePickerClose: (selectedDates) => {
-                        this.state.allEventsFilteredByDate = this.filterEventsByDateRange(selectedDates[0], selectedDates[1]);
+                        const [newStart, newEnd] = selectedDates;
+                        const [oldStart, oldEnd] = this.state.lastSelectedDates;
+
+                        // If dates are the same as before, do nothing to avoid re-computation
+                        if (oldStart && oldEnd && newStart.getTime() === oldStart.getTime() && newEnd.getTime() === oldEnd.getTime()) {
+                            return;
+                        }
+
+                        // Update the stored dates and re-filter
+                        this.state.lastSelectedDates = selectedDates;
+                        this.state.allEventsFilteredByDate = this.filterEventsByDateRange(newStart, newEnd);
+                        DataManager.buildTagIndex(this.state, this.state.allEventsFilteredByDate);
                         this.filterAndDisplayEvents();
                     }
                 });
@@ -151,28 +163,46 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const selectedTags = Object.entries(currentTagStates).filter(([, s]) => s === 'selected').map(([t]) => t);
             const requiredTags = Object.entries(currentTagStates).filter(([, s]) => s === 'required').map(([t]) => t);
+            const forbiddenTags = Object.entries(currentTagStates).filter(([, s]) => s === 'forbidden').map(([t]) => t);
 
-            let eventsToFilter;
+            let allMatchingEventsFlatList;
 
-            if (requiredTags.length > 0) {
-                const firstRequiredTag = requiredTags[0];
-                const initialEventIds = this.state.eventTagIndex[firstRequiredTag] || new Set();
-                eventsToFilter = Array.from(initialEventIds).map(id => this.state.eventsById[id]).filter(Boolean);
-            } else if (selectedTags.length > 0) {
-                const matchingEventIds = new Set();
-                selectedTags.forEach(tag => {
-                    if (this.state.eventTagIndex[tag]) {
-                        this.state.eventTagIndex[tag].forEach(eventId => matchingEventIds.add(eventId));
-                    }
-                });
-                eventsToFilter = Array.from(matchingEventIds).map(id => this.state.eventsById[id]).filter(Boolean);
+            if (selectedTags.length === 0 && requiredTags.length === 0) { // Special case for performance
+                allMatchingEventsFlatList = this.state.allEventsFilteredByDate;
+                if (forbiddenTags.length > 0) {
+                    const forbiddenTagsSet = new Set(forbiddenTags);
+                    allMatchingEventsFlatList = allMatchingEventsFlatList.filter(event =>
+                        !event.hashtags?.some(tag => forbiddenTagsSet.has(tag))
+                    );
+                }
             } else {
-                eventsToFilter = this.state.allEventsFilteredByDate;
-            }
+                let eventsToFilter;
 
-            const allMatchingEventsFlatList = eventsToFilter.filter(event =>
-                this.isEventMatchingFilters(event, currentSliderStartDate, currentSliderEndDate, currentTagStates)
-            );
+                if (requiredTags.length > 0) {
+                    const firstRequiredTag = requiredTags[0];
+                    const initialEventIds = this.state.eventTagIndex[firstRequiredTag] || new Set();
+                    eventsToFilter = Array.from(initialEventIds).map(id => this.state.eventsById[id]).filter(Boolean);
+                } else if (selectedTags.length > 0) {
+                    const matchingEventIds = new Set();
+                    selectedTags.forEach(tag => {
+                        if (this.state.eventTagIndex[tag]) {
+                            this.state.eventTagIndex[tag].forEach(eventId => matchingEventIds.add(eventId));
+                        }
+                    });
+                    eventsToFilter = Array.from(matchingEventIds).map(id => this.state.eventsById[id]).filter(Boolean);
+                } else {
+                    eventsToFilter = this.state.allEventsFilteredByDate;
+                }
+
+                if (forbiddenTags.length > 0) {
+                    const forbiddenTagsSet = new Set(forbiddenTags);
+                    eventsToFilter = eventsToFilter.filter(event =>
+                        !event.hashtags?.some(tag => forbiddenTagsSet.has(tag))
+                    );
+                }
+
+                allMatchingEventsFlatList = eventsToFilter;
+            }
 
             const filteredLocations = {};
             allMatchingEventsFlatList.forEach(event => {
@@ -184,8 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
-            const positiveTags = [...selectedTags, ...requiredTags];
-            this.displayEventsOnMap(filteredLocations, popupToReopenLatLng, positiveTags);
+            this.displayEventsOnMap(filteredLocations, popupToReopenLatLng);
             HashtagFilterUI.updateView(allMatchingEventsFlatList);
         },
 
@@ -264,9 +293,8 @@ document.addEventListener('DOMContentLoaded', () => {
          * Displays events on the map.
          * @param {object} locationsToDisplay - The locations and events to display.
          * @param {L.LatLng} popupToReopenLatLng - The LatLng of a popup to reopen.
-         * @param {Array<string>} selectedTags - The currently selected tags.
          */
-        displayEventsOnMap(locationsToDisplay, popupToReopenLatLng = null, selectedTags = []) {
+        displayEventsOnMap(locationsToDisplay, popupToReopenLatLng = null) {
             const newMarkers = {};
             MapManager.clearMarkers();
             let visibleLocationCount = 0;

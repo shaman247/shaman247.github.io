@@ -129,9 +129,10 @@ const DataManager = {
         });
     },
 
-    buildTagIndex: function(state) {
+    buildTagIndex: function(state, events) {
+        const eventsToIndex = events || state.allEvents;
         state.eventTagIndex = {};
-        state.allEvents.forEach(event => {
+        eventsToIndex.forEach(event => {
             if (event.hashtags && Array.isArray(event.hashtags)) {
                 event.hashtags.forEach(tag => {
                     if (!state.eventTagIndex[tag]) {

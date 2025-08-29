@@ -265,7 +265,7 @@ body {
 }
 .hashtag-button.state-forbidden:hover {
     text-decoration: line-through;
-    background-color: var(--tertiary-hover-bg);
+    border: 1px solid var(--tertiary-bg);
     color: var(--secondary-text);
 }
 
