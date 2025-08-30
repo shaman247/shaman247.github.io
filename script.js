@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
             allAvailableTags: [],
             eventTagIndex: {},
             allEventsFilteredByDate: [],
+            eventsByLatLngInDateRange: {},
             lastSelectedDates: [],
         },
 
@@ -28,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
             START_DATE: new Date(2025, 7, 1),
             END_DATE: new Date(2025, 11, 31),
             ONE_DAY_IN_MS: 24 * 60 * 60 * 1000,
-            DEFAULT_MARKER_COLOR: ['#0f0', '#ccc'],
+            DEFAULT_MARKER_COLOR: '#0f0',
             HASHTAG_COLOR_PALETTE: [
                 ['#d16a6f', '#d19f6a'], ['#e88c4b', '#e8c54b'], ['#d9c35c', '#a6d95c'],
                 ['#68b08f', '#689db0'], ['#5f8fe3', '#8f5fe3'], ['#a65b9a', '#d15a63'],
@@ -89,6 +90,17 @@ document.addEventListener('DOMContentLoaded', () => {
                         // Update the stored dates and re-filter
                         this.state.lastSelectedDates = selectedDates;
                         this.state.allEventsFilteredByDate = this.filterEventsByDateRange(newStart, newEnd);
+                        
+                        this.state.eventsByLatLngInDateRange = {};
+                        this.state.allEventsFilteredByDate.forEach(event => {
+                            if (event.locationKey) {
+                                if (!this.state.eventsByLatLngInDateRange[event.locationKey]) {
+                                    this.state.eventsByLatLngInDateRange[event.locationKey] = [];
+                                }
+                                this.state.eventsByLatLngInDateRange[event.locationKey].push(event);
+                            }
+                        });
+
                         DataManager.buildTagIndex(this.state, this.state.allEventsFilteredByDate);
                         this.filterAndDisplayEvents();
                     }
@@ -138,27 +150,28 @@ document.addEventListener('DOMContentLoaded', () => {
         /**
          * Filters and displays events on the map based on current filter criteria.
          */
-        filterAndDisplayEvents() {
+        filterAndDisplayEvents(options = {}) {
             if (!this.state.datePickerInstance) {
                 console.warn("filterAndDisplayEvents called before datePicker is initialized.");
                 return;
             }
 
-            let popupToReopenLatLng = null;
+            let openPopup = null;
+            let openMarker = null;
             if (this.state.map) {
                 this.state.map.eachLayer(layer => {
                     if (layer instanceof L.Popup && this.state.map.hasLayer(layer)) {
-                        popupToReopenLatLng = layer.getLatLng();
+                        openPopup = layer;
+                        if (layer._source) { openMarker = layer._source; }
                     }
                 });
             }
 
             const selectedDates = this.state.datePickerInstance.selectedDates;
             if (selectedDates.length < 2) {
-                return;
+                return; // Exit if no valid date range is selected
             }
 
-            const [currentSliderStartDate, currentSliderEndDate] = selectedDates;
             const currentTagStates = HashtagFilterUI.getTagStates();
 
             const selectedTags = Object.entries(currentTagStates).filter(([, s]) => s === 'selected').map(([t]) => t);
@@ -179,9 +192,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 let eventsToFilter;
 
                 if (requiredTags.length > 0) {
-                    const firstRequiredTag = requiredTags[0];
-                    const initialEventIds = this.state.eventTagIndex[firstRequiredTag] || new Set();
-                    eventsToFilter = Array.from(initialEventIds).map(id => this.state.eventsById[id]).filter(Boolean);
+                    // Start with a set of event IDs from the first required tag.
+                    let matchingEventIds = new Set(this.state.eventTagIndex[requiredTags[0]] || []);
+                    // Intersect with event IDs from other required tags to find events that have ALL required tags.
+                    for (let i = 1; i < requiredTags.length; i++) {
+                        const tag = requiredTags[i];
+                        const eventIdsForTag = new Set(this.state.eventTagIndex[tag] || []);
+                        matchingEventIds = new Set([...matchingEventIds].filter(id => eventIdsForTag.has(id)));
+                    }
+                    eventsToFilter = Array.from(matchingEventIds).map(id => this.state.eventsById[id]).filter(Boolean);
                 } else if (selectedTags.length > 0) {
                     const matchingEventIds = new Set();
                     selectedTags.forEach(tag => {
@@ -214,44 +233,54 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
-            this.displayEventsOnMap(filteredLocations, popupToReopenLatLng);
+            // If a popup is open, update its content before redrawing the map
+            if (openPopup) {
+                const popupLatLng = openPopup.getLatLng();
+                const locationKey = `${popupLatLng.lat},${popupLatLng.lng}`;
+                const locationInfo = this.state.locationsByLatLng[locationKey];
+                const eventsAtLocationInDateRange = this.state.eventsByLatLngInDateRange[locationKey] || [];
+
+                const currentPopupFilters = {
+                    sliderStartDate: selectedDates[0],
+                    sliderEndDate: selectedDates[1],
+                    tagStates: currentTagStates
+                };
+                const filterFunctions = {
+                    isEventMatchingTagFilters: this.isEventMatchingTagFilters.bind(this)
+                };
+                const newContent = UIManager.createLocationPopupContent(
+                    locationInfo,
+                    eventsAtLocationInDateRange,
+                    currentPopupFilters, 
+                    filterFunctions);
+                openPopup.setContent(newContent);
+            }
+            this.displayEventsOnMap(filteredLocations, openMarker);
             HashtagFilterUI.updateView(allMatchingEventsFlatList);
         },
-
+        
         /**
-         * Checks if an event matches the current date and tag filters.
+         * Checks if an event matches the current tag filters.
          * @param {object} event - The event to check.
-         * @param {Date} filterStartDate - The start of the date range.
-         * @param {Date} filterEndDate - The end of the date range.
          * @param {object} tagStates - The current state of the tag filters.
-         * @returns {boolean} - True if the event matches the filters.
+         * @returns {boolean} - True if the event matches the tag filters.
          */
-        isEventMatchingFilters(event, filterStartDate, filterEndDate, tagStates) {
-            const dateMatch = this.isEventInDateRange(event, filterStartDate, filterEndDate);
-            if (!dateMatch) return false;
-
+        isEventMatchingTagFilters(event, tagStates) {
             const selectedTags = Object.entries(tagStates).filter(([, state]) => state === 'selected').map(([tag]) => tag);
             const requiredTags = Object.entries(tagStates).filter(([, state]) => state === 'required').map(([tag]) => tag);
             const forbiddenTags = Object.entries(tagStates).filter(([, state]) => state === 'forbidden').map(([tag]) => tag);
 
             const eventTags = new Set(event.hashtags || []);
 
-            // Rule 1: Must contain all required tags
-            if (requiredTags.length > 0 && !requiredTags.every(tag => eventTags.has(tag))) {
-                return false;
-            }
-
-            // Rule 2: Must not contain any forbidden tags
             if (forbiddenTags.length > 0 && forbiddenTags.some(tag => eventTags.has(tag))) {
                 return false;
             }
-
-            // Rule 3: Must contain at least one of the selected or required tags, if any exist.
-            const positiveTags = [...selectedTags, ...requiredTags];
-            if (positiveTags.length > 0 && !positiveTags.some(tag => eventTags.has(tag))) {
+            if (requiredTags.length > 0 && !requiredTags.every(tag => eventTags.has(tag))) {
                 return false;
             }
-
+            if (requiredTags.length === 0 && selectedTags.length > 0 && !selectedTags.some(tag => eventTags.has(tag))) {
+                return false;
+            }
             return true;
         },
         
@@ -292,57 +321,58 @@ document.addEventListener('DOMContentLoaded', () => {
         /**
          * Displays events on the map.
          * @param {object} locationsToDisplay - The locations and events to display.
-         * @param {L.LatLng} popupToReopenLatLng - The LatLng of a popup to reopen.
+         * @param {L.Marker} [markerToKeep=null] - A marker to keep on the map (with an open popup).
          */
-        displayEventsOnMap(locationsToDisplay, popupToReopenLatLng = null) {
-            const newMarkers = {};
-            MapManager.clearMarkers();
-            let visibleLocationCount = 0;
-
-            for (const locationKey in locationsToDisplay) {
-                if (visibleLocationCount >= this.config.MARKER_DISPLAY_LIMIT) {
-                    console.warn(`Marker display limit (${this.config.MARKER_DISPLAY_LIMIT}) reached.`);
-                    break;
-                }
-
-                const eventsAtLocation = locationsToDisplay[locationKey];
-                if (eventsAtLocation.length === 0) continue;
-
-                visibleLocationCount++;
-
-                const [lat, lng] = locationKey.split(',').map(Number);
-                if (lat === 0 && lng === 0) continue;
-
-                const locationInfo = this.state.locationsByLatLng[locationKey];
-                const markerEmoji = locationInfo ? locationInfo.emoji : '📍';
-                const locationName = locationInfo ? locationInfo.location : 'Unknown Location';
-
-                const markerColor = MapManager.getMarkerColor(eventsAtLocation, locationInfo);
-                const customIcon = MapManager.createCustomMarkerIcon(markerColor, markerEmoji);
-
-                const popupContentCallback = () => {
-                    const selectedDates = this.state.datePickerInstance.selectedDates;
-                    const currentPopupFilters = {
-                        sliderStartDate: selectedDates[0],
-                        sliderEndDate: selectedDates[1],
-                        tagStates: HashtagFilterUI.getTagStates()
-                    };
-                    const allEventsForThisPhysicalLocation = this.state.eventsByLatLng[locationKey] || [];
-                    return UIManager.createLocationPopupContent(locationInfo, allEventsForThisPhysicalLocation, currentPopupFilters, this.isEventMatchingFilters.bind(this));
-                };
-
-                const marker = MapManager.addMarkerToMap([lat, lng], customIcon, locationName, popupContentCallback);
-                if (marker) {
-                    newMarkers[locationKey] = marker;
-                }
-            }
-
-            if (popupToReopenLatLng) {
-                const keyToReopen = `${popupToReopenLatLng.lat},${popupToReopenLatLng.lng}`;
-                if (newMarkers[keyToReopen]) {
-                    newMarkers[keyToReopen].openPopup();
-                }
-            }
+        displayEventsOnMap(locationsToDisplay, markerToKeep = null) {
+             let openMarkerLocationKey = null;
+             if (markerToKeep) {
+                 const latLng = markerToKeep.getLatLng();
+                 openMarkerLocationKey = `${latLng.lat},${latLng.lng}`;
+             }
+ 
+             MapManager.clearMarkers(markerToKeep);
+             let visibleLocationCount = markerToKeep ? 1 : 0;
+ 
+             for (const locationKey in locationsToDisplay) {
+                 if (locationKey === openMarkerLocationKey) {
+                     // Already handled the marker to keep, so skip it in the loop.
+                     continue;
+                 }
+ 
+                 if (visibleLocationCount >= this.config.MARKER_DISPLAY_LIMIT) {
+                     console.warn(`Marker display limit (${this.config.MARKER_DISPLAY_LIMIT}) reached.`);
+                     break;
+                 }
+ 
+                 const eventsAtLocation = locationsToDisplay[locationKey];
+                 if (eventsAtLocation.length === 0) continue;
+ 
+                 visibleLocationCount++;
+ 
+                 const [lat, lng] = locationKey.split(',').map(Number);
+                 if (lat === 0 && lng === 0) continue;
+ 
+                 const locationInfo = this.state.locationsByLatLng[locationKey];
+                 const locationName = locationInfo ? locationInfo.location : 'Unknown Location';
+ 
+                 const customIcon = MapManager.createMarkerIcon(locationInfo);
+ 
+                 const popupContentCallback = () => {
+                     const selectedDates = this.state.datePickerInstance.selectedDates;
+                     const currentPopupFilters = {
+                         sliderStartDate: selectedDates[0],
+                         sliderEndDate: selectedDates[1],
+                         tagStates: HashtagFilterUI.getTagStates()
+                     };
+                     const eventsAtLocationInDateRange = this.state.eventsByLatLngInDateRange[locationKey] || [];
+                     const filterFunctions = {
+                        isEventMatchingTagFilters: this.isEventMatchingTagFilters.bind(this)
+                     };
+                     return UIManager.createLocationPopupContent(locationInfo, eventsAtLocationInDateRange, currentPopupFilters, filterFunctions);
+                 };
+ 
+                 MapManager.addMarkerToMap([lat, lng], customIcon, locationName, popupContentCallback);
+             }
         }
     };
 

@@ -27,24 +27,32 @@ const MapManager = (() => {
 
     /**
      * Clears all markers from the map.
+     * @param {L.Marker} [markerToSpare=null] - The marker to not remove.
      */
-    function clearMarkers() {
+    function clearMarkers(markerToSpare = null) {
         if (state.markersLayerInstance) {
-            state.markersLayerInstance.clearLayers();
+            if (!markerToSpare) {
+                state.markersLayerInstance.clearLayers();
+                return;
+            }
+            const layersToRemove = [];
+            state.markersLayerInstance.eachLayer(layer => {
+                if (layer !== markerToSpare) {
+                    layersToRemove.push(layer);
+                }
+            });
+            layersToRemove.forEach(layer => state.markersLayerInstance.removeLayer(layer));
         }
     }
 
     /**
      * Gets the color for a marker based on the events at its location.
-     * @param {Array} eventsAtThisLocation - The events at the marker's location.
      * @param {object} locationInfo - Information about the location.
      * @returns {Array<string>|string} - The color for the marker.
      */
-    function getMarkerColor(eventsAtThisLocation, locationInfo) {
-        if (eventsAtThisLocation && eventsAtThisLocation.length > 0) {
-            if (locationInfo && locationInfo.emoji && state.markerColorsRef[locationInfo.emoji]) {
-                return state.markerColorsRef[locationInfo.emoji];
-            }
+    function getMarkerColor(locationInfo) {
+        if (locationInfo && locationInfo.emoji && state.markerColorsRef[locationInfo.emoji]) {
+            return state.markerColorsRef[locationInfo.emoji][0];
         }
         return state.defaultMarkerColorRef;
     }
@@ -55,14 +63,16 @@ const MapManager = (() => {
      * @param {string} emoji - The emoji to display on the marker.
      * @returns {L.DivIcon} - The custom marker icon.
      */
-    function createCustomMarkerIcon(markerColor, emoji) {
+    function createMarkerIcon(locationInfo) {
         const baseWidth = 45;
         const baseHeight = 60;
         const iconSize = [baseWidth, baseHeight];
+        const markerColor = getMarkerColor(locationInfo);
+        const emoji = locationInfo ? locationInfo.emoji : '✨';
         const iconHtml = `
             <svg width=45 height=60 viewBox="0 0 28 35" xmlns="http://www.w3.org/2000/svg">
                 <g transform="translate(0, 1)">
-                    <path d="M14 0C7.37258 0 2 5.37258 2 12C2 21.056 14 32 14 32C14 32 26 21.056 26 12C26 5.37258 20.6274 0 14 0Z" fill="${markerColor[0]}" stroke="#333" stroke-width="1"/>
+                    <path d="M14 0C7.37258 0 2 5.37258 2 12C2 21.056 14 32 14 32C14 32 26 21.056 26 12C26 5.37258 20.6274 0 14 0Z" fill="${markerColor}" stroke="#333" stroke-width="1"/>
                     <text x="14" y="13" font-size="16" text-anchor="middle" dominant-baseline="central">${emoji}</text>
                 </g>
             </svg>`;
@@ -95,11 +105,22 @@ const MapManager = (() => {
         return marker;
     }
 
+    /**
+     * Removes a single marker from the map.
+     * @param {L.Marker} marker - The marker to remove.
+     */
+    function removeMarker(marker) {
+        if (state.markersLayerInstance && marker) {
+            state.markersLayerInstance.removeLayer(marker);
+        }
+    }
+
     return {
         init,
         clearMarkers,
         getMarkerColor,
-        createCustomMarkerIcon,
+        createMarkerIcon,
         addMarkerToMap,
+        removeMarker,
     };
 })();

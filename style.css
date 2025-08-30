@@ -260,12 +260,15 @@ body {
 /* Forbidden State (NOT) */
 .hashtag-button.state-forbidden {
     text-decoration: line-through;
+    border: 1px solid transparent;
+    padding: 3px 9px; /* Adjusted padding */
     background-color: var(--primary-bg);
     color: var(--secondary-text);
 }
 .hashtag-button.state-forbidden:hover {
     text-decoration: line-through;
     border: 1px solid var(--tertiary-bg);
+    padding: 3px 9px; /* Adjusted padding */
     color: var(--secondary-text);
 }
 

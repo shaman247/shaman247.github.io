@@ -142,15 +142,14 @@ const HashtagFilterUI = (() => {
         }
     }
 
-    function getPopupNextState(currentState) {
+    function getRightClickNextState(currentState) {
         switch (currentState) {
             case TAG_STATE.SELECTED:
             case TAG_STATE.REQUIRED:
+            case TAG_STATE.FORBIDDEN:
                 return TAG_STATE.UNSELECTED;
             case TAG_STATE.UNSELECTED:
                 return TAG_STATE.SELECTED;
-            case TAG_STATE.FORBIDDEN:
-                return TAG_STATE.UNSELECTED;
             default:
                 return TAG_STATE.UNSELECTED;
         }
@@ -175,7 +174,14 @@ const HashtagFilterUI = (() => {
             }
         });
 
-        button.addEventListener('contextmenu', (e) => e.preventDefault());
+        button.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            state.tagStates[tag] = getRightClickNextState(state.tagStates[tag]);
+            updateTagVisuals(button, tag);
+            if (state.onFilterChangeCallback) {
+                state.onFilterChangeCallback();
+            }
+        });
         return button;
     }
 
@@ -202,29 +208,11 @@ const HashtagFilterUI = (() => {
         button.addEventListener('contextmenu', (e) => {
             e.preventDefault();
             e.stopPropagation();
-        });
-
-        return button;
-    }
-
-    function createPopupTagButton(tag) {
-        const button = document.createElement('button');
-        button.dataset.tag = tag;
-
-        updateTagVisuals(button, tag);
-
-        button.addEventListener('click', (e) => {
-            e.stopPropagation();
-            state.tagStates[tag] = getPopupNextState(state.tagStates[tag]);
+            state.tagStates[tag] = getRightClickNextState(state.tagStates[tag]);
             updateTagVisuals(button, tag);
             if (state.onFilterChangeCallback) {
                 state.onFilterChangeCallback();
             }
-        });
-
-        button.addEventListener('contextmenu', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
         });
 
         return button;
@@ -404,7 +392,6 @@ const HashtagFilterUI = (() => {
         getTagStates,
         resetSelections,
         createInteractiveTagButton,
-        createPopupTagButton,
     };
 })();
 

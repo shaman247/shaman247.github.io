@@ -54,31 +54,20 @@ const UIManager = {
         input.style.width = `${sizer.offsetWidth + 5}px`;
     },
 
-    createLocationPopupContent: function(locationInfo, eventsAtLocation, activeFilters, isEventMatchingFilters) {
+    createLocationPopupContent: function(locationInfo, eventsAtLocation, activeFilters, filterFunctions) {
         const popupContainer = document.createElement('div');
         popupContainer.className = 'leaflet-popup-content';
-
-        const filteredEvents = eventsAtLocation.filter(event =>
-            isEventMatchingFilters(event, activeFilters.sliderStartDate, activeFilters.sliderEndDate, activeFilters.tagStates)
-        );
-
-        if (filteredEvents.length === 0) {
-            const noEventsP = document.createElement('p');
-            noEventsP.textContent = "No events at this location match the current filters.";
-            popupContainer.appendChild(noEventsP);
-            return popupContainer;
-        }
 
         if (locationInfo) {
             popupContainer.appendChild(this.createPopupHeader(locationInfo));
         }
 
-        popupContainer.appendChild(this.createEventsList(filteredEvents, activeFilters, locationInfo));
+        popupContainer.appendChild(this.createEventsList(eventsAtLocation, activeFilters, locationInfo, filterFunctions));
 
         return popupContainer;
     },
 
-    createPopupHeader: function(locationInfo) {
+    createPopupHeader: function (locationInfo) {
         const headerWrapper = document.createElement('div');
         headerWrapper.className = 'popup-header';
 
@@ -105,46 +94,71 @@ const UIManager = {
         return headerWrapper;
     },
 
-    createEventsList: function(filteredEvents, activeFilters, locationInfo) {
+    createEventsList: function(eventsAtLocation, activeFilters, locationInfo, filterFunctions) {
         const eventsListWrapper = document.createElement('div');
         eventsListWrapper.className = 'popup-events-list';
+
+        if (eventsAtLocation.length === 0) {
+            const noEventsP = document.createElement('p');
+            noEventsP.textContent = "No events at this location in the selected date range.";
+            eventsListWrapper.appendChild(noEventsP);
+            return eventsListWrapper;
+        }
 
         const selectedTags = Object.entries(activeFilters.tagStates)
             .filter(([, state]) => (state === 'selected' || state === 'required'))
             .map(([tag]) => tag);
-        const hasActiveTagFilters = selectedTags.length > 0;
 
-        if (hasActiveTagFilters) {
-            filteredEvents.sort((a, b) => {
+        const hasActiveTagFilters = selectedTags.length > 0;
+        const hasForbiddenTags = Object.entries(activeFilters.tagStates).some(([, state]) => state === 'forbidden');
+        const hasAnyTagFilter = hasActiveTagFilters || hasForbiddenTags;
+
+        eventsAtLocation.sort((a, b) => {
+            const aTagMatch = filterFunctions.isEventMatchingTagFilters(a, activeFilters.tagStates);
+            const bTagMatch = filterFunctions.isEventMatchingTagFilters(b, activeFilters.tagStates);
+
+            // Events matching tags get priority
+            if (aTagMatch !== bTagMatch) {
+                return bTagMatch - aTagMatch; // true (1) comes before false (0)
+            }
+
+            // Secondary sort: if scores are equal, sort by tag match count if there are active tag filters
+            if (hasActiveTagFilters) {
                 const aMatchCount = selectedTags.filter(tag => (a.hashtags || []).includes(tag)).length;
                 const bMatchCount = selectedTags.filter(tag => (b.hashtags || []).includes(tag)).length;
                 if (bMatchCount !== aMatchCount) {
                     return bMatchCount - aMatchCount;
                 }
-                const aStart = a.occurrences?.[0]?.start?.getTime() || 0;
-                const bStart = b.occurrences?.[0]?.start?.getTime() || 0;
-                return aStart - bStart;
-            });
-        }
-
-        const expandAll = !hasActiveTagFilters && filteredEvents.length > 0 && filteredEvents.length < 4;
-        let isFirstMatchingEventInPopup = true;
-
-        filteredEvents.forEach(event => {
-            const details = document.createElement('details');
-            let shouldExpand = expandAll || isFirstMatchingEventInPopup;
-            if (hasActiveTagFilters) {
-                shouldExpand = selectedTags.some(tag => (event.hashtags || []).includes(tag));
             }
-            details.open = shouldExpand;
+
+            // Tertiary sort: by start date
+            const aStart = a.occurrences?.[0]?.start?.getTime() || 0;
+            const bStart = b.occurrences?.[0]?.start?.getTime() || 0;
+            return aStart - bStart;
+        });
+
+        const matchingEvents = eventsAtLocation.filter(event => filterFunctions.isEventMatchingTagFilters(event, activeFilters.tagStates));
+        const expandAll = !hasAnyTagFilter && eventsAtLocation.length > 0 && eventsAtLocation.length < 4;
+        let isFirstEvent = true;
+
+        eventsAtLocation.forEach(event => {
+            const details = document.createElement('details');
+            const eventMatches = matchingEvents.includes(event);
+
+            if (hasAnyTagFilter) {
+                details.open = eventMatches;
+            } else {
+                details.open = expandAll || isFirstEvent;
+            }
 
             const summary = document.createElement('summary');
             summary.innerHTML = `<span class="popup-event-emoji">${Utils.escapeHtml(event.emoji)}</span> ${Utils.escapeHtml(event.name)}`;
+
             details.appendChild(summary);
 
             details.appendChild(this.createEventDetail(event, locationInfo));
             eventsListWrapper.appendChild(details);
-            isFirstMatchingEventInPopup = false;
+            isFirstEvent = false;
         });
 
         return eventsListWrapper;
@@ -190,7 +204,7 @@ const UIManager = {
             const tagsContainer = document.createElement('div');
             tagsContainer.className = 'hashtag-tags-container popup-tags-container';
             event.hashtags.forEach(tag => {
-                const tagButton = HashtagFilterUI.createPopupTagButton(tag);
+                const tagButton = HashtagFilterUI.createInteractiveTagButton(tag);
                 if (tagButton) {
                     tagsContainer.appendChild(tagButton);
                 }
