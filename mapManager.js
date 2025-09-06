@@ -7,14 +7,6 @@ const MapManager = (() => {
         markerColorsRef: null,
     };
 
-    /**
-     * Initializes the MapManager module.
-     * @param {L.Map} mapInstance - The Leaflet map instance.
-     * @param {object} hashtagColors - A reference to the hashtag colors object.
-     * @param {Array<string>} defaultMarkerColor - The default marker color.
-     * @param {object} markerColors - A reference to the marker colors object.
-     * @returns {{markersLayer: L.LayerGroup}} - An object containing the markers layer.
-     */
     function init(mapInstance, hashtagColors, defaultMarkerColor, markerColors) {
         state.mapInstance = mapInstance;
         state.hashtagColorsRef = hashtagColors;
@@ -25,10 +17,6 @@ const MapManager = (() => {
         return { markersLayer: state.markersLayerInstance };
     }
 
-    /**
-     * Clears all markers from the map.
-     * @param {L.Marker} [markerToSpare=null] - The marker to not remove.
-     */
     function clearMarkers(markerToSpare = null) {
         if (state.markersLayerInstance) {
             if (!markerToSpare) {
@@ -45,30 +33,22 @@ const MapManager = (() => {
         }
     }
 
-    /**
-     * Gets the color for a marker based on the events at its location.
-     * @param {object} locationInfo - Information about the location.
-     * @returns {Array<string>|string} - The color for the marker.
-     */
     function getMarkerColor(locationInfo) {
-        if (locationInfo && locationInfo.emoji && state.markerColorsRef[locationInfo.emoji]) {
-            return state.markerColorsRef[locationInfo.emoji][0];
+        if (locationInfo) {
+            const emoji = locationInfo.flavor_emoji ? locationInfo.flavor_emoji : locationInfo.base_emoji;
+            if (state.markerColorsRef[emoji]) {
+                return state.markerColorsRef[emoji][0];
+            }
         }
         return state.defaultMarkerColorRef;
     }
 
-    /**
-     * Creates a custom marker icon with the given color, emoji, and prominence.
-     * @param {Array<string>|string} markerColor - The color of the marker.
-     * @param {string} emoji - The emoji to display on the marker.
-     * @returns {L.DivIcon} - The custom marker icon.
-     */
     function createMarkerIcon(locationInfo) {
         const baseWidth = 45;
         const baseHeight = 60;
         const iconSize = [baseWidth, baseHeight];
         const markerColor = getMarkerColor(locationInfo);
-        const emoji = locationInfo ? locationInfo.emoji : '✨';
+        const emoji = locationInfo.flavor_emoji ? locationInfo.flavor_emoji : (locationInfo.base_emoji ? locationInfo.base_emoji : '✨');
         const iconHtml = `
             <svg width=45 height=60 viewBox="0 0 28 35" xmlns="http://www.w3.org/2000/svg">
                 <g transform="translate(0, 1)">
@@ -85,14 +65,6 @@ const MapManager = (() => {
         });
     }
 
-    /**
-     * Adds a marker to the map.
-     * @param {L.LatLng} latLng - The latitude and longitude of the marker.
-     * @param {L.DivIcon} icon - The icon for the marker.
-     * @param {string} tooltipText - The text for the marker's tooltip.
-     * @param {function} popupContentCallback - A function that returns the content for the marker's popup.
-     * @returns {L.Marker} - The created marker.
-     */
     function addMarkerToMap(latLng, icon, tooltipText, popupContentCallback) {
         if (!state.markersLayerInstance) return;
 
@@ -105,10 +77,6 @@ const MapManager = (() => {
         return marker;
     }
 
-    /**
-     * Removes a single marker from the map.
-     * @param {L.Marker} marker - The marker to remove.
-     */
     function removeMarker(marker) {
         if (state.markersLayerInstance && marker) {
             state.markersLayerInstance.removeLayer(marker);

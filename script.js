@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
     const App = {
-        // Application state
         state: {
             map: null,
             tileLayer: null,
@@ -21,7 +20,6 @@ document.addEventListener('DOMContentLoaded', () => {
             lastSelectedDates: [],
         },
 
-        // Configuration constants
         config: {
             EVENT_DATA_URL: 'events.json',
             TAG_CONFIG_URL: 'tags.json',
@@ -29,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
             START_DATE: new Date(2025, 7, 1),
             END_DATE: new Date(2025, 11, 31),
             ONE_DAY_IN_MS: 24 * 60 * 60 * 1000,
-            DEFAULT_MARKER_COLOR: '#0f0',
+            DEFAULT_MARKER_COLOR: '#444',
             HASHTAG_COLOR_PALETTE: [
                 ['#d16a6f', '#d19f6a'], ['#e88c4b', '#e8c54b'], ['#d9c35c', '#a6d95c'],
                 ['#68b08f', '#689db0'], ['#5f8fe3', '#8f5fe3'], ['#a65b9a', '#d15a63'],
@@ -48,7 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
             MARKER_DISPLAY_LIMIT: 500
         },
 
-        // DOM elements
         elements: {
             hashtagFiltersContainer: document.getElementById('hashtag-filters-container'),
             datePicker: document.getElementById('date-picker'),
@@ -57,9 +54,6 @@ document.addEventListener('DOMContentLoaded', () => {
             leftPanel: document.getElementById('left-panel'),
         },
 
-        /**
-         * Initializes the application.
-         */
         async init() {
             try {
                 const [eventData, locationData, tagConfig] = await Promise.all([
@@ -82,12 +76,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         const [newStart, newEnd] = selectedDates;
                         const [oldStart, oldEnd] = this.state.lastSelectedDates;
 
-                        // If dates are the same as before, do nothing to avoid re-computation
                         if (oldStart && oldEnd && newStart.getTime() === oldStart.getTime() && newEnd.getTime() === oldEnd.getTime()) {
                             return;
                         }
 
-                        // Update the stored dates and re-filter
                         this.state.lastSelectedDates = selectedDates;
                         this.state.allEventsFilteredByDate = this.filterEventsByDateRange(newStart, newEnd);
                         
@@ -113,9 +105,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         },
 
-        /**
-         * Initializes the Leaflet map.
-         */
         initMap() {
             this.state.map = L.map('map', { zoomControl: false })
                 .setView(this.config.MAP_INITIAL_VIEW, this.config.MAP_INITIAL_ZOOM);
@@ -131,9 +120,6 @@ document.addEventListener('DOMContentLoaded', () => {
             this.state.markersLayer = markersLayer;
         },
 
-        /**
-         * Initializes the hashtag filter UI.
-         */
         initHashtagFilterUI() {
             HashtagFilterUI.init({
                 allAvailableTags: this.state.allAvailableTags,
@@ -147,9 +133,6 @@ document.addEventListener('DOMContentLoaded', () => {
             HashtagFilterUI.populateInitialFilters();
         },
 
-        /**
-         * Filters and displays events on the map based on current filter criteria.
-         */
         filterAndDisplayEvents(options = {}) {
             if (!this.state.datePickerInstance) {
                 console.warn("filterAndDisplayEvents called before datePicker is initialized.");
@@ -169,7 +152,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const selectedDates = this.state.datePickerInstance.selectedDates;
             if (selectedDates.length < 2) {
-                return; // Exit if no valid date range is selected
+                return;
             }
 
             const currentTagStates = HashtagFilterUI.getTagStates();
@@ -180,7 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             let allMatchingEventsFlatList;
 
-            if (selectedTags.length === 0 && requiredTags.length === 0) { // Special case for performance
+            if (selectedTags.length === 0 && requiredTags.length === 0) {
                 allMatchingEventsFlatList = this.state.allEventsFilteredByDate;
                 if (forbiddenTags.length > 0) {
                     const forbiddenTagsSet = new Set(forbiddenTags);
@@ -192,9 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 let eventsToFilter;
 
                 if (requiredTags.length > 0) {
-                    // Start with a set of event IDs from the first required tag.
                     let matchingEventIds = new Set(this.state.eventTagIndex[requiredTags[0]] || []);
-                    // Intersect with event IDs from other required tags to find events that have ALL required tags.
                     for (let i = 1; i < requiredTags.length; i++) {
                         const tag = requiredTags[i];
                         const eventIdsForTag = new Set(this.state.eventTagIndex[tag] || []);
@@ -233,7 +214,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
-            // If a popup is open, update its content before redrawing the map
             if (openPopup) {
                 const popupLatLng = openPopup.getLatLng();
                 const locationKey = `${popupLatLng.lat},${popupLatLng.lng}`;
@@ -259,12 +239,6 @@ document.addEventListener('DOMContentLoaded', () => {
             HashtagFilterUI.updateView(allMatchingEventsFlatList);
         },
         
-        /**
-         * Checks if an event matches the current tag filters.
-         * @param {object} event - The event to check.
-         * @param {object} tagStates - The current state of the tag filters.
-         * @returns {boolean} - True if the event matches the tag filters.
-         */
         isEventMatchingTagFilters(event, tagStates) {
             const selectedTags = Object.entries(tagStates).filter(([, state]) => state === 'selected').map(([tag]) => tag);
             const requiredTags = Object.entries(tagStates).filter(([, state]) => state === 'required').map(([tag]) => tag);
@@ -284,13 +258,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return true;
         },
         
-        /**
-         * Checks if an event falls within a given date range.
-         * @param {object} event - The event to check.
-         * @param {Date} startDate - The start of the date range.
-         * @param {Date} endDate - The end of the date range.
-         * @returns {boolean} - True if the event is in the date range.
-         */
         isEventInDateRange(event, startDate, endDate) {
             if (!event.occurrences || event.occurrences.length === 0) {
                 return false;
@@ -308,21 +275,10 @@ document.addEventListener('DOMContentLoaded', () => {
             return false;
         },
 
-        /**
-         * Filters events by a date range.
-         * @param {Date} startDate - The start of the date range.
-         * @param {Date} endDate - The end of the date range.
-         * @returns {Array} - A list of events that fall within the date range.
-         */
         filterEventsByDateRange(startDate, endDate) {
             return this.state.allEvents.filter(event => this.isEventInDateRange(event, startDate, endDate));
         },
 
-        /**
-         * Displays events on the map.
-         * @param {object} locationsToDisplay - The locations and events to display.
-         * @param {L.Marker} [markerToKeep=null] - A marker to keep on the map (with an open popup).
-         */
         displayEventsOnMap(locationsToDisplay, markerToKeep = null) {
              let openMarkerLocationKey = null;
              if (markerToKeep) {
@@ -335,7 +291,6 @@ document.addEventListener('DOMContentLoaded', () => {
  
              for (const locationKey in locationsToDisplay) {
                  if (locationKey === openMarkerLocationKey) {
-                     // Already handled the marker to keep, so skip it in the loop.
                      continue;
                  }
  

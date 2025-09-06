@@ -89,7 +89,7 @@
     "🎉": ["#63247a", "#ff9e9e"],
     "📖": ["#325fb8", "#a9defe"],
     "💽": ["#4c365e", "#ffbf52"],
-    "📍": ["#3e564b", "#ff5c7c"],
+    "✨": ["#3e564b", "#ff5c7c"],
     "🏘️": ["#574242", "#ffe28a"],
     "🌹": ["#5fbfac", "#ff6b6b"],
     "💭": ["#8046b9", "#c2e4ff"]
@@ -113,6 +113,7 @@
     "nyc",
     "nycart",
     "nycarts",
+    "nycomedy",
     "nyceats",
     "nycevent",
     "nycevents",
@@ -123,7 +124,9 @@
     "nycperformance",
     "pioneerworksnyc",
     "qbg",
+    "saturdaynight",
     "statenisland",
+    "sundaynight",
     "thedl",
     "wavehill"],
   "rewrite": {

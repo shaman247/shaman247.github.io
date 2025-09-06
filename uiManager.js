@@ -73,7 +73,7 @@ const UIManager = {
 
         const emojiSpan = document.createElement('span');
         emojiSpan.className = 'popup-header-emoji';
-        emojiSpan.textContent = Utils.escapeHtml(locationInfo.emoji);
+        emojiSpan.textContent = Utils.escapeHtml(locationInfo.flavor_emoji ? locationInfo.flavor_emoji : locationInfo.base_emoji);
         headerWrapper.appendChild(emojiSpan);
 
         const textWrapper = document.createElement('div');
@@ -117,12 +117,10 @@ const UIManager = {
             const aTagMatch = filterFunctions.isEventMatchingTagFilters(a, activeFilters.tagStates);
             const bTagMatch = filterFunctions.isEventMatchingTagFilters(b, activeFilters.tagStates);
 
-            // Events matching tags get priority
             if (aTagMatch !== bTagMatch) {
-                return bTagMatch - aTagMatch; // true (1) comes before false (0)
+                return bTagMatch - aTagMatch;
             }
 
-            // Secondary sort: if scores are equal, sort by tag match count if there are active tag filters
             if (hasActiveTagFilters) {
                 const aMatchCount = selectedTags.filter(tag => (a.hashtags || []).includes(tag)).length;
                 const bMatchCount = selectedTags.filter(tag => (b.hashtags || []).includes(tag)).length;
@@ -131,7 +129,6 @@ const UIManager = {
                 }
             }
 
-            // Tertiary sort: by start date
             const aStart = a.occurrences?.[0]?.start?.getTime() || 0;
             const bStart = b.occurrences?.[0]?.start?.getTime() || 0;
             return aStart - bStart;
